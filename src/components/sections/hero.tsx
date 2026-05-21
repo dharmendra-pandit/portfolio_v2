@@ -96,15 +96,15 @@ export const Hero = () => {
             </Button>
           </MagneticButton>
           <MagneticButton>
-            <Button
-              size="lg"
-              variant="outline"
-              className="rounded-full h-14 px-8 text-lg border-border bg-foreground/5 backdrop-blur-md hover:bg-foreground/10 hover:text-foreground"
-              onClick={() => window.open('/resume.pdf', '_blank')}
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center rounded-full h-14 px-8 text-lg border border-border bg-foreground/5 backdrop-blur-md hover:bg-foreground/10 hover:text-foreground transition-all duration-300 font-medium"
             >
               <FileText className="w-5 h-5 mr-2" />
               Resume
-            </Button>
+            </a>
           </MagneticButton>
         </motion.div>
 
