@@ -25,7 +25,7 @@ export const Contact = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter mb-6 text-foreground"
+            className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter mb-6 text-foreground"
           >
             Get in <span className="text-foreground">touch.</span>
           </motion.h2>

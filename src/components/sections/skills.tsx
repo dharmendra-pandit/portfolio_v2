@@ -79,7 +79,7 @@ export const Skills = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-5xl md:text-7xl font-black tracking-tighter mb-6 text-foreground"
+            className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter mb-6 text-foreground"
           >
             Technical <span className="text-foreground/80">Skills.</span>
           </motion.h2>

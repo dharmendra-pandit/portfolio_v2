@@ -33,7 +33,7 @@ export const Certifications = () => {
         <div className="text-center mb-16">
           <AnimatedText
             text="Certifications."
-            className="text-5xl md:text-7xl font-black tracking-tighter mb-4"
+            className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter mb-4"
             el="h2"
           />
         </div>

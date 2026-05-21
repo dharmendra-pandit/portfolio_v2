@@ -41,16 +41,16 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-7xl md:text-9xl lg:text-[11rem] font-black tracking-tighter leading-[0.9] mb-6"
+          className="text-5xl sm:text-7xl md:text-9xl lg:text-[11rem] font-black tracking-tighter leading-[0.9] mb-6"
         >
           <span className="text-foreground">Dharmendra</span><br />
           <span className="text-foreground/80">Pandit.</span>
         </motion.h1>
 
-        <div className="h-10 mb-8 flex items-center justify-center">
+        <div className="h-auto min-h-10 mb-8 flex items-center justify-center">
           <TypingAnimation 
             text="Aspiring Software Engineer & Generative AI Enthusiast"
-            className="text-xl md:text-3xl font-medium text-muted-foreground"
+            className="text-lg sm:text-xl md:text-3xl font-medium text-muted-foreground text-center"
             delay={1}
             duration={0.05}
           />
@@ -60,7 +60,7 @@ export const Hero = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 3, duration: 1 }}
-          className="max-w-2xl text-lg md:text-xl text-muted-foreground mb-12"
+          className="max-w-2xl text-base sm:text-lg md:text-xl text-muted-foreground mb-12 text-center"
         >
           Building futuristic digital experiences, intelligent AI solutions, and
           highly scalable web applications. Let's create the future together.
@@ -112,7 +112,7 @@ export const Hero = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 3.5, duration: 1 }}
-          className="flex items-center gap-6 mt-16"
+          className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 mt-12 sm:mt-16"
         >
           {[
             { icon: FaGithub, href: "https://github.com/dharmendra-pandit" },
