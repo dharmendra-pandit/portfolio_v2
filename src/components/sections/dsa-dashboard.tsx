@@ -25,6 +25,13 @@ const defaultActivityData = [
   { name: 'Jul', solved: 85 },
 ]
 
+const defaultProjectActivityData = [
+  { name: 'Q1', projects: 0 },
+  { name: 'Q2', projects: 0 },
+  { name: 'Q3', projects: 0 },
+  { name: 'Q4', projects: 0 },
+]
+
 // We will update stats dynamically in the component
 const defaultStats = [
   {
@@ -60,6 +67,23 @@ const defaultStats = [
 export const DsaDashboard = () => {
   const [stats, setStats] = useState(defaultStats)
   const [activityData, setActivityData] = useState(defaultActivityData)
+  const [projectActivityData, setProjectActivityData] = useState(defaultProjectActivityData)
+
+  const totalProblems = stats.reduce((acc, stat) => {
+    if (['LeetCode', 'Code360', 'GeeksforGeeks'].includes(stat.platform)) {
+      const num = parseInt(stat.solved)
+      return acc + (isNaN(num) ? 0 : num)
+    }
+    return acc
+  }, 0)
+
+  const totalProjects = stats.reduce((acc, stat) => {
+    if (stat.platform === 'GitHub') {
+      const num = parseInt(stat.solved)
+      return acc + (isNaN(num) ? 0 : num)
+    }
+    return acc
+  }, 0)
 
   useEffect(() => {
     const fetchLeetCodeData = async () => {
@@ -200,9 +224,45 @@ export const DsaDashboard = () => {
       }
     }
 
+    const fetchGitHubRepos = async () => {
+      try {
+        const response = await fetch('https://api.github.com/users/dharmendra-pandit/repos?per_page=100')
+        const data = await response.json()
+        if (Array.isArray(data)) {
+          const quarterMap = new Map()
+          data.forEach(repo => {
+            if (repo.created_at && !repo.fork) {
+              const date = new Date(repo.created_at)
+              const year = date.getFullYear()
+              const q = Math.floor(date.getMonth() / 3) + 1
+              const key = `Q${q} '${year.toString().slice(2)}`
+              
+              if (!quarterMap.has(key)) {
+                quarterMap.set(key, { year, q, name: key, projects: 0 })
+              }
+              const entry = quarterMap.get(key)
+              entry.projects += 1
+            }
+          })
+          
+          const sortedQuarters = Array.from(quarterMap.values()).sort((a, b) => {
+            if (a.year !== b.year) return a.year - b.year;
+            return a.q - b.q;
+          });
+          
+          if (sortedQuarters.length > 0) {
+            setProjectActivityData(sortedQuarters.map(q => ({ name: q.name, projects: q.projects })))
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch GitHub repos:', error)
+      }
+    }
+
     fetchLeetCodeData()
     fetchLeetCodeCalendar()
     fetchGitHubData()
+    fetchGitHubRepos()
     fetchCode360Data()
     fetchGFGData()
   }, [])
@@ -229,6 +289,47 @@ export const DsaDashboard = () => {
             Consistency is the key to mastery. Here is my problem-solving and
             open-source contribution journey.
           </motion.p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-6">
+           {/* Total Summaries */}
+           <div className="lg:col-span-2 relative group">
+             <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/20 to-primary/5 rounded-3xl blur opacity-50 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
+             <Card className="relative h-full p-6 bg-foreground/5 border border-foreground/5 rounded-3xl backdrop-blur-3xl overflow-hidden shadow-lg">
+               <CardHeader className="p-0 pb-2 border-none">
+                 <CardTitle className="text-lg font-medium text-muted-foreground flex items-center gap-3">
+                   <div className="p-2.5 bg-primary/10 rounded-xl border border-primary/20 text-primary">
+                     <Code2 className="w-6 h-6" />
+                   </div>
+                   Total Problems Solved
+                 </CardTitle>
+               </CardHeader>
+               <CardContent className="p-0 border-none mt-4">
+                 <div className="text-5xl font-black text-foreground">
+                   {totalProblems > 0 ? totalProblems : '...'}
+                 </div>
+               </CardContent>
+             </Card>
+           </div>
+           
+           <div className="lg:col-span-2 relative group">
+             <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/20 to-primary/5 rounded-3xl blur opacity-50 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
+             <Card className="relative h-full p-6 bg-foreground/5 border border-foreground/5 rounded-3xl backdrop-blur-3xl overflow-hidden shadow-lg">
+               <CardHeader className="p-0 pb-2 border-none">
+                 <CardTitle className="text-lg font-medium text-muted-foreground flex items-center gap-3">
+                   <div className="p-2.5 bg-primary/10 rounded-xl border border-primary/20 text-primary">
+                     <FaGithub className="w-6 h-6" />
+                   </div>
+                   Total Projects
+                 </CardTitle>
+               </CardHeader>
+               <CardContent className="p-0 border-none mt-4">
+                 <div className="text-5xl font-black text-foreground">
+                   {totalProjects > 0 ? totalProjects : '...'}
+                 </div>
+               </CardContent>
+             </Card>
+           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
@@ -279,85 +380,132 @@ export const DsaDashboard = () => {
           </div>
 
           {/* Chart Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="lg:col-span-4"
-          >
-            <Card className="h-full p-8 bg-foreground/5 border border-foreground/5 rounded-[2.5rem] backdrop-blur-3xl transition-all duration-500 hover:border-foreground/10 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-              <CardHeader className="p-0 pb-8 border-none">
-                <CardTitle className="text-2xl font-bold text-foreground">
-                  Problems Solved (Last 7 Months)
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="w-full p-0 border-none">
-                <div className="h-[350px] w-full">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart
-                      data={activityData}
-                      margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-                    >
-                      <defs>
-                        <linearGradient
-                          id="colorSolved"
-                          x1="0"
-                          y1="0"
-                          x2="0"
-                          y2="1"
-                        >
-                          <stop
-                            offset="5%"
-                            stopColor="var(--primary)"
-                            stopOpacity={0.5}
-                          />
-                          <stop
-                            offset="95%"
-                            stopColor="var(--primary)"
-                            stopOpacity={0}
-                          />
-                        </linearGradient>
-                      </defs>
-                      <XAxis
-                        dataKey="name"
-                        stroke="#888888"
-                        fontSize={12}
-                        tickLine={false}
-                        axisLine={false}
-                        dy={10}
-                      />
-                      <YAxis
-                        stroke="#888888"
-                        fontSize={12}
-                        tickLine={false}
-                        axisLine={false}
-                        tickFormatter={(value) => `${value}`}
-                        dx={-10}
-                      />
-                      <Tooltip
-                        contentStyle={{
-                          backgroundColor: 'var(--background)',
-                          border: '1px solid var(--border)',
-                          borderRadius: '12px',
-                          backdropFilter: 'blur(10px)'
-                        }}
-                        itemStyle={{ color: 'var(--foreground)', fontWeight: 'bold' }}
-                      />
-                      <Area
-                        type="monotone"
-                        dataKey="solved"
-                        stroke="var(--primary)"
-                        strokeWidth={3}
-                        fillOpacity={1}
-                        fill="url(#colorSolved)"
-                      />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+          <div className="lg:col-span-4 grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="h-full"
+            >
+              <Card className="h-full p-8 bg-foreground/5 border border-foreground/5 rounded-[2.5rem] backdrop-blur-3xl transition-all duration-500 hover:border-foreground/10 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+                <CardHeader className="p-0 pb-8 border-none">
+                  <CardTitle className="text-2xl font-bold text-foreground">
+                    Problems Solved (Last 7 Months)
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="w-full p-0 border-none">
+                  <div className="h-[350px] w-full">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart
+                        data={activityData}
+                        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+                      >
+                        <defs>
+                          <linearGradient
+                            id="colorSolved"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                          >
+                            <stop
+                              offset="5%"
+                              stopColor="var(--primary)"
+                              stopOpacity={0.5}
+                            />
+                            <stop
+                              offset="95%"
+                              stopColor="var(--primary)"
+                              stopOpacity={0}
+                            />
+                          </linearGradient>
+                        </defs>
+                        <XAxis
+                          dataKey="name"
+                          stroke="#888888"
+                          fontSize={12}
+                          tickLine={false}
+                          axisLine={false}
+                          dy={10}
+                        />
+                        <YAxis
+                          stroke="#888888"
+                          fontSize={12}
+                          tickLine={false}
+                          axisLine={false}
+                          tickFormatter={(value) => `${value}`}
+                          dx={-10}
+                        />
+                        <Tooltip
+                          contentStyle={{
+                            backgroundColor: 'var(--background)',
+                            border: '1px solid var(--border)',
+                            borderRadius: '12px',
+                            backdropFilter: 'blur(10px)'
+                          }}
+                          itemStyle={{ color: 'var(--foreground)', fontWeight: 'bold' }}
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="solved"
+                          stroke="var(--primary)"
+                          strokeWidth={3}
+                          fillOpacity={1}
+                          fill="url(#colorSolved)"
+                        />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="h-full"
+            >
+              <Card className="h-full p-8 bg-foreground/5 border border-foreground/5 rounded-[2.5rem] backdrop-blur-3xl transition-all duration-500 hover:border-foreground/10 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+                <CardHeader className="p-0 pb-8 border-none">
+                  <CardTitle className="text-2xl font-bold text-foreground">
+                    Projects (Quarterly Basis)
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="w-full p-0 border-none">
+                  <div className="h-[350px] w-full">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart
+                        data={projectActivityData}
+                        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+                      >
+                        <defs>
+                          <linearGradient id="colorProjects" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.5} />
+                            <stop offset="95%" stopColor="var(--primary)" stopOpacity={0} />
+                          </linearGradient>
+                        </defs>
+                        <XAxis dataKey="name" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} dy={10} />
+                        <YAxis stroke="#888888" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `${value}`} dx={-10} />
+                        <Tooltip
+                          contentStyle={{
+                            backgroundColor: 'var(--background)',
+                            border: '1px solid var(--border)',
+                            borderRadius: '12px',
+                            backdropFilter: 'blur(10px)'
+                          }}
+                          itemStyle={{ color: 'var(--foreground)', fontWeight: 'bold' }}
+                        />
+                        <Area type="monotone" dataKey="projects" stroke="var(--primary)" strokeWidth={3} fillOpacity={1} fill="url(#colorProjects)" />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>
