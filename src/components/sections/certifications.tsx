@@ -24,6 +24,12 @@ const certs = [
     date: '2026',
     link: '#',
   },
+  {
+    title: 'Java',
+    issuer: 'Code Hunt',
+    date: '2026',
+    link: '#',
+  },
 ]
 
 export const Certifications = () => {
