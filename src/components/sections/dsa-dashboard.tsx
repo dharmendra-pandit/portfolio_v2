@@ -14,16 +14,21 @@ import {
 import { Code2, Trophy, Star, Target } from 'lucide-react'
 import { FaGithub } from 'react-icons/fa'
 
-// Default mock data, will be updated dynamically
-const defaultActivityData = [
-  { name: 'Jan', solved: 40 },
-  { name: 'Feb', solved: 30 },
-  { name: 'Mar', solved: 55 },
-  { name: 'Apr', solved: 45 },
-  { name: 'May', solved: 70 },
-  { name: 'Jun', solved: 65 },
-  { name: 'Jul', solved: 85 },
-]
+// Initialize activity data with last 7 months set to 0
+const getInitialActivityData = () => {
+  const now = new Date()
+  const months = []
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1)
+    months.push({
+      name: d.toLocaleString('default', { month: 'short' }),
+      solved: 0
+    })
+  }
+  return months
+}
+
+const defaultActivityData = getInitialActivityData()
 
 const defaultProjectActivityData = [
   { name: 'Q1', projects: 0 },
@@ -112,7 +117,7 @@ export const DsaDashboard = () => {
         setStats((prevStats) =>
           prevStats.map((stat) => {
             if (stat.platform === 'LeetCode') {
-              return { ...stat, solved: '400+', rating: 'Unranked' }
+              return { ...stat, solved: '0', rating: 'Unranked' }
             }
             return stat
           }),
@@ -145,7 +150,7 @@ export const DsaDashboard = () => {
         setStats((prevStats) =>
           prevStats.map((stat) => {
             if (stat.platform === 'GitHub') {
-              return { ...stat, solved: '20+', rating: 'Public Projects' }
+              return { ...stat, solved: '0', rating: 'Public Projects' }
             }
             return stat
           }),
