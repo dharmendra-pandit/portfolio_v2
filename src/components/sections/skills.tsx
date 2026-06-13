@@ -13,113 +13,93 @@ import {
   FaInfinity
 } from 'react-icons/fa'
 import { TbWorld, TbBrandNextjs } from 'react-icons/tb'
+import { TerminalSquare, BrainCircuit, Globe, Rocket, Code2 } from 'lucide-react'
 
 const skillCategories = [
-  {
-    title: 'Programming Languages',
-    icon: <FaPython className="w-8 h-8 text-foreground" />,
-    skills: ['Java', 'Python', 'TypeScript', 'JavaScript'],
-  },
-  {
-    title: 'Core Subjects',
-    icon: <FaBook className="w-8 h-8 text-foreground" />,
-    skills: ['Object-Oriented Programming', 'Database Management', 'Operating Systems', 'Computer Networks'],
-  },
   {
     title: 'AI ML',
     icon: <FaRobot className="w-8 h-8 text-foreground" />,
     skills: [
+      'Machine Learning',
+      'Deep Learning',
       'NLP & LLMs',
+      'Computer Vision',
       'Hugging Face',
       'Prompt Engineering',
       'RAG Systems',
       'LangChain',
-      'FAISS',
+      'TensorFlow',
+      'PyTorch',
     ],
   },
   {
-    title: 'Backend & Data',
-    icon: <FaDatabase className="w-8 h-8 text-foreground" />,
+    title: 'Backend Engineering',
+    icon: <FaServer className="w-8 h-8 text-foreground" />,
     skills: [
       'Node.js',
       'Express.js',
       'FastAPI',
       'REST APIs',
+      'Microservices',
+      'System Design',
       'Data Pipelines',
     ],
   },
   {
-    title: 'DevOps',
+    title: 'DevOps & Cloud',
     icon: <FaInfinity className="w-8 h-8 text-foreground" />,
-    skills: ['Docker', 'Kubernetes', 'CI/CD', 'GitHub Actions', 'Linux', 'Terraform'],
+    skills: ['Docker', 'Kubernetes', 'CI/CD', 'GitHub Actions', 'AWS', 'Linux', 'Terraform'],
   },
   {
     title: 'Databases',
-    icon: <TbWorld className="w-8 h-8 text-foreground" />,
-    skills: ['MongoDB', 'MySQL', 'PostgreSQL', 'Redis'],
+    icon: <FaDatabase className="w-8 h-8 text-foreground" />,
+    skills: ['MongoDB', 'MySQL', 'PostgreSQL', 'Redis', 'Vector DBs (FAISS)'],
   },
   {
-    title: 'Cloud & Tools',
+    title: 'Data Structures & Algorithms',
+    icon: <Code2 className="w-8 h-8 text-foreground" />,
+    skills: ['Problem Solving', 'Algorithm Design', 'Time/Space Complexity', 'Graph Theory', 'Dynamic Programming'],
+  },
+  {
+    title: 'Programming Languages',
+    icon: <FaPython className="w-8 h-8 text-foreground" />,
+    skills: ['Java', 'Python', 'TypeScript', 'JavaScript', 'C++'],
+  },
+  {
+    title: 'Tools & Ecosystem',
     icon: <FaTools className="w-8 h-8 text-foreground" />,
     skills: [
-      'AWS',
       'Git & GitHub',
       'Vercel',
-      'Render',
       'Postman',
       'VS Code',
+      'Jupyter',
     ],
   },
 ]
-
-const VennDiagram = () => (
-  <div className="relative w-full max-w-md mx-auto my-16 aspect-square flex items-center justify-center">
-    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-      <svg viewBox="0 0 400 400" className="w-full h-full opacity-80" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.4" />
-          </linearGradient>
-          <linearGradient id="grad2" x1="100%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#ec4899" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="#f43f5e" stopOpacity="0.4" />
-          </linearGradient>
-          <linearGradient id="grad3" x1="50%" y1="100%" x2="50%" y2="0%">
-            <stop offset="0%" stopColor="#10b981" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="#14b8a6" stopOpacity="0.4" />
-          </linearGradient>
-        </defs>
-
-        <circle cx="150" cy="150" r="110" fill="url(#grad1)" stroke="currentColor" strokeWidth="1" className="text-foreground/20" />
-        <circle cx="250" cy="150" r="110" fill="url(#grad2)" stroke="currentColor" strokeWidth="1" className="text-foreground/20" />
-        <circle cx="200" cy="240" r="110" fill="url(#grad3)" stroke="currentColor" strokeWidth="1" className="text-foreground/20" />
-        
-        <text x="120" y="110" textAnchor="middle" fill="currentColor" className="text-sm font-bold opacity-80" fontSize="16">AI / ML</text>
-        <text x="280" y="110" textAnchor="middle" fill="currentColor" className="text-sm font-bold opacity-80" fontSize="16">DevOps</text>
-        <text x="200" y="300" textAnchor="middle" fill="currentColor" className="text-sm font-bold opacity-80" fontSize="16">Backend</text>
-
-        <text x="200" y="145" textAnchor="middle" fill="currentColor" className="text-xs font-bold opacity-90" fontSize="12">MLOps</text>
-        <text x="150" y="210" textAnchor="middle" fill="currentColor" className="text-xs font-bold opacity-90" fontSize="12">Data Eng</text>
-        <text x="250" y="210" textAnchor="middle" fill="currentColor" className="text-xs font-bold opacity-90" fontSize="12">Cloud native</text>
-        <text x="200" y="200" textAnchor="middle" fill="currentColor" className="text-sm font-black opacity-100" fontSize="14">AI Engineering</text>
-      </svg>
-    </div>
-  </div>
-)
 
 export const Skills = () => {
   return (
     <section id="skills" className="relative min-h-screen py-48 flex items-center justify-center overflow-hidden">
       <div className="container px-4 mx-auto relative z-10">
         <div className="text-center mb-20">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-foreground/5 border border-border text-sm mb-6 shadow-[0_0_15px_rgba(255,255,255,0.05)]"
+          >
+            <span className="text-foreground">My Expertise</span>
+          </motion.div>
+
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter mb-6 text-foreground"
           >
-            Technical <span className="text-foreground/80">Skills.</span>
+            Architecting <span className="text-foreground/80">Solutions.</span>
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0 }}
@@ -128,18 +108,11 @@ export const Skills = () => {
             transition={{ delay: 0.2 }}
             className="max-w-2xl mx-auto text-lg text-muted-foreground"
           >
-            A comprehensive overview of my technical expertise and tools.
+            Engineering the future through intelligent AI models, highly scalable backend architectures, 
+            and robust DevOps pipelines. Focused on bridging the gap between theoretical models 
+            and real-world performance.
           </motion.p>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <VennDiagram />
-        </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
           {skillCategories.map((category, index) => (
