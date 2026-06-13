@@ -298,8 +298,7 @@ export const DsaDashboard = () => {
             transition={{ delay: 0.2 }}
             className="max-w-2xl mx-auto text-lg text-muted-foreground"
           >
-            Consistency is the key to mastery. Here is my problem-solving and
-            open-source contribution journey.
+            Consistency is the key to mastery in AI & ML, DevOps, and algorithmic problem-solving. Here is my open-source contribution and problem-solving journey.
           </motion.p>
         </div>
 
@@ -313,7 +312,7 @@ export const DsaDashboard = () => {
                    <div className="p-2.5 bg-primary/10 rounded-xl border border-primary/20 text-primary">
                      <Code2 className="w-6 h-6" />
                    </div>
-                   Total Problems Solved
+                   Total Problems Solved (LeetCode, GeeksforGeeks, Code360)
                  </CardTitle>
                </CardHeader>
                <CardContent className="p-0 border-none mt-4">
@@ -332,7 +331,7 @@ export const DsaDashboard = () => {
                    <div className="p-2.5 bg-primary/10 rounded-xl border border-primary/20 text-primary">
                      <FaGithub className="w-6 h-6" />
                    </div>
-                   Total Projects
+                   Total Projects (GitHub, Kaggle)
                  </CardTitle>
                </CardHeader>
                <CardContent className="p-0 border-none mt-4">
