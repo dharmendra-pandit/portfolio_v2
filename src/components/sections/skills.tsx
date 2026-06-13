@@ -9,6 +9,8 @@ import {
   FaNodeJs,
   FaTools,
   FaBook,
+  FaServer,
+  FaInfinity
 } from 'react-icons/fa'
 import { TbWorld, TbBrandNextjs } from 'react-icons/tb'
 
@@ -16,7 +18,7 @@ const skillCategories = [
   {
     title: 'Programming Languages',
     icon: <FaPython className="w-8 h-8 text-foreground" />,
-    skills: ['Java', 'Python', 'TypeScript'],
+    skills: ['Java', 'Python', 'TypeScript', 'JavaScript'],
   },
   {
     title: 'Core Subjects',
@@ -24,7 +26,7 @@ const skillCategories = [
     skills: ['Object-Oriented Programming', 'Database Management', 'Operating Systems', 'Computer Networks'],
   },
   {
-    title: 'AI & Generative AI',
+    title: 'AI ML',
     icon: <FaRobot className="w-8 h-8 text-foreground" />,
     skills: [
       'NLP & LLMs',
@@ -47,14 +49,14 @@ const skillCategories = [
     ],
   },
   {
-    title: 'Frontend Development',
-    icon: <FaReact className="w-8 h-8 text-foreground" />,
-    skills: ['React.js', 'Next.js', 'Tailwind CSS', 'HTML5', 'CSS3'],
+    title: 'DevOps',
+    icon: <FaInfinity className="w-8 h-8 text-foreground" />,
+    skills: ['Docker', 'Kubernetes', 'CI/CD', 'GitHub Actions', 'Linux', 'Terraform'],
   },
   {
     title: 'Databases',
     icon: <TbWorld className="w-8 h-8 text-foreground" />,
-    skills: ['MongoDB', 'MySQL'],
+    skills: ['MongoDB', 'MySQL', 'PostgreSQL', 'Redis'],
   },
   {
     title: 'Cloud & Tools',
@@ -69,6 +71,42 @@ const skillCategories = [
     ],
   },
 ]
+
+const VennDiagram = () => (
+  <div className="relative w-full max-w-md mx-auto my-16 aspect-square flex items-center justify-center">
+    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <svg viewBox="0 0 400 400" className="w-full h-full opacity-80" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.4" />
+          </linearGradient>
+          <linearGradient id="grad2" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#ec4899" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#f43f5e" stopOpacity="0.4" />
+          </linearGradient>
+          <linearGradient id="grad3" x1="50%" y1="100%" x2="50%" y2="0%">
+            <stop offset="0%" stopColor="#10b981" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#14b8a6" stopOpacity="0.4" />
+          </linearGradient>
+        </defs>
+
+        <circle cx="150" cy="150" r="110" fill="url(#grad1)" stroke="currentColor" strokeWidth="1" className="text-foreground/20" />
+        <circle cx="250" cy="150" r="110" fill="url(#grad2)" stroke="currentColor" strokeWidth="1" className="text-foreground/20" />
+        <circle cx="200" cy="240" r="110" fill="url(#grad3)" stroke="currentColor" strokeWidth="1" className="text-foreground/20" />
+        
+        <text x="120" y="110" textAnchor="middle" fill="currentColor" className="text-sm font-bold opacity-80" fontSize="16">AI / ML</text>
+        <text x="280" y="110" textAnchor="middle" fill="currentColor" className="text-sm font-bold opacity-80" fontSize="16">DevOps</text>
+        <text x="200" y="300" textAnchor="middle" fill="currentColor" className="text-sm font-bold opacity-80" fontSize="16">Backend</text>
+
+        <text x="200" y="145" textAnchor="middle" fill="currentColor" className="text-xs font-bold opacity-90" fontSize="12">MLOps</text>
+        <text x="150" y="210" textAnchor="middle" fill="currentColor" className="text-xs font-bold opacity-90" fontSize="12">Data Eng</text>
+        <text x="250" y="210" textAnchor="middle" fill="currentColor" className="text-xs font-bold opacity-90" fontSize="12">Cloud native</text>
+        <text x="200" y="200" textAnchor="middle" fill="currentColor" className="text-sm font-black opacity-100" fontSize="14">AI Engineering</text>
+      </svg>
+    </div>
+  </div>
+)
 
 export const Skills = () => {
   return (
@@ -93,6 +131,15 @@ export const Skills = () => {
             A comprehensive overview of my technical expertise and tools.
           </motion.p>
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <VennDiagram />
+        </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
           {skillCategories.map((category, index) => (

@@ -12,7 +12,7 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 import { Code2, Trophy, Star, Target } from 'lucide-react'
-import { FaGithub } from 'react-icons/fa'
+import { FaGithub, FaKaggle } from 'react-icons/fa'
 
 // Initialize activity data with last 7 months set to 0
 const getInitialActivityData = () => {
@@ -52,6 +52,13 @@ const defaultStats = [
     icon: <FaGithub className="w-5 h-5 text-foreground" />,
     rating: 'Repositories',
     link: 'https://github.com/dharmendra-pandit',
+  },
+  {
+    platform: 'Kaggle',
+    solved: 'Active',
+    icon: <FaKaggle className="w-5 h-5 text-foreground" />,
+    rating: 'Contributor',
+    link: 'https://www.kaggle.com/dharmendrapandit12',
   },
   {
     platform: 'Code360',
@@ -339,7 +346,7 @@ export const DsaDashboard = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
           {/* Stats Cards */}
-          <div className="lg:col-span-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="lg:col-span-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
             {stats.map((stat, index) => (
               <motion.div
                 key={index}
