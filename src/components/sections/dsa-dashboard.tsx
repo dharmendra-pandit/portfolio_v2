@@ -302,93 +302,89 @@ export const DsaDashboard = () => {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-6">
-           {/* Total Summaries */}
-           <div className="lg:col-span-2 relative group">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto mb-6">
+           {/* Total Summaries Box 1 */}
+           <div className="relative group">
              <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/20 to-primary/5 rounded-3xl blur opacity-50 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
-             <Card className="relative h-full p-6 bg-foreground/5 border border-foreground/5 rounded-3xl backdrop-blur-3xl overflow-hidden shadow-lg">
-               <CardHeader className="p-0 pb-2 border-none">
-                 <CardTitle className="text-lg font-medium text-muted-foreground flex items-center gap-3">
-                   <div className="p-2.5 bg-primary/10 rounded-xl border border-primary/20 text-primary">
-                     <Code2 className="w-6 h-6" />
+             <Card className="relative h-full p-6 bg-foreground/5 border border-foreground/5 rounded-3xl backdrop-blur-3xl overflow-hidden shadow-lg flex flex-col justify-between">
+               <div>
+                 <CardHeader className="p-0 pb-2 border-none">
+                   <CardTitle className="text-lg font-medium text-muted-foreground flex items-center gap-3">
+                     <div className="p-2.5 bg-primary/10 rounded-xl border border-primary/20 text-primary">
+                       <Code2 className="w-6 h-6" />
+                     </div>
+                     Total Problems Solved
+                   </CardTitle>
+                 </CardHeader>
+                 <CardContent className="p-0 border-none mt-4 mb-6">
+                   <div className="text-5xl font-black text-foreground">
+                     {totalProblems > 0 ? totalProblems : '...'}
                    </div>
-                   Total Problems Solved (LeetCode, GeeksforGeeks, Code360)
-                 </CardTitle>
-               </CardHeader>
-               <CardContent className="p-0 border-none mt-4">
-                 <div className="text-5xl font-black text-foreground">
-                   {totalProblems > 0 ? totalProblems : '...'}
-                 </div>
-               </CardContent>
+                 </CardContent>
+               </div>
+               
+               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-border/50">
+                 {stats.filter(s => ['LeetCode', 'GeeksforGeeks', 'Code360'].includes(s.platform)).map((stat, index) => (
+                   <a key={index} href={stat.link} target="_blank" rel="noopener noreferrer" className="group/stat block bg-foreground/5 p-4 rounded-2xl hover:bg-foreground/10 transition-colors">
+                     <div className="flex items-center gap-2 mb-2 text-sm font-medium text-muted-foreground group-hover/stat:text-foreground transition-colors">
+                       {stat.icon} {stat.platform}
+                     </div>
+                     <div className="flex items-end justify-between">
+                       <div className="text-2xl font-bold text-foreground group-hover/stat:text-primary transition-colors">
+                         {stat.solved}
+                       </div>
+                       <div className="text-xs text-primary/80 flex items-center gap-1">
+                         <Trophy className="w-3 h-3" /> {stat.rating}
+                       </div>
+                     </div>
+                   </a>
+                 ))}
+               </div>
              </Card>
            </div>
            
-           <div className="lg:col-span-2 relative group">
+           {/* Total Summaries Box 2 */}
+           <div className="relative group">
              <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/20 to-primary/5 rounded-3xl blur opacity-50 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
-             <Card className="relative h-full p-6 bg-foreground/5 border border-foreground/5 rounded-3xl backdrop-blur-3xl overflow-hidden shadow-lg">
-               <CardHeader className="p-0 pb-2 border-none">
-                 <CardTitle className="text-lg font-medium text-muted-foreground flex items-center gap-3">
-                   <div className="p-2.5 bg-primary/10 rounded-xl border border-primary/20 text-primary">
-                     <FaGithub className="w-6 h-6" />
+             <Card className="relative h-full p-6 bg-foreground/5 border border-foreground/5 rounded-3xl backdrop-blur-3xl overflow-hidden shadow-lg flex flex-col justify-between">
+               <div>
+                 <CardHeader className="p-0 pb-2 border-none">
+                   <CardTitle className="text-lg font-medium text-muted-foreground flex items-center gap-3">
+                     <div className="p-2.5 bg-primary/10 rounded-xl border border-primary/20 text-primary">
+                       <FaGithub className="w-6 h-6" />
+                     </div>
+                     Total Projects
+                   </CardTitle>
+                 </CardHeader>
+                 <CardContent className="p-0 border-none mt-4 mb-6">
+                   <div className="text-5xl font-black text-foreground">
+                     {totalProjects > 0 ? totalProjects : '...'}
                    </div>
-                   Total Projects (GitHub, Kaggle)
-                 </CardTitle>
-               </CardHeader>
-               <CardContent className="p-0 border-none mt-4">
-                 <div className="text-5xl font-black text-foreground">
-                   {totalProjects > 0 ? totalProjects : '...'}
-                 </div>
-               </CardContent>
+                 </CardContent>
+               </div>
+
+               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-border/50">
+                 {stats.filter(s => ['GitHub', 'Kaggle'].includes(s.platform)).map((stat, index) => (
+                   <a key={index} href={stat.link} target="_blank" rel="noopener noreferrer" className="group/stat block bg-foreground/5 p-4 rounded-2xl hover:bg-foreground/10 transition-colors">
+                     <div className="flex items-center gap-2 mb-2 text-sm font-medium text-muted-foreground group-hover/stat:text-foreground transition-colors">
+                       {stat.icon} {stat.platform}
+                     </div>
+                     <div className="flex items-end justify-between">
+                       <div className="text-2xl font-bold text-foreground group-hover/stat:text-primary transition-colors">
+                         {stat.solved}
+                       </div>
+                       <div className="text-xs text-primary/80 flex items-center gap-1">
+                         <Trophy className="w-3 h-3" /> {stat.rating}
+                       </div>
+                     </div>
+                   </a>
+                 ))}
+               </div>
              </Card>
            </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-          {/* Stats Cards */}
-          <div className="lg:col-span-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: '-50px' }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -5 }}
-                className="relative group"
-              >
-                {/* Animated Glow Border */}
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-foreground/20 to-foreground/5 rounded-3xl blur opacity-0 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
-                
-                <a
-                  href={stat.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block relative z-10 h-full"
-                >
-                  <Card className="h-full p-6 bg-foreground/5 border border-foreground/5 rounded-3xl backdrop-blur-3xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-500">
-                    <CardHeader className="p-0 pb-2 relative z-10 border-none">
-                      <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-3 group-hover:text-foreground transition-colors">
-                        <div className="p-2.5 bg-foreground/5 rounded-xl border border-border group-hover:scale-110 transition-transform duration-500 shadow-[0_0_15px_rgba(255,255,255,0.05)]">
-                          {stat.icon}
-                        </div>
-                        {stat.platform}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-0 relative z-10 border-none">
-                      <div className="flex justify-between items-end mt-4">
-                        <div className="text-3xl font-bold text-foreground group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-foreground group-hover:to-foreground/50 transition-all">
-                          {stat.solved}
-                        </div>
-                        <div className="text-sm text-primary flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
-                          <Trophy className="w-4 h-4" /> {stat.rating}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </a>
-              </motion.div>
-            ))}
-          </div>
 
           {/* Chart Section */}
           <div className="lg:col-span-4 grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
