@@ -10,15 +10,15 @@ const timelineData = [
     title: 'B.Tech in Computer Science Engineering',
     company: 'JECRC University, Jaipur',
     description:
-      "Currently pursuing bachelor's degree with a CGPA of 8.17. Focusing on core computer science fundamentals, full-stack development, and artificial intelligence.",
+      "Currently pursuing bachelor's degree with a CGPA of 8.17. Focusing on core computer science fundamentals, DevOps, and AI & ML.",
     icon: <GraduationCap className="w-5 h-5 text-foreground" />,
   },
   {
     date: 'Achievement',
     title: 'AI-Powered Applications',
-    company: 'Full Stack Integration',
+    company: 'AI & ML Integration',
     description:
-      'Built and deployed AI-powered full-stack applications integrating Machine Learning and RAG-based systems.',
+      'Built and deployed AI-powered applications integrating Machine Learning and RAG-based systems.',
     icon: <Award className="w-5 h-5 text-foreground" />,
   },
   {

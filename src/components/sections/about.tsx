@@ -56,7 +56,7 @@ export const About = () => {
                 I am an aspiring Software Engineer driven by an immense passion
                 for building intelligent systems and robust applications. My
                 expertise spans across Backend Development, Gen-AI, Python, and
-                the MERN stack.
+                DevOps, and Algorithmic Problem Solving.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
                 What excites me the most is bridging the gap between theoretical
@@ -97,9 +97,9 @@ export const About = () => {
                 bg: "bg-foreground/10"
               },
               {
-                icon: Globe,
-                title: "Full-Stack Web",
-                desc: "Building highly responsive modern web apps with React and Next.js.",
+                icon: Code2,
+                title: "Problem Solving",
+                desc: "Mastering algorithms and data structures for optimal system performance.",
                 color: "text-foreground",
                 bg: "bg-foreground/10"
               }

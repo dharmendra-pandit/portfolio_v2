@@ -49,7 +49,7 @@ export const Hero = () => {
 
         <div className="h-auto min-h-10 mb-8 flex items-center justify-center">
           <TypingAnimation 
-            text="Aspiring Software Engineer & Generative AI Enthusiast"
+            text="Aspiring Software Engineer, AI & ML, and DevOps Enthusiast"
             className="text-lg sm:text-xl md:text-3xl font-medium text-muted-foreground text-center"
             delay={1}
             duration={0.05}
@@ -62,8 +62,8 @@ export const Hero = () => {
           transition={{ delay: 3, duration: 1 }}
           className="max-w-2xl text-base sm:text-lg md:text-xl text-muted-foreground mb-12 text-center"
         >
-          Building futuristic digital experiences, intelligent AI solutions, and
-          highly scalable web applications. Let's create the future together.
+          Architecting intelligent AI & ML systems, robust DevOps pipelines, and
+          algorithmic problem-solving. Let's create the future together.
         </motion.p>
 
         <motion.div

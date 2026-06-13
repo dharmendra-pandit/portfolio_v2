@@ -22,7 +22,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Dharmendra Pandit | Portfolio',
   description:
-    'Futuristic developer portfolio of Dharmendra Pandit - Full Stack & AI Developer.',
+    'Futuristic developer portfolio of Dharmendra Pandit - AI & ML, DevOps & Backend Engineer.',
 }
 
 export default function RootLayout({

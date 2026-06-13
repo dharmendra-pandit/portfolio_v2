@@ -50,7 +50,7 @@ export const FeaturedProjects = () => {
             transition={{ delay: 0.2 }}
             className="max-w-2xl mx-auto text-lg text-muted-foreground"
           >
-            A showcase of my AI-powered applications and full-stack development work, synced dynamically from GitHub.
+            A showcase of my AI & ML applications and DevOps projects, synced dynamically from GitHub.
           </motion.p>
         </div>
 

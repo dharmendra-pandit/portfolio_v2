@@ -17,7 +17,7 @@ import { TerminalSquare, BrainCircuit, Globe, Rocket, Code2 } from 'lucide-react
 
 const skillCategories = [
   {
-    title: 'AI ML',
+    title: 'AI & ML',
     icon: <FaRobot className="w-8 h-8 text-foreground" />,
     skills: [
       'Machine Learning',

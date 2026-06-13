@@ -7,7 +7,7 @@ import { AnimatedText } from '@/components/ui/animated-text'
 
 const certs = [
   {
-    title: 'AI ML',
+    title: 'AI & ML',
     issuer: 'freeCodeCamp',
     date: '2026',
     link: '#',
