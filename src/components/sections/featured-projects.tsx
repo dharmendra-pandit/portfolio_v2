@@ -2,56 +2,127 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { FaGithub, FaKaggle } from 'react-icons/fa'
 import { ProjectCard, Project } from '@/components/ui/project-card'
+import { KaggleCard, KaggleNotebook } from '@/components/ui/kaggle-card'
 import { ProjectSkeleton } from '@/components/ui/project-skeleton'
+import { Button } from '@/components/ui/button'
 
 export const FeaturedProjects = () => {
-  const [projects, setProjects] = useState<Project[]>([])
+  const [activeTab, setActiveTab] = useState<'github' | 'kaggle'>('github')
+  const [projects, setProjects] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  // Listen to hash change from dsa-dashboard navigation
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash
+      if (hash === '#projects-kaggle') {
+        setActiveTab('kaggle')
+        setTimeout(() => {
+          document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })
+        }, 100)
+      } else if (hash === '#projects-github') {
+        setActiveTab('github')
+        setTimeout(() => {
+          document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })
+        }, 100)
+      }
+    }
+
+    window.addEventListener('hashchange', handleHashChange)
+    // Check initial hash
+    handleHashChange()
+
+    return () => window.removeEventListener('hashchange', handleHashChange)
+  }, [])
+
+  // Fetch projects whenever active tab changes
   useEffect(() => {
     const fetchProjects = async () => {
+      setLoading(true)
+      setError(null)
       try {
-        const res = await fetch('/api/github')
-        if (!res.ok) throw new Error('Failed to fetch projects')
+        const url = activeTab === 'github' ? '/api/github' : '/api/kaggle'
+        const res = await fetch(url)
+        if (!res.ok) throw new Error(`Failed to fetch ${activeTab} projects`)
         const data = await res.json()
         setProjects(data.projects || [])
       } catch (err) {
         console.error(err)
-        setError('Unable to load projects at this time.')
+        setError(`Unable to load ${activeTab === 'github' ? 'GitHub projects' : 'Kaggle notebooks'} at this time.`)
       } finally {
         setLoading(false)
       }
     }
 
     fetchProjects()
-  }, [])
+  }, [activeTab])
 
   return (
     <section
       id="projects"
-      className="relative py-48 flex items-center justify-center overflow-hidden"
+      className="relative py-48 flex items-center justify-center overflow-hidden border-t border-border/20"
     >
+      {/* Dynamic background glow based on active tab */}
+      <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-[120px] pointer-events-none transition-all duration-1000 ${
+        activeTab === 'github' ? 'bg-primary/5' : 'bg-[#20BEFF]/5'
+      }`} />
+
       <div className="container px-4 mx-auto relative z-10">
-        <div className="text-center mb-20">
+        <div className="text-center mb-16">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter mb-6 text-foreground"
           >
-            Featured <span className="text-foreground/80">Projects.</span>
+            Showcase <span className="text-foreground/80">Gallery.</span>
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="max-w-2xl mx-auto text-lg text-muted-foreground"
+            className="max-w-2xl mx-auto text-lg text-muted-foreground mb-12"
           >
-            A showcase of my AI & ML applications and DevOps projects, synced dynamically from GitHub.
+            Explore my production repositories, open-source work, and machine learning notebook kernels synced dynamically.
           </motion.p>
+
+          {/* Platform Tab Switcher */}
+          <div className="flex justify-center">
+            <div className="inline-flex p-1.5 bg-foreground/5 border border-border rounded-2xl backdrop-blur-md">
+              <button
+                onClick={() => {
+                  setActiveTab('github')
+                  window.location.hash = '#projects-github'
+                }}
+                className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 cursor-pointer ${
+                  activeTab === 'github'
+                    ? 'bg-foreground text-background shadow-md'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                <FaGithub className="w-4 h-4" />
+                <span>GitHub Repositories</span>
+              </button>
+              <button
+                onClick={() => {
+                  setActiveTab('kaggle')
+                  window.location.hash = '#projects-kaggle'
+                }}
+                className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 cursor-pointer ${
+                  activeTab === 'kaggle'
+                    ? 'bg-gradient-to-r from-[#20BEFF] to-[#008AFF] text-white shadow-md border-0'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                <FaKaggle className="w-4 h-4" />
+                <span>Kaggle Notebooks</span>
+              </button>
+            </div>
+          </div>
         </div>
 
         {error && (
@@ -60,6 +131,7 @@ export const FeaturedProjects = () => {
           </div>
         )}
 
+        {/* Dynamic Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {loading
             ? Array.from({ length: 6 }).map((_, i) => (
@@ -67,10 +139,53 @@ export const FeaturedProjects = () => {
                   <ProjectSkeleton />
                 </div>
               ))
-            : projects.map((project, index) => (
+            : activeTab === 'github'
+            ? projects.map((project, index) => (
                 <ProjectCard key={project.url} project={project} index={index} />
+              ))
+            : projects.map((notebook, index) => (
+                <KaggleCard key={notebook.title} notebook={notebook} index={index} />
               ))}
         </div>
+
+        {/* View All buttons */}
+        {!loading && projects.length > 0 && (
+          <div className="text-center mt-16">
+            {activeTab === 'github' ? (
+              <a
+                href="https://github.com/dharmendra-pandit"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block"
+              >
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="px-8 py-6 rounded-2xl border-border bg-background hover:bg-muted dark:border-input dark:bg-input/30 dark:hover:bg-input/50 transition-all font-semibold gap-2 shadow-[0_4px_20px_rgba(255,255,255,0.05)] cursor-pointer text-sm"
+                >
+                  <FaGithub className="w-5 h-5" />
+                  <span>View All GitHub Projects</span>
+                </Button>
+              </a>
+            ) : (
+              <a
+                href="https://www.kaggle.com/work"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block"
+              >
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="px-8 py-6 rounded-2xl border-border bg-background hover:bg-muted dark:border-input dark:bg-input/30 dark:hover:bg-input/50 transition-all font-semibold gap-2 shadow-[0_4px_20px_rgba(32,190,255,0.05)] cursor-pointer text-sm"
+                >
+                  <FaKaggle className="w-5 h-5 text-[#20BEFF]" />
+                  <span>View All Kaggle Work</span>
+                </Button>
+              </a>
+            )}
+          </div>
+        )}
       </div>
     </section>
   )

@@ -364,21 +364,29 @@ export const DsaDashboard = () => {
                </div>
 
                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-border/50">
-                 {stats.filter(s => ['GitHub', 'Kaggle'].includes(s.platform)).map((stat, index) => (
-                   <a key={index} href={stat.link} target="_blank" rel="noopener noreferrer" className="group/stat block bg-foreground/5 p-4 rounded-2xl hover:bg-foreground/10 transition-colors">
-                     <div className="flex items-center gap-2 mb-2 text-sm font-medium text-muted-foreground group-hover/stat:text-foreground transition-colors">
-                       {stat.icon} {stat.platform}
-                     </div>
-                     <div className="flex items-end justify-between">
-                       <div className="text-2xl font-bold text-foreground group-hover/stat:text-primary transition-colors">
-                         {stat.solved}
-                       </div>
-                       <div className="text-xs text-primary/80 flex items-center gap-1">
-                         <Trophy className="w-3 h-3" /> {stat.rating}
-                       </div>
-                     </div>
-                   </a>
-                 ))}
+                 {stats.filter(s => ['GitHub', 'Kaggle'].includes(s.platform)).map((stat, index) => {
+                    const isGitHub = stat.platform === 'GitHub';
+                    const targetLink = isGitHub ? '#projects-github' : '#projects-kaggle';
+                    return (
+                      <a
+                        key={index}
+                        href={targetLink}
+                        className="group/stat block bg-foreground/5 p-4 rounded-2xl hover:bg-foreground/10 transition-colors"
+                      >
+                        <div className="flex items-center gap-2 mb-2 text-sm font-medium text-muted-foreground group-hover/stat:text-foreground transition-colors">
+                          {stat.icon} {stat.platform}
+                        </div>
+                        <div className="flex items-end justify-between">
+                          <div className="text-2xl font-bold text-foreground group-hover/stat:text-primary transition-colors">
+                            {stat.solved}
+                          </div>
+                          <div className="text-xs text-primary/80 flex items-center gap-1">
+                            <Trophy className="w-3 h-3" /> {stat.rating}
+                          </div>
+                        </div>
+                      </a>
+                    );
+                  })}
                </div>
              </Card>
            </div>

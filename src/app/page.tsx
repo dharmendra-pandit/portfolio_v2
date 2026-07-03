@@ -3,7 +3,6 @@ import { About } from "@/components/sections/about";
 import { Skills } from "@/components/sections/skills";
 import { DsaDashboard } from "@/components/sections/dsa-dashboard";
 import { FeaturedProjects } from "@/components/sections/featured-projects";
-import { KaggleProjects } from "@/components/sections/kaggle-projects";
 import { Experience } from "@/components/sections/experience";
 import { Certifications } from "@/components/sections/certifications";
 import { Contact } from "@/components/sections/contact";
@@ -16,7 +15,6 @@ export default function Home() {
       <Skills />
       <DsaDashboard />
       <FeaturedProjects />
-      <KaggleProjects />
       <Experience />
       <Certifications />
       <Contact />
