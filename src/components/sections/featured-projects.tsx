@@ -169,7 +169,7 @@ export const FeaturedProjects = () => {
               </a>
             ) : (
               <a
-                href="https://www.kaggle.com/work"
+                href="https://www.kaggle.com/dharmendrapandit12"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block"

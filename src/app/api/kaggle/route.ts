@@ -42,7 +42,7 @@ export async function GET() {
     }
 
     const auth = Buffer.from(`${username}:${apiKey}`).toString('base64')
-    
+
     // Fetch user's kernels from Kaggle REST API
     const response = await fetch(`https://www.kaggle.com/api/v1/kernels/list?user=${username}`, {
       headers: {
@@ -58,7 +58,7 @@ export async function GET() {
     }
 
     const kernels = await response.json()
-    
+
     if (!Array.isArray(kernels) || kernels.length === 0) {
       return NextResponse.json({ projects: DEFAULT_NOTEBOOKS })
     }
@@ -66,7 +66,7 @@ export async function GET() {
     // Map Kaggle kernels API response to Project items
     const projects = kernels.map((kernel: any) => {
       const slug = kernel.ref.split('/')[1]
-      
+
       // Determine description, dataset, and tags based on name / slug
       let description = 'Machine learning model and data analysis built on Kaggle.'
       let datasetName = 'Kaggle Dataset'
