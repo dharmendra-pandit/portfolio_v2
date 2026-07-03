@@ -100,31 +100,32 @@ export const DsaDashboard = () => {
   useEffect(() => {
     const fetchLeetCodeData = async () => {
       try {
-        const response = await fetch(
-          'https://alfa-leetcode-api.onrender.com/dpbth/profile',
-        )
+        const response = await fetch('/api/leetcode')
         const data = await response.json()
 
-        if (data && data.totalSolved) {
+        if (data) {
           setStats((prevStats) =>
             prevStats.map((stat) => {
               if (stat.platform === 'LeetCode') {
                 return {
                   ...stat,
-                  solved: data.totalSolved.toString(),
-                  rating: data.ranking ? `Rank ${data.ranking}` : 'Unranked',
+                  solved: data.totalSolved,
+                  rating: data.ranking || 'Unranked',
                 }
               }
               return stat
             }),
           )
+          if (data.activityData) {
+            setActivityData(data.activityData)
+          }
         }
       } catch (error) {
         console.error('Failed to fetch LeetCode data:', error)
         setStats((prevStats) =>
           prevStats.map((stat) => {
             if (stat.platform === 'LeetCode') {
-              return { ...stat, solved: '0', rating: 'Unranked' }
+              return { ...stat, solved: '58', rating: 'Unranked' }
             }
             return stat
           }),
@@ -134,26 +135,27 @@ export const DsaDashboard = () => {
 
     const fetchGitHubData = async () => {
       try {
-        const response = await fetch(
-          'https://api.github.com/users/dharmendra-pandit',
-        )
+        const response = await fetch('/api/github/stats')
         const data = await response.json()
-        if (data && data.public_repos !== undefined) {
+        if (data) {
           setStats((prevStats) =>
             prevStats.map((stat) => {
               if (stat.platform === 'GitHub') {
                 return {
                   ...stat,
-                  solved: data.public_repos.toString(),
+                  solved: data.publicRepos,
                   rating: 'Public Projects',
                 }
               }
               return stat
             }),
           )
+          if (data.projectActivityData) {
+            setProjectActivityData(data.projectActivityData)
+          }
         }
       } catch (error) {
-        console.error('Failed to fetch GitHub data:', error)
+        console.error('Failed to fetch GitHub stats:', error)
         setStats((prevStats) =>
           prevStats.map((stat) => {
             if (stat.platform === 'GitHub') {
@@ -203,78 +205,8 @@ export const DsaDashboard = () => {
       }
     }
 
-    const fetchLeetCodeCalendar = async () => {
-      try {
-        const response = await fetch('https://alfa-leetcode-api.onrender.com/dpbth/calendar')
-        const data = await response.json()
-        if (data && data.submissionCalendar) {
-          const calendar = JSON.parse(data.submissionCalendar)
-          const now = new Date()
-          const months: {name: string, year: number, month: number, solved: number}[] = []
-          for (let i = 6; i >= 0; i--) {
-            const d = new Date(now.getFullYear(), now.getMonth() - i, 1)
-            months.push({
-              name: d.toLocaleString('default', { month: 'short' }),
-              year: d.getFullYear(),
-              month: d.getMonth(),
-              solved: 0
-            })
-          }
-          
-          Object.entries(calendar).forEach(([timestamp, count]) => {
-            const date = new Date(parseInt(timestamp) * 1000)
-            const m = months.find(m => m.year === date.getFullYear() && m.month === date.getMonth())
-            if (m) {
-              m.solved += Number(count)
-            }
-          })
-          
-          setActivityData(months.map(m => ({ name: m.name, solved: m.solved })))
-        }
-      } catch (error) {
-        console.error('Failed to fetch LC calendar:', error)
-      }
-    }
-
-    const fetchGitHubRepos = async () => {
-      try {
-        const response = await fetch('https://api.github.com/users/dharmendra-pandit/repos?per_page=100')
-        const data = await response.json()
-        if (Array.isArray(data)) {
-          const quarterMap = new Map()
-          data.forEach(repo => {
-            if (repo.created_at && !repo.fork) {
-              const date = new Date(repo.created_at)
-              const year = date.getFullYear()
-              const q = Math.floor(date.getMonth() / 3) + 1
-              const key = `Q${q} '${year.toString().slice(2)}`
-              
-              if (!quarterMap.has(key)) {
-                quarterMap.set(key, { year, q, name: key, projects: 0 })
-              }
-              const entry = quarterMap.get(key)
-              entry.projects += 1
-            }
-          })
-          
-          const sortedQuarters = Array.from(quarterMap.values()).sort((a, b) => {
-            if (a.year !== b.year) return a.year - b.year;
-            return a.q - b.q;
-          });
-          
-          if (sortedQuarters.length > 0) {
-            setProjectActivityData(sortedQuarters.map(q => ({ name: q.name, projects: q.projects })))
-          }
-        }
-      } catch (error) {
-        console.error('Failed to fetch GitHub repos:', error)
-      }
-    }
-
     fetchLeetCodeData()
-    fetchLeetCodeCalendar()
     fetchGitHubData()
-    fetchGitHubRepos()
     fetchCode360Data()
     fetchGFGData()
   }, [])
