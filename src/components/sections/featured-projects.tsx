@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { FaGithub, FaKaggle } from 'react-icons/fa'
+import { Database, Code2, User } from 'lucide-react'
 import { ProjectCard, Project } from '@/components/ui/project-card'
 import { KaggleCard, KaggleNotebook } from '@/components/ui/kaggle-card'
 import { ProjectSkeleton } from '@/components/ui/project-skeleton'
@@ -10,7 +11,10 @@ import { Button } from '@/components/ui/button'
 
 export const FeaturedProjects = () => {
   const [activeTab, setActiveTab] = useState<'github' | 'kaggle'>('github')
+  const [kaggleSubTab, setKaggleSubTab] = useState<'notebooks' | 'datasets'>('notebooks')
   const [projects, setProjects] = useState<any[]>([])
+  const [kaggleNotebooks, setKaggleNotebooks] = useState<KaggleNotebook[]>([])
+  const [kaggleDatasets, setKaggleDatasets] = useState<KaggleNotebook[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -48,10 +52,15 @@ export const FeaturedProjects = () => {
         const res = await fetch(url)
         if (!res.ok) throw new Error(`Failed to fetch ${activeTab} projects`)
         const data = await res.json()
-        setProjects(data.projects || [])
+        if (activeTab === 'github') {
+          setProjects(data.projects || [])
+        } else {
+          setKaggleNotebooks(data.notebooks || [])
+          setKaggleDatasets(data.datasets || [])
+        }
       } catch (err) {
         console.error(err)
-        setError(`Unable to load ${activeTab === 'github' ? 'GitHub projects' : 'Kaggle notebooks'} at this time.`)
+        setError(`Unable to load ${activeTab === 'github' ? 'GitHub projects' : 'Kaggle data'} at this time.`)
       } finally {
         setLoading(false)
       }
@@ -91,7 +100,7 @@ export const FeaturedProjects = () => {
           </motion.p>
 
           {/* Platform Tab Switcher */}
-          <div className="flex justify-center">
+          <div className="flex flex-col items-center gap-6 justify-center">
             <div className="inline-flex p-1.5 bg-foreground/5 border border-border rounded-2xl backdrop-blur-md">
               <button
                 onClick={() => {
@@ -119,9 +128,41 @@ export const FeaturedProjects = () => {
                 }`}
               >
                 <FaKaggle className="w-4 h-4" />
-                <span>Kaggle Notebooks</span>
+                <span>Kaggle Workspace</span>
               </button>
             </div>
+
+            {/* Kaggle Sub-tab Switcher */}
+            {activeTab === 'kaggle' && (
+              <motion.div 
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="inline-flex p-1 bg-foreground/5 border border-border/60 rounded-xl backdrop-blur-md"
+              >
+                <button
+                  onClick={() => setKaggleSubTab('notebooks')}
+                  className={`flex items-center gap-2 px-4 py-1.5 rounded-lg text-xs font-medium transition-all duration-300 cursor-pointer ${
+                    kaggleSubTab === 'notebooks'
+                      ? 'bg-foreground/10 text-foreground shadow-sm'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  <Code2 className="w-3.5 h-3.5" />
+                  <span>Notebooks & Code</span>
+                </button>
+                <button
+                  onClick={() => setKaggleSubTab('datasets')}
+                  className={`flex items-center gap-2 px-4 py-1.5 rounded-lg text-xs font-medium transition-all duration-300 cursor-pointer ${
+                    kaggleSubTab === 'datasets'
+                      ? 'bg-foreground/10 text-foreground shadow-sm'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  <Database className="w-3.5 h-3.5" />
+                  <span>Public Datasets</span>
+                </button>
+              </motion.div>
+            )}
           </div>
         </div>
 
@@ -143,46 +184,94 @@ export const FeaturedProjects = () => {
             ? projects.map((project, index) => (
                 <ProjectCard key={project.url} project={project} index={index} />
               ))
-            : projects.map((notebook, index) => (
-                <KaggleCard key={notebook.title} notebook={notebook} index={index} />
+            : kaggleSubTab === 'notebooks'
+            ? kaggleNotebooks.map((notebook, index) => (
+                <KaggleCard 
+                  key={notebook.title} 
+                  notebook={{ ...notebook, type: 'notebook' }} 
+                  index={index} 
+                />
+              ))
+            : kaggleDatasets.map((dataset, index) => (
+                <KaggleCard 
+                  key={dataset.title} 
+                  notebook={{ ...dataset, type: 'dataset' }} 
+                  index={index} 
+                />
               ))}
         </div>
 
         {/* View All buttons */}
-        {!loading && projects.length > 0 && (
+        {!loading && (
           <div className="text-center mt-16">
             {activeTab === 'github' ? (
-              <a
-                href="https://github.com/dharmendra-pandit"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block"
-              >
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="px-8 py-6 rounded-2xl border-border bg-background hover:bg-muted dark:border-input dark:bg-input/30 dark:hover:bg-input/50 transition-all font-semibold gap-2 shadow-[0_4px_20px_rgba(255,255,255,0.05)] cursor-pointer text-sm"
+              projects.length > 0 && (
+                <a
+                  href="https://github.com/dharmendra-pandit"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block"
                 >
-                  <FaGithub className="w-5 h-5" />
-                  <span>View All GitHub Projects</span>
-                </Button>
-              </a>
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="px-8 py-6 rounded-2xl border-border bg-background hover:bg-muted dark:border-input dark:bg-input/30 dark:hover:bg-input/50 transition-all font-semibold gap-2 shadow-[0_4px_20px_rgba(255,255,255,0.05)] cursor-pointer text-sm"
+                  >
+                    <FaGithub className="w-5 h-5" />
+                    <span>View All GitHub Projects</span>
+                  </Button>
+                </a>
+              )
             ) : (
-              <a
-                href="https://www.kaggle.com/dharmendrapandit12"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block"
-              >
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="px-8 py-6 rounded-2xl border-border bg-background hover:bg-muted dark:border-input dark:bg-input/30 dark:hover:bg-input/50 transition-all font-semibold gap-2 shadow-[0_4px_20px_rgba(32,190,255,0.05)] cursor-pointer text-sm"
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-2xl mx-auto">
+                <a
+                  href="https://www.kaggle.com/dharmendrapandit12"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto"
                 >
-                  <FaKaggle className="w-5 h-5 text-[#20BEFF]" />
-                  <span>View All Kaggle Work</span>
-                </Button>
-              </a>
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="w-full sm:w-auto px-6 py-5 rounded-2xl border-border bg-background hover:bg-muted dark:border-input dark:bg-input/30 dark:hover:bg-input/50 transition-all font-semibold gap-2 shadow-[0_4px_20px_rgba(32,190,255,0.03)] cursor-pointer text-xs"
+                  >
+                    <User className="w-4 h-4 text-[#20BEFF]" />
+                    <span>Kaggle Profile</span>
+                  </Button>
+                </a>
+
+                <a
+                  href="https://www.kaggle.com/dharmendrapandit12/datasets"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto"
+                >
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="w-full sm:w-auto px-6 py-5 rounded-2xl border-border bg-background hover:bg-muted dark:border-input dark:bg-input/30 dark:hover:bg-input/50 transition-all font-semibold gap-2 shadow-[0_4px_20px_rgba(32,190,255,0.03)] cursor-pointer text-xs"
+                  >
+                    <Database className="w-4 h-4 text-[#20BEFF]" />
+                    <span>Kaggle Datasets</span>
+                  </Button>
+                </a>
+
+                <a
+                  href="https://www.kaggle.com/dharmendrapandit12/code"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto"
+                >
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="w-full sm:w-auto px-6 py-5 rounded-2xl border-border bg-background hover:bg-muted dark:border-input dark:bg-input/30 dark:hover:bg-input/50 transition-all font-semibold gap-2 shadow-[0_4px_20px_rgba(32,190,255,0.03)] cursor-pointer text-xs"
+                  >
+                    <Code2 className="w-4 h-4 text-[#20BEFF]" />
+                    <span>Kaggle Notebooks & Code</span>
+                  </Button>
+                </a>
+              </div>
             )}
           </div>
         )}

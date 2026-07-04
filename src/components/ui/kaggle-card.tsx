@@ -14,9 +14,12 @@ export interface KaggleNotebook {
   lastUpdated: string
   notebookUrl: string
   kaggleUrl: string
+  type?: 'notebook' | 'dataset'
 }
 
 export const KaggleCard = ({ notebook, index }: { notebook: KaggleNotebook; index: number }) => {
+  const isDataset = notebook.type === 'dataset'
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -42,15 +45,17 @@ export const KaggleCard = ({ notebook, index }: { notebook: KaggleNotebook; inde
             </div>
           </div>
 
-          {/* Notebook Title */}
+          {/* Title */}
           <h3 className="text-2xl font-bold mb-3 text-foreground group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-foreground group-hover:to-[#20BEFF] transition-all">
             {notebook.title}
           </h3>
 
-          {/* Dataset Name badge */}
+          {/* Resource Name badge */}
           <div className="inline-flex items-center gap-1.5 text-xs text-muted-foreground mb-4 font-mono bg-muted/30 px-3 py-1 rounded-md max-w-fit border border-border/40">
             <Database className="w-3.5 h-3.5 text-[#20BEFF]" />
-            <span className="truncate max-w-[220px]">{notebook.datasetName}</span>
+            <span className="truncate max-w-[220px]">
+              {isDataset ? 'Kaggle Dataset' : notebook.datasetName}
+            </span>
           </div>
 
           {/* Description */}
@@ -83,8 +88,8 @@ export const KaggleCard = ({ notebook, index }: { notebook: KaggleNotebook; inde
                 size="sm"
                 className="w-full flex items-center justify-center gap-1.5 rounded-xl border-border bg-background hover:bg-muted dark:border-input dark:bg-input/30 dark:hover:bg-input/50 transition-all text-xs cursor-pointer"
               >
-                <Code2 className="w-3.5 h-3.5" />
-                <span>View Notebook</span>
+                {isDataset ? <Database className="w-3.5 h-3.5" /> : <Code2 className="w-3.5 h-3.5" />}
+                <span>{isDataset ? 'View Dataset' : 'View Notebook'}</span>
               </Button>
             </a>
             
