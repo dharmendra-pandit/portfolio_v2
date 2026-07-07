@@ -15,6 +15,7 @@ export const FeaturedProjects = () => {
   const [projects, setProjects] = useState<any[]>([])
   const [kaggleNotebooks, setKaggleNotebooks] = useState<KaggleNotebook[]>([])
   const [kaggleDatasets, setKaggleDatasets] = useState<KaggleNotebook[]>([])
+  const [kaggleUsername, setKaggleUsername] = useState('dharmendrapandit12')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -57,6 +58,9 @@ export const FeaturedProjects = () => {
         } else {
           setKaggleNotebooks(data.notebooks || [])
           setKaggleDatasets(data.datasets || [])
+          if (data.username) {
+            setKaggleUsername(data.username)
+          }
         }
       } catch (err) {
         console.error(err)
@@ -225,7 +229,7 @@ export const FeaturedProjects = () => {
             ) : (
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-2xl mx-auto">
                 <a
-                  href="https://www.kaggle.com/dharmendrapandit12"
+                  href={`https://www.kaggle.com/${kaggleUsername}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full sm:w-auto"
@@ -241,7 +245,7 @@ export const FeaturedProjects = () => {
                 </a>
 
                 <a
-                  href="https://www.kaggle.com/dharmendrapandit12/datasets"
+                  href={`https://www.kaggle.com/${kaggleUsername}/datasets`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full sm:w-auto"
@@ -257,7 +261,7 @@ export const FeaturedProjects = () => {
                 </a>
 
                 <a
-                  href="https://www.kaggle.com/dharmendrapandit12/code"
+                  href={`https://www.kaggle.com/${kaggleUsername}/code`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full sm:w-auto"

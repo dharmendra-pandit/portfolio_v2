@@ -55,9 +55,9 @@ const defaultStats = [
   },
   {
     platform: 'Kaggle',
-    solved: 'Active',
+    solved: 'Loading...',
     icon: <FaKaggle className="w-5 h-5 text-foreground" />,
-    rating: 'Contributor',
+    rating: '...',
     link: 'https://www.kaggle.com/dharmendrapandit12',
   },
   {
@@ -138,6 +138,7 @@ export const DsaDashboard = () => {
                   ...stat,
                   solved: data.totalSolved,
                   rating: data.ranking || 'Unranked',
+                  link: data.link || stat.link,
                 }
               }
               return stat
@@ -172,6 +173,7 @@ export const DsaDashboard = () => {
                   ...stat,
                   solved: data.publicRepos,
                   rating: 'Public Projects',
+                  link: data.link || stat.link,
                 }
               }
               return stat
@@ -202,7 +204,12 @@ export const DsaDashboard = () => {
           setStats((prevStats) =>
             prevStats.map((stat) => {
               if (stat.platform === 'Code360') {
-                return { ...stat, solved: data.solved, rating: data.rating || 'Scholar' }
+                return {
+                  ...stat,
+                  solved: data.solved,
+                  rating: data.rating || 'Scholar',
+                  link: data.link || stat.link,
+                }
               }
               return stat
             })
@@ -210,6 +217,14 @@ export const DsaDashboard = () => {
         }
       } catch (error) {
         console.error('Failed to fetch Code360 data:', error)
+        setStats((prevStats) =>
+          prevStats.map((stat) => {
+            if (stat.platform === 'Code360') {
+              return { ...stat, solved: '19', rating: 'Scholar' }
+            }
+            return stat
+          })
+        )
       }
     }
 
@@ -221,7 +236,12 @@ export const DsaDashboard = () => {
           setStats((prevStats) =>
             prevStats.map((stat) => {
               if (stat.platform === 'GeeksforGeeks') {
-                return { ...stat, solved: data.solved, rating: data.rating || 'Top 5%' }
+                return {
+                  ...stat,
+                  solved: data.solved,
+                  rating: data.rating || 'Top 5%',
+                  link: data.link || stat.link,
+                }
               }
               return stat
             })
@@ -229,6 +249,49 @@ export const DsaDashboard = () => {
         }
       } catch (error) {
         console.error('Failed to fetch GFG data:', error)
+        setStats((prevStats) =>
+          prevStats.map((stat) => {
+            if (stat.platform === 'GeeksforGeeks') {
+              return { ...stat, solved: '52', rating: 'Top 5%' }
+            }
+            return stat
+          })
+        )
+      }
+    }
+
+    const fetchKaggleData = async () => {
+      try {
+        const response = await fetch('/api/kaggle')
+        const data = await response.json()
+        if (data) {
+          setStats((prevStats) =>
+            prevStats.map((stat) => {
+              if (stat.platform === 'Kaggle') {
+                const totalNotebooks = data.notebooks?.length || 2
+                const totalDatasets = data.datasets?.length || 2
+                const totalContributions = totalNotebooks + totalDatasets
+                return {
+                  ...stat,
+                  solved: `${totalContributions} Contribs`,
+                  rating: data.profile?.tier || 'Novice',
+                  link: data.link || stat.link,
+                }
+              }
+              return stat
+            })
+          )
+        }
+      } catch (error) {
+        console.error('Failed to fetch Kaggle stats:', error)
+        setStats((prevStats) =>
+          prevStats.map((stat) => {
+            if (stat.platform === 'Kaggle') {
+              return { ...stat, solved: '4 Contribs', rating: 'Novice' }
+            }
+            return stat
+          })
+        )
       }
     }
 
@@ -236,6 +299,7 @@ export const DsaDashboard = () => {
     fetchGitHubData()
     fetchCode360Data()
     fetchGFGData()
+    fetchKaggleData()
   }, [])
 
   return (

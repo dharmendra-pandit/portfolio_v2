@@ -1,8 +1,13 @@
 import { NextResponse } from 'next/server';
 
-export async function GET(request: Request) {
+export const revalidate = 3600; // Cache for 1 hour
+
+export async function GET() {
+  const uuid = process.env.CODE360_UUID || 'panditbth';
   try {
-    const res = await fetch('https://api.codingninjas.com/api/v3/public_section/profile/user_details?uuid=panditbth', { next: { revalidate: 3600 } });
+    const res = await fetch(`https://api.codingninjas.com/api/v3/public_section/profile/user_details?uuid=${uuid}`, {
+      next: { revalidate: 3600 }
+    });
     if (!res.ok) {
       throw new Error(`Failed to fetch Code360 profile, status: ${res.status}`);
     }
@@ -15,9 +20,14 @@ export async function GET(request: Request) {
     return NextResponse.json({
       solved: solved.toString(),
       rating: levelName,
+      link: `https://www.naukri.com/code360/profile/${uuid}`,
     });
   } catch (error) {
     console.error('Code360 API error:', error);
-    return NextResponse.json({ solved: '350+', rating: 'Level 4' }, { status: 500 });
+    return NextResponse.json({
+      solved: '19',
+      rating: 'Scholar',
+      link: `https://www.naukri.com/code360/profile/${uuid}`,
+    });
   }
 }

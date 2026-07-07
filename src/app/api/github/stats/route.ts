@@ -80,9 +80,12 @@ export async function GET() {
     return NextResponse.json({
       publicRepos: publicRepos.toString(),
       projectActivityData,
+      username,
+      link: `https://github.com/${username}`,
     });
   } catch (error: any) {
     console.error('GitHub Stats API error:', error);
+    const username = process.env.GITHUB_USERNAME || 'dharmendra-pandit';
     return NextResponse.json(
       {
         error: 'Failed to fetch GitHub stats',
@@ -92,7 +95,9 @@ export async function GET() {
           { name: 'Q2', projects: 0 },
           { name: 'Q3', projects: 0 },
           { name: 'Q4', projects: 0 },
-        ]
+        ],
+        username,
+        link: `https://github.com/${username}`,
       },
       { status: 500 }
     );

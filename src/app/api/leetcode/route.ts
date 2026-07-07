@@ -8,7 +8,7 @@ const FALLBACK_PROFILE = {
 };
 
 export async function GET() {
-  const username = 'dpbth';
+  const username = process.env.LEETCODE_USERNAME || 'dpbth';
 
   const fetchWithTimeout = async (url: string, timeoutMs = 4000) => {
     const controller = new AbortController();
@@ -70,6 +70,7 @@ export async function GET() {
       totalSolved: totalSolved.toString(),
       ranking: ranking ? `Rank ${ranking}` : 'Unranked',
       activityData,
+      link: `https://leetcode.com/${username}/`,
     });
   } catch (error) {
     console.error('LeetCode API proxy error, returning fallback:', error);
@@ -89,6 +90,7 @@ export async function GET() {
       totalSolved: FALLBACK_PROFILE.totalSolved.toString(),
       ranking: `Rank ${FALLBACK_PROFILE.ranking}`,
       activityData,
+      link: `https://leetcode.com/${username}/`,
     });
   }
 }

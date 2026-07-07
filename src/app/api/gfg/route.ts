@@ -1,8 +1,13 @@
 import { NextResponse } from 'next/server';
 
-export async function GET(request: Request) {
+export const revalidate = 3600; // Cache for 1 hour
+
+export async function GET() {
+  const username = process.env.GFG_USERNAME || 'iampanditbth';
   try {
-    const res = await fetch('https://www.geeksforgeeks.org/profile/iampanditbth/', { next: { revalidate: 3600 } });
+    const res = await fetch(`https://www.geeksforgeeks.org/profile/${username}/`, {
+      next: { revalidate: 3600 }
+    });
     if (!res.ok) {
       throw new Error(`Failed to fetch GFG profile, status: ${res.status}`);
     }
@@ -13,7 +18,7 @@ export async function GET(request: Request) {
     const scoreMatch = html.match(/\\?"score\\?":(\d+)/);
     const rankMatch = html.match(/\\?"pod_global_rank\\?":(\d+)/);
     
-    let solved = '250+';
+    let solved = '52';
     let rating = 'Top 5%';
     
     if (solvedMatch) {
@@ -28,9 +33,14 @@ export async function GET(request: Request) {
     return NextResponse.json({
       solved,
       rating,
+      link: `https://www.geeksforgeeks.org/profile/${username}/`,
     });
   } catch (error) {
     console.error('GFG API error:', error);
-    return NextResponse.json({ solved: '250+', rating: 'Top 5%' }, { status: 500 });
+    return NextResponse.json({
+      solved: '52',
+      rating: 'Top 5%',
+      link: `https://www.geeksforgeeks.org/profile/${username}/`,
+    });
   }
 }
