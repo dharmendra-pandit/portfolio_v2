@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import { GraphQLClient, gql } from 'graphql-request'
 
 const GITHUB_API_URL = 'https://api.github.com/graphql'
+ 
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {

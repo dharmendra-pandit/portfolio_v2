@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
 
-export const revalidate = 3600; // Cache for 1 hour
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   const uuid = process.env.CODE360_UUID || 'panditbth';
   try {
     const res = await fetch(`https://api.codingninjas.com/api/v3/public_section/profile/user_details?uuid=${uuid}`, {
-      next: { revalidate: 3600 }
+      cache: 'no-store'
     });
     if (!res.ok) {
       throw new Error(`Failed to fetch Code360 profile, status: ${res.status}`);

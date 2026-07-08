@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
 
-export const revalidate = 3600; // Cache for 1 hour
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   const username = process.env.GFG_USERNAME || 'iampanditbth';
   try {
     const res = await fetch(`https://www.geeksforgeeks.org/profile/${username}/`, {
-      next: { revalidate: 3600 }
+      cache: 'no-store'
     });
     if (!res.ok) {
       throw new Error(`Failed to fetch GFG profile, status: ${res.status}`);

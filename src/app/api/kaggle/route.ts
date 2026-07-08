@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-export const revalidate = 3600 // Cache for 1 hour
+export const dynamic = 'force-dynamic'
 
 // Real public notebooks of the user dharmendrapandit12
 const REAL_NOTEBOOKS = [
@@ -41,7 +41,7 @@ export async function GET() {
             'Authorization': `Basic ${auth}`,
             'Content-Type': 'application/json'
           },
-          next: { revalidate: 3600 }
+          cache: 'no-store'
         })
         if (res.ok) {
           rawDatasets = await res.json()
@@ -56,7 +56,7 @@ export async function GET() {
     if (!datasetsFetched) {
       try {
         const res = await fetch(`https://www.kaggle.com/api/v1/datasets/list?user=${username}`, {
-          next: { revalidate: 3600 }
+          cache: 'no-store'
         })
         if (res.ok) {
           rawDatasets = await res.json()

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-export const revalidate = 3600; // Cache for 1 hour
+export const dynamic = 'force-dynamic';
 
 const FALLBACK_PROFILE = {
   totalSolved: 58,
@@ -16,7 +16,7 @@ export async function GET() {
     try {
       const response = await fetch(url, {
         signal: controller.signal,
-        next: { revalidate: 3600 }
+        cache: 'no-store'
       });
       clearTimeout(id);
       return response;

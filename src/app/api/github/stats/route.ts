@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-export const revalidate = 3600; // Cache for 1 hour
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
@@ -20,13 +20,13 @@ export async function GET() {
     // Fetch user profile stats
     const profilePromise = fetch(`https://api.github.com/users/${username}`, {
       headers,
-      next: { revalidate: 3600 }
+      cache: 'no-store'
     });
 
     // Fetch repositories
     const reposPromise = fetch(`https://api.github.com/users/${username}/repos?per_page=100`, {
       headers,
-      next: { revalidate: 3600 }
+      cache: 'no-store'
     });
 
     const [profileRes, reposRes] = await Promise.all([profilePromise, reposPromise]);
