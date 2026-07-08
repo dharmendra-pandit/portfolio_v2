@@ -1,0 +1,297 @@
+{
+  "leetcode": {
+    "totalSolved": "62",
+    "ranking": "Rank 2267643",
+    "activityData": [
+      {
+        "name": "Jan",
+        "solved": 0
+      },
+      {
+        "name": "Feb",
+        "solved": 13
+      },
+      {
+        "name": "Mar",
+        "solved": 3
+      },
+      {
+        "name": "Apr",
+        "solved": 5
+      },
+      {
+        "name": "May",
+        "solved": 17
+      },
+      {
+        "name": "Jun",
+        "solved": 26
+      },
+      {
+        "name": "Jul",
+        "solved": 19
+      }
+    ]
+  },
+  "code360": {
+    "solved": "19",
+    "rating": "Champion"
+  },
+  "gfg": {
+    "solved": "52",
+    "rating": "Score 119"
+  },
+  "kaggle": {
+    "username": "dharmendrapandit12",
+    "link": "https://www.kaggle.com/dharmendrapandit12/",
+    "profile": {
+      "tier": "Novice",
+      "datasetCount": 2,
+      "notebookCount": 2,
+      "followers": 0
+    },
+    "datasets": [
+      {
+        "title": "Laptop Battery Health Prediction Dataset",
+        "description": "Synthetic dataset with realistic battery degradation patterns (voltage, temperature, cycle count) for predicting cell state-of-health.",
+        "datasetName": "Laptop Battery Health Prediction Dataset",
+        "tags": [
+          "Battery Health",
+          "Data Generation",
+          "Time Series",
+          "Regression"
+        ],
+        "lastUpdated": "Jul 2026",
+        "notebookUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/laptop-battery-health-dataset",
+        "kaggleUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/laptop-battery-health-dataset",
+        "type": "dataset"
+      },
+      {
+        "title": "Breast Cancer Dataset CSV",
+        "description": "Comprehensive CSV dataset containing clinical measurements and features optimized for breast cancer prediction and classification models.",
+        "datasetName": "Breast Cancer Dataset CSV",
+        "tags": [
+          "Classification",
+          "Healthcare",
+          "CSV",
+          "Tabular"
+        ],
+        "lastUpdated": "Jun 2026",
+        "notebookUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/breast-cancer-dataset-csv",
+        "kaggleUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/breast-cancer-dataset-csv",
+        "type": "dataset"
+      }
+    ],
+    "notebooks": [
+      {
+        "title": "Laptop Battery Health Dataset Generation",
+        "description": "Synthetic dataset generation with realistic battery degradation patterns (voltage, temperature, cycle count) and baseline machine learning modeling.",
+        "datasetName": "Laptop Battery Health Prediction Dataset",
+        "tags": [
+          "Python",
+          "Data Generation",
+          "Battery Health",
+          "Regression"
+        ],
+        "lastUpdated": "Jul 2026",
+        "notebookUrl": "https://www.kaggle.com/code/dharmendrapandit12/laptop-battery-health-dataset-generation",
+        "kaggleUrl": "https://www.kaggle.com/code/dharmendrapandit12/laptop-battery-health-dataset-generation",
+        "type": "notebook"
+      },
+      {
+        "title": "Breast Cancer Predictions",
+        "description": "Exploratory Data Analysis and machine learning models to predict breast cancer classifications using SVM, Random Forests, and XGBoost.",
+        "datasetName": "Breast Cancer Dataset CSV",
+        "tags": [
+          "Python",
+          "Pandas",
+          "Scikit-learn",
+          "Classification",
+          "EDA"
+        ],
+        "lastUpdated": "Jun 2026",
+        "notebookUrl": "https://www.kaggle.com/code/dharmendrapandit12/breast-cancer-predictions",
+        "kaggleUrl": "https://www.kaggle.com/code/dharmendrapandit12/breast-cancer-predictions",
+        "type": "notebook"
+      }
+    ]
+  },
+  "github": {
+    "username": "dharmendra-pandit",
+    "publicRepos": "26",
+    "projectActivityData": [
+      {
+        "name": "Q1 '25",
+        "projects": 3
+      },
+      {
+        "name": "Q3 '25",
+        "projects": 7
+      },
+      {
+        "name": "Q4 '25",
+        "projects": 3
+      },
+      {
+        "name": "Q1 '26",
+        "projects": 2
+      },
+      {
+        "name": "Q2 '26",
+        "projects": 10
+      },
+      {
+        "name": "Q3 '26",
+        "projects": 1
+      }
+    ],
+    "projects": [
+      {
+        "name": "AI-Dataset-Generator",
+        "description": "A full-stack application for generating AI training datasets by scraping web content. This project combines a Node.js/Express backend with a Next.js frontend to provide an intuitive interface for dataset creation through web scraping.",
+        "url": "https://github.com/dharmendra-pandit/AI-Dataset-Generator",
+        "homepageUrl": null,
+        "stargazerCount": 2,
+        "forkCount": 0,
+        "updatedAt": "2026-04-13T05:26:35Z",
+        "primaryLanguage": {
+          "name": "JavaScript",
+          "color": "#f1e05a"
+        },
+        "languages": {
+          "nodes": [
+            {
+              "name": "JavaScript",
+              "color": "#f1e05a"
+            },
+            {
+              "name": "Python",
+              "color": "#3572A5"
+            },
+            {
+              "name": "CSS",
+              "color": "#663399"
+            }
+          ]
+        }
+      },
+      {
+        "name": "AI-Knowledge-Assistant",
+        "description": "AI Knowledge Assistant is a small Node.js and Express service that lets you upload a PDF, break it into chunks, generate embeddings with Google Gemini, and answer questions against the uploaded content.",
+        "url": "https://github.com/dharmendra-pandit/AI-Knowledge-Assistant",
+        "homepageUrl": null,
+        "stargazerCount": 2,
+        "forkCount": 0,
+        "updatedAt": "2026-04-13T05:26:16Z",
+        "primaryLanguage": {
+          "name": "JavaScript",
+          "color": "#f1e05a"
+        },
+        "languages": {
+          "nodes": [
+            {
+              "name": "JavaScript",
+              "color": "#f1e05a"
+            }
+          ]
+        }
+      },
+      {
+        "name": "Campus-Post",
+        "description": "CampusPost is a modern campus community platform that enables students to share posts, connect with peers, and engage in campus discussions in real time. Built with a responsive full-stack architecture for seamless social interaction and collaboration.",
+        "url": "https://github.com/dharmendra-pandit/Campus-Post",
+        "homepageUrl": "https://campus-post.vercel.app",
+        "stargazerCount": 2,
+        "forkCount": 0,
+        "updatedAt": "2026-05-21T11:56:03Z",
+        "primaryLanguage": {
+          "name": "JavaScript",
+          "color": "#f1e05a"
+        },
+        "languages": {
+          "nodes": [
+            {
+              "name": "JavaScript",
+              "color": "#f1e05a"
+            },
+            {
+              "name": "CSS",
+              "color": "#663399"
+            },
+            {
+              "name": "EJS",
+              "color": "#a91e50"
+            }
+          ]
+        }
+      },
+      {
+        "name": "Dr.-Audit---AI-Resume-Health-Checker",
+        "description": "An intelligent Applicant Tracking System (ATS) calculator that evaluates resumes against job descriptions using a hybrid AI architecture. The system combines Python's FastAPI backend for intelligent document processing with a Telegram Bot interface for seamless user interaction.",
+        "url": "https://github.com/dharmendra-pandit/Dr.-Audit---AI-Resume-Health-Checker",
+        "homepageUrl": null,
+        "stargazerCount": 2,
+        "forkCount": 0,
+        "updatedAt": "2026-04-13T05:26:21Z",
+        "primaryLanguage": null,
+        "languages": {
+          "nodes": []
+        }
+      },
+      {
+        "name": "CreditWise-Bank-AI",
+        "description": "AI-powered loan approval prediction system that analyzes applicant details and predicts loan approval status using Machine Learning and Streamlit.",
+        "url": "https://github.com/dharmendra-pandit/CreditWise-Bank-AI",
+        "homepageUrl": "https://creditwise-bank-ai-quappo9zedozvx4mcssyf7.streamlit.app/",
+        "stargazerCount": 1,
+        "forkCount": 0,
+        "updatedAt": "2026-05-21T11:52:45Z",
+        "primaryLanguage": {
+          "name": "Jupyter Notebook",
+          "color": "#DA5B0B"
+        },
+        "languages": {
+          "nodes": [
+            {
+              "name": "Jupyter Notebook",
+              "color": "#DA5B0B"
+            },
+            {
+              "name": "Python",
+              "color": "#3572A5"
+            }
+          ]
+        }
+      },
+      {
+        "name": "CareerOS",
+        "description": "CareerOS helps students prepare for internships and placements through AI-powered practice, coding challenges, and company-specific assessments.",
+        "url": "https://github.com/dharmendra-pandit/CareerOS",
+        "homepageUrl": "https://careeros-puce.vercel.app",
+        "stargazerCount": 1,
+        "forkCount": 0,
+        "updatedAt": "2026-07-04T16:50:57Z",
+        "primaryLanguage": {
+          "name": "TypeScript",
+          "color": "#3178c6"
+        },
+        "languages": {
+          "nodes": [
+            {
+              "name": "TypeScript",
+              "color": "#3178c6"
+            },
+            {
+              "name": "CSS",
+              "color": "#663399"
+            },
+            {
+              "name": "JavaScript",
+              "color": "#f1e05a"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

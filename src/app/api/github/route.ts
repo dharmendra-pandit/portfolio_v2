@@ -1,9 +1,24 @@
 import { NextResponse } from 'next/server'
 import { GraphQLClient, gql } from 'graphql-request'
+import fs from 'fs'
+import path from 'path'
 
 const GITHUB_API_URL = 'https://api.github.com/graphql'
  
 export const dynamic = 'force-dynamic';
+
+function getCachedData() {
+  try {
+    const cachePath = path.join(process.cwd(), 'src/data/stats-cache.json');
+    if (fs.existsSync(cachePath)) {
+      const data = JSON.parse(fs.readFileSync(cachePath, 'utf8'));
+      return data.github?.projects;
+    }
+  } catch (err) {
+    console.error('Error reading GitHub projects cache:', err);
+  }
+  return null;
+}
 
 export async function GET() {
   try {
@@ -11,6 +26,10 @@ export async function GET() {
     const username = process.env.GITHUB_USERNAME
 
     if (!token || !username) {
+      const cachedProjects = getCachedData()
+      if (cachedProjects) {
+        return NextResponse.json({ projects: cachedProjects })
+      }
       return NextResponse.json(
         { error: 'GitHub credentials not configured in environment variables' },
         { status: 500 }
@@ -58,7 +77,11 @@ export async function GET() {
 
     return NextResponse.json({ projects })
   } catch (error) {
-    console.error('Error fetching GitHub data:', error)
+    console.error('Error fetching GitHub data, trying cache fallback:', error)
+    const cachedProjects = getCachedData()
+    if (cachedProjects) {
+      return NextResponse.json({ projects: cachedProjects })
+    }
     return NextResponse.json(
       { error: 'Failed to fetch GitHub projects' },
       { status: 500 }

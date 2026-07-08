@@ -1,14 +1,30 @@
 import { NextResponse } from 'next/server';
+import fs from 'fs';
+import path from 'path';
 
 export const dynamic = 'force-dynamic';
 
+function getCachedData() {
+  try {
+    const cachePath = path.join(process.cwd(), 'src/data/stats-cache.json');
+    if (fs.existsSync(cachePath)) {
+      const data = JSON.parse(fs.readFileSync(cachePath, 'utf8'));
+      return data.github;
+    }
+  } catch (err) {
+    console.error('Error reading GitHub stats cache:', err);
+  }
+  return null;
+}
+
 export async function GET() {
+  const username = process.env.GITHUB_USERNAME || 'dharmendra-pandit';
   try {
     const token = process.env.GITHUB_TOKEN;
-    const username = process.env.GITHUB_USERNAME || 'dharmendra-pandit';
 
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
+      'User-Agent': 'Node-Next-App'
     };
 
     if (token) {
@@ -17,14 +33,27 @@ export async function GET() {
       console.warn('[GitHub Stats API] GITHUB_TOKEN not found in environment variables. Making unauthenticated request.');
     }
 
+    const fetchWithTimeout = async (url: string, options: any = {}, timeoutMs = 3000) => {
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        const response = await fetch(url, { ...options, signal: controller.signal });
+        clearTimeout(id);
+        return response;
+      } catch (err) {
+        clearTimeout(id);
+        throw err;
+      }
+    };
+
     // Fetch user profile stats
-    const profilePromise = fetch(`https://api.github.com/users/${username}`, {
+    const profilePromise = fetchWithTimeout(`https://api.github.com/users/${username}`, {
       headers,
       cache: 'no-store'
     });
 
     // Fetch repositories
-    const reposPromise = fetch(`https://api.github.com/users/${username}/repos?per_page=100`, {
+    const reposPromise = fetchWithTimeout(`https://api.github.com/users/${username}/repos?per_page=100`, {
       headers,
       cache: 'no-store'
     });
@@ -84,8 +113,17 @@ export async function GET() {
       link: `https://github.com/${username}`,
     });
   } catch (error: any) {
-    console.error('GitHub Stats API error:', error);
-    const username = process.env.GITHUB_USERNAME || 'dharmendra-pandit';
+    console.error('GitHub Stats API error, trying cache fallback:', error);
+    const cached = getCachedData();
+    if (cached) {
+      return NextResponse.json({
+        publicRepos: cached.publicRepos,
+        projectActivityData: cached.projectActivityData,
+        username,
+        link: `https://github.com/${username}`
+      });
+    }
+    const usernameVal = process.env.GITHUB_USERNAME || 'dharmendra-pandit';
     return NextResponse.json(
       {
         error: 'Failed to fetch GitHub stats',
@@ -96,8 +134,8 @@ export async function GET() {
           { name: 'Q3', projects: 0 },
           { name: 'Q4', projects: 0 },
         ],
-        username,
-        link: `https://github.com/${username}`,
+        username: usernameVal,
+        link: `https://github.com/${usernameVal}`,
       },
       { status: 500 }
     );

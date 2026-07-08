@@ -1,6 +1,21 @@
 import { NextResponse } from 'next/server'
+import fs from 'fs'
+import path from 'path'
 
 export const dynamic = 'force-dynamic'
+
+function getCachedData() {
+  try {
+    const cachePath = path.join(process.cwd(), 'src/data/stats-cache.json');
+    if (fs.existsSync(cachePath)) {
+      const data = JSON.parse(fs.readFileSync(cachePath, 'utf8'));
+      return data.kaggle;
+    }
+  } catch (err) {
+    console.error('Error reading Kaggle cache:', err);
+  }
+  return null;
+}
 
 // Real public notebooks of the user dharmendrapandit12
 const REAL_NOTEBOOKS = [
@@ -25,18 +40,31 @@ const REAL_NOTEBOOKS = [
 ]
 
 export async function GET() {
+  const username = process.env.KAGGLE_USERNAME || 'dharmendrapandit12'
   try {
-    const username = process.env.KAGGLE_USERNAME || 'dharmendrapandit12'
     const apiKey = process.env.KAGGLE_KEY
 
     let rawDatasets: any[] = []
     let datasetsFetched = false
 
+    const fetchWithTimeout = async (url: string, options: any = {}, timeoutMs = 3000) => {
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        const response = await fetch(url, { ...options, signal: controller.signal });
+        clearTimeout(id);
+        return response;
+      } catch (err) {
+        clearTimeout(id);
+        throw err;
+      }
+    };
+
     // 1. Try fetching datasets using API key
     if (apiKey) {
       try {
         const auth = Buffer.from(`${username}:${apiKey}`).toString('base64')
-        const res = await fetch(`https://www.kaggle.com/api/v1/datasets/list?user=${username}`, {
+        const res = await fetchWithTimeout(`https://www.kaggle.com/api/v1/datasets/list?user=${username}`, {
           headers: {
             'Authorization': `Basic ${auth}`,
             'Content-Type': 'application/json'
@@ -55,7 +83,7 @@ export async function GET() {
     // 2. If authenticated fetch failed or wasn't tried, fetch datasets publicly (which is supported)
     if (!datasetsFetched) {
       try {
-        const res = await fetch(`https://www.kaggle.com/api/v1/datasets/list?user=${username}`, {
+        const res = await fetchWithTimeout(`https://www.kaggle.com/api/v1/datasets/list?user=${username}`, {
           cache: 'no-store'
         })
         if (res.ok) {
@@ -163,7 +191,17 @@ export async function GET() {
     return NextResponse.json({ notebooks, datasets, profile, username, link: `https://www.kaggle.com/${username}/` })
   } catch (error) {
     const username = process.env.KAGGLE_USERNAME || 'dharmendrapandit12'
-    console.error('[Kaggle API] Error fetching Kaggle data:', error)
+    console.error('[Kaggle API] Error fetching Kaggle data, trying cache fallback:', error)
+    const cached = getCachedData()
+    if (cached) {
+      return NextResponse.json({
+        notebooks: cached.notebooks,
+        datasets: cached.datasets,
+        profile: cached.profile,
+        username: cached.username || username,
+        link: cached.link || `https://www.kaggle.com/${username}/`
+      })
+    }
     return NextResponse.json({
       notebooks: REAL_NOTEBOOKS.map(nb => ({ ...nb, lastUpdated: 'Jul 2026' })),
       datasets: [

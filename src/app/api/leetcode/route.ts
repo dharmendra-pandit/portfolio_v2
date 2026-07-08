@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+import fs from 'fs';
+import path from 'path';
 
 export const dynamic = 'force-dynamic';
 
@@ -7,10 +9,23 @@ const FALLBACK_PROFILE = {
   ranking: 2391521,
 };
 
+function getCachedData() {
+  try {
+    const cachePath = path.join(process.cwd(), 'src/data/stats-cache.json');
+    if (fs.existsSync(cachePath)) {
+      const data = JSON.parse(fs.readFileSync(cachePath, 'utf8'));
+      return data.leetcode;
+    }
+  } catch (err) {
+    console.error('Error reading LeetCode cache:', err);
+  }
+  return null;
+}
+
 export async function GET() {
   const username = process.env.LEETCODE_USERNAME || 'dpbth';
 
-  const fetchWithTimeout = async (url: string, timeoutMs = 4000) => {
+  const fetchWithTimeout = async (url: string, timeoutMs = 3000) => {
     const controller = new AbortController();
     const id = setTimeout(() => controller.abort(), timeoutMs);
     try {
@@ -73,7 +88,16 @@ export async function GET() {
       link: `https://leetcode.com/${username}/`,
     });
   } catch (error) {
-    console.error('LeetCode API proxy error, returning fallback:', error);
+    console.error('LeetCode API proxy error, trying cache fallback:', error);
+    const cached = getCachedData();
+    if (cached) {
+      return NextResponse.json({
+        totalSolved: cached.totalSolved,
+        ranking: cached.ranking,
+        activityData: cached.activityData,
+        link: `https://leetcode.com/${username}/`,
+      });
+    }
 
     // Generate fallback activity data (0 solved for last 7 months)
     const now = new Date();
