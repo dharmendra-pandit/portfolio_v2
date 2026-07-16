@@ -1,7 +1,7 @@
 {
   "leetcode": {
     "totalSolved": "76",
-    "ranking": "Rank 1976685",
+    "ranking": "Rank 1959288",
     "activityData": [
       {
         "name": "Jan",
@@ -46,7 +46,7 @@
     "link": "https://www.kaggle.com/dharmendrapandit12/",
     "profile": {
       "tier": "Novice",
-      "datasetCount": 2,
+      "datasetCount": 1,
       "notebookCount": 2,
       "followers": 0
     },
@@ -64,21 +64,6 @@
         "lastUpdated": "Jul 2026",
         "notebookUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/laptop-battery-health-dataset",
         "kaggleUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/laptop-battery-health-dataset",
-        "type": "dataset"
-      },
-      {
-        "title": "Breast Cancer Dataset CSV",
-        "description": "Comprehensive CSV dataset containing clinical measurements and features optimized for breast cancer prediction and classification models.",
-        "datasetName": "Breast Cancer Dataset CSV",
-        "tags": [
-          "Classification",
-          "Healthcare",
-          "CSV",
-          "Tabular"
-        ],
-        "lastUpdated": "Jun 2026",
-        "notebookUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/breast-cancer-dataset-csv",
-        "kaggleUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/breast-cancer-dataset-csv",
         "type": "dataset"
       }
     ],
