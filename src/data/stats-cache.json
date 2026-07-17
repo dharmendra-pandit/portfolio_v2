@@ -46,7 +46,7 @@
     "link": "https://www.kaggle.com/dharmendrapandit12/",
     "profile": {
       "tier": "Novice",
-      "datasetCount": 1,
+      "datasetCount": 2,
       "notebookCount": 2,
       "followers": 0
     },
@@ -64,6 +64,19 @@
         "lastUpdated": "Jul 2026",
         "notebookUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/laptop-battery-health-dataset",
         "kaggleUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/laptop-battery-health-dataset",
+        "type": "dataset"
+      },
+      {
+        "title": "Synthetic Bank Loan Approval Dataset (20K Records)",
+        "description": "A realistic synthetic dataset for loan approval prediction and machine learning",
+        "datasetName": "Synthetic Bank Loan Approval Dataset (20K Records)",
+        "tags": [
+          "Dataset",
+          "CSV"
+        ],
+        "lastUpdated": "Jul 2026",
+        "notebookUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/synthetic-bank-loan-approval-dataset-20k-records",
+        "kaggleUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/synthetic-bank-loan-approval-dataset-20k-records",
         "type": "dataset"
       }
     ],
