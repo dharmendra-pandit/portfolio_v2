@@ -52,6 +52,19 @@
     },
     "datasets": [
       {
+        "title": "Synthetic Bank Loan Approval Dataset (20K Records)",
+        "description": "A realistic synthetic dataset for loan approval prediction and machine learning",
+        "datasetName": "Synthetic Bank Loan Approval Dataset (20K Records)",
+        "tags": [
+          "Dataset",
+          "CSV"
+        ],
+        "lastUpdated": "Jul 2026",
+        "notebookUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/synthetic-bank-loan-approval-dataset-20k-records",
+        "kaggleUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/synthetic-bank-loan-approval-dataset-20k-records",
+        "type": "dataset"
+      },
+      {
         "title": "Laptop Battery Health Prediction Dataset",
         "description": "Synthetic dataset with realistic battery degradation patterns (voltage, temperature, cycle count) for predicting cell state-of-health.",
         "datasetName": "Laptop Battery Health Prediction Dataset",
@@ -64,19 +77,6 @@
         "lastUpdated": "Jul 2026",
         "notebookUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/laptop-battery-health-dataset",
         "kaggleUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/laptop-battery-health-dataset",
-        "type": "dataset"
-      },
-      {
-        "title": "Synthetic Bank Loan Approval Dataset (20K Records)",
-        "description": "A realistic synthetic dataset for loan approval prediction and machine learning",
-        "datasetName": "Synthetic Bank Loan Approval Dataset (20K Records)",
-        "tags": [
-          "Dataset",
-          "CSV"
-        ],
-        "lastUpdated": "Jul 2026",
-        "notebookUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/synthetic-bank-loan-approval-dataset-20k-records",
-        "kaggleUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/synthetic-bank-loan-approval-dataset-20k-records",
         "type": "dataset"
       }
     ],
