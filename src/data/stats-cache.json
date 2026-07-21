@@ -116,7 +116,7 @@
   },
   "github": {
     "username": "dharmendra-pandit",
-    "publicRepos": "27",
+    "publicRepos": "28",
     "projectActivityData": [
       {
         "name": "Q1 '25",
@@ -140,7 +140,7 @@
       },
       {
         "name": "Q3 '26",
-        "projects": 2
+        "projects": 3
       }
     ],
     "projects": [
@@ -295,7 +295,7 @@
   "docker": {
     "username": "iampanditji",
     "link": "https://hub.docker.com/u/iampanditji",
-    "pullCount": 97,
+    "pullCount": 99,
     "starCount": 1,
     "reposCount": 3,
     "repositories": [
@@ -318,7 +318,7 @@
         "description": "Node.js and Express backend API for the Simple Blog Post application with MongoDB integration.",
         "url": "https://hub.docker.com/r/iampanditji/simple-blogpost-backend",
         "starCount": 0,
-        "pullCount": 41,
+        "pullCount": 42,
         "lastUpdated": "Jul 2026",
         "tags": [
           "API management",
@@ -332,7 +332,7 @@
         "description": "Production-ready React frontend served with Nginx, providing a fast and responsive user interface ",
         "url": "https://hub.docker.com/r/iampanditji/simple-blogpost-frontend",
         "starCount": 0,
-        "pullCount": 35,
+        "pullCount": 36,
         "lastUpdated": "Jul 2026",
         "tags": [
           "Web servers",
