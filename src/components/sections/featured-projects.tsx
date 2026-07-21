@@ -2,20 +2,23 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { FaGithub, FaKaggle } from 'react-icons/fa'
+import { FaGithub, FaKaggle, FaDocker } from 'react-icons/fa'
 import { Database, Code2, User } from 'lucide-react'
 import { ProjectCard, Project } from '@/components/ui/project-card'
 import { KaggleCard, KaggleNotebook } from '@/components/ui/kaggle-card'
+import { DockerCard, DockerRepository } from '@/components/ui/docker-card'
 import { ProjectSkeleton } from '@/components/ui/project-skeleton'
 import { Button } from '@/components/ui/button'
 
 export const FeaturedProjects = () => {
-  const [activeTab, setActiveTab] = useState<'github' | 'kaggle'>('kaggle')
+  const [activeTab, setActiveTab] = useState<'github' | 'kaggle' | 'docker'>('kaggle')
   const [kaggleSubTab, setKaggleSubTab] = useState<'notebooks' | 'datasets'>('notebooks')
   const [projects, setProjects] = useState<any[]>([])
   const [kaggleNotebooks, setKaggleNotebooks] = useState<KaggleNotebook[]>([])
   const [kaggleDatasets, setKaggleDatasets] = useState<KaggleNotebook[]>([])
   const [kaggleUsername, setKaggleUsername] = useState('dharmendrapandit12')
+  const [dockerRepos, setDockerRepos] = useState<DockerRepository[]>([])
+  const [dockerUsername, setDockerUsername] = useState('iampanditji')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -30,6 +33,11 @@ export const FeaturedProjects = () => {
         }, 100)
       } else if (hash === '#projects-github') {
         setActiveTab('github')
+        setTimeout(() => {
+          document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })
+        }, 100)
+      } else if (hash === '#projects-docker') {
+        setActiveTab('docker')
         setTimeout(() => {
           document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })
         }, 100)
@@ -49,12 +57,17 @@ export const FeaturedProjects = () => {
       setLoading(true)
       setError(null)
       try {
-        const url = activeTab === 'github' ? '/api/github' : '/api/kaggle'
-        const res = await fetch(url)
+        const url = activeTab === 'github' ? '/api/github' : activeTab === 'docker' ? '/api/docker' : '/api/kaggle'
+        const res = await fetch(url, { cache: 'no-store' })
         if (!res.ok) throw new Error(`Failed to fetch ${activeTab} projects`)
         const data = await res.json()
         if (activeTab === 'github') {
           setProjects(data.projects || [])
+        } else if (activeTab === 'docker') {
+          setDockerRepos(data.repositories || [])
+          if (data.username) {
+            setDockerUsername(data.username)
+          }
         } else {
           setKaggleNotebooks(data.notebooks || [])
           setKaggleDatasets(data.datasets || [])
@@ -64,7 +77,7 @@ export const FeaturedProjects = () => {
         }
       } catch (err) {
         console.error(err)
-        setError(`Unable to load ${activeTab === 'github' ? 'GitHub projects' : 'Kaggle data'} at this time.`)
+        setError(`Unable to load ${activeTab === 'github' ? 'GitHub projects' : activeTab === 'docker' ? 'Docker images' : 'Kaggle data'} at this time.`)
       } finally {
         setLoading(false)
       }
@@ -80,7 +93,7 @@ export const FeaturedProjects = () => {
     >
       {/* Dynamic background glow based on active tab */}
       <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-[120px] pointer-events-none transition-all duration-1000 ${
-        activeTab === 'github' ? 'bg-primary/5' : 'bg-[#20BEFF]/5'
+        activeTab === 'github' ? 'bg-primary/5' : activeTab === 'docker' ? 'bg-[#2496ED]/5' : 'bg-[#20BEFF]/5'
       }`} />
 
       <div className="container px-4 mx-auto relative z-10">
@@ -105,7 +118,7 @@ export const FeaturedProjects = () => {
 
           {/* Platform Tab Switcher */}
           <div className="flex flex-col items-center gap-6 justify-center">
-            <div className="inline-flex p-1.5 bg-foreground/5 border border-border rounded-2xl backdrop-blur-md">
+            <div className="flex flex-wrap items-center justify-center gap-2 p-1.5 bg-foreground/5 border border-border rounded-2xl backdrop-blur-md">
               <button
                 onClick={() => {
                   setActiveTab('github')
@@ -133,6 +146,20 @@ export const FeaturedProjects = () => {
               >
                 <FaKaggle className="w-4 h-4" />
                 <span>Kaggle Workspace</span>
+              </button>
+              <button
+                onClick={() => {
+                  setActiveTab('docker')
+                  window.location.hash = '#projects-docker'
+                }}
+                className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 cursor-pointer ${
+                  activeTab === 'docker'
+                    ? 'bg-gradient-to-r from-[#2496ED] to-[#008AFF] text-white shadow-md border-0'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                <FaDocker className="w-4 h-4" />
+                <span>Docker Hub</span>
               </button>
             </div>
 
@@ -188,6 +215,10 @@ export const FeaturedProjects = () => {
             ? projects.map((project, index) => (
                 <ProjectCard key={project.url} project={project} index={index} />
               ))
+            : activeTab === 'docker'
+            ? dockerRepos.map((repo, index) => (
+                <DockerCard key={repo.title} repo={repo} index={index} />
+              ))
             : kaggleSubTab === 'notebooks'
             ? kaggleNotebooks.map((notebook, index) => (
                 <KaggleCard 
@@ -223,6 +254,24 @@ export const FeaturedProjects = () => {
                   >
                     <FaGithub className="w-5 h-5" />
                     <span>View All GitHub Projects</span>
+                  </Button>
+                </a>
+              )
+            ) : activeTab === 'docker' ? (
+              dockerRepos.length > 0 && (
+                <a
+                  href={`https://hub.docker.com/u/${dockerUsername}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block"
+                >
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="px-8 py-6 rounded-2xl border-border bg-background hover:bg-muted dark:border-input dark:bg-input/30 dark:hover:bg-input/50 transition-all font-semibold gap-2 shadow-[0_4px_20px_rgba(36,150,237,0.05)] cursor-pointer text-sm"
+                  >
+                    <FaDocker className="w-5 h-5 text-[#2496ED]" />
+                    <span>View Docker Hub Profile</span>
                   </Button>
                 </a>
               )

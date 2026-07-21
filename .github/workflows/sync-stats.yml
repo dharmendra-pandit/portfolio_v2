@@ -34,6 +34,7 @@ jobs:
           GFG_USERNAME: ${{ vars.GFG_USERNAME || 'iampanditbth' }}
           KAGGLE_USERNAME: ${{ vars.KAGGLE_USERNAME || 'dharmendrapandit12' }}
           KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+          DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME || 'iampanditji' }}
         run: node scripts/sync-stats.js
 
       - name: Commit and Push Changes

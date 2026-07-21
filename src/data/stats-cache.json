@@ -1,7 +1,7 @@
 {
   "leetcode": {
     "totalSolved": "76",
-    "ranking": "Rank 1965399",
+    "ranking": "Rank 1967076",
     "activityData": [
       {
         "name": "Jan",
@@ -289,6 +289,57 @@
             }
           ]
         }
+      }
+    ]
+  },
+  "docker": {
+    "username": "iampanditji",
+    "link": "https://hub.docker.com/u/iampanditji",
+    "pullCount": 96,
+    "starCount": 1,
+    "reposCount": 3,
+    "repositories": [
+      {
+        "title": "simple-node-project",
+        "description": "Simple Node.js project with Docker and Docker Hub integration.",
+        "url": "https://hub.docker.com/r/iampanditji/simple-node-project",
+        "starCount": 1,
+        "pullCount": 20,
+        "lastUpdated": "Jul 2026",
+        "tags": [
+          "Web servers",
+          "Monitoring & observability",
+          "Web analytics"
+        ],
+        "type": "docker"
+      },
+      {
+        "title": "simple-blogpost-backend",
+        "description": "Node.js and Express backend API for the Simple Blog Post application with MongoDB integration.",
+        "url": "https://hub.docker.com/r/iampanditji/simple-blogpost-backend",
+        "starCount": 0,
+        "pullCount": 41,
+        "lastUpdated": "Jul 2026",
+        "tags": [
+          "API management",
+          "Web servers",
+          "Web analytics"
+        ],
+        "type": "docker"
+      },
+      {
+        "title": "simple-blogpost-frontend",
+        "description": "Production-ready React frontend served with Nginx, providing a fast and responsive user interface ",
+        "url": "https://hub.docker.com/r/iampanditji/simple-blogpost-frontend",
+        "starCount": 0,
+        "pullCount": 35,
+        "lastUpdated": "Jul 2026",
+        "tags": [
+          "Web servers",
+          "Databases & storage",
+          "Web analytics"
+        ],
+        "type": "docker"
       }
     ]
   }

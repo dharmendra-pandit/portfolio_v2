@@ -12,7 +12,7 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 import { Code2, Trophy, Star, Target } from 'lucide-react'
-import { FaGithub, FaKaggle } from 'react-icons/fa'
+import { FaGithub, FaKaggle, FaDocker } from 'react-icons/fa'
 
 // Initialize activity data with last 7 months set to 0
 const getInitialActivityData = () => {
@@ -61,6 +61,13 @@ const defaultStats = [
     link: 'https://www.kaggle.com/dharmendrapandit12',
   },
   {
+    platform: 'Docker',
+    solved: 'Loading...',
+    icon: <FaDocker className="w-5 h-5 text-foreground" />,
+    rating: 'Pulls',
+    link: 'https://hub.docker.com/u/iampanditji',
+  },
+  {
     platform: 'Code360',
     solved: 'Loading...',
     icon: <Target className="w-5 h-5 text-foreground" />,
@@ -93,6 +100,12 @@ export const DsaDashboard = () => {
   const totalProjects = stats.reduce((acc, stat) => {
     if (stat.platform === 'GitHub') {
       const num = parseInt(stat.solved)
+      return acc + (isNaN(num) ? 0 : num)
+    } else if (stat.platform === 'Docker') {
+      const num = parseInt(stat.solved)
+      return acc + (isNaN(num) ? 0 : num)
+    } else if (stat.platform === 'Kaggle') {
+      const num = parseInt(stat.solved.split(' ')[0])
       return acc + (isNaN(num) ? 0 : num)
     }
     return acc
@@ -127,7 +140,7 @@ export const DsaDashboard = () => {
   useEffect(() => {
     const fetchLeetCodeData = async () => {
       try {
-        const response = await fetch('/api/leetcode')
+        const response = await fetch('/api/leetcode', { cache: 'no-store' })
         const data = await response.json()
 
         if (data) {
@@ -163,7 +176,7 @@ export const DsaDashboard = () => {
 
     const fetchGitHubData = async () => {
       try {
-        const response = await fetch('/api/github/stats')
+        const response = await fetch('/api/github/stats', { cache: 'no-store' })
         const data = await response.json()
         if (data) {
           setStats((prevStats) =>
@@ -198,7 +211,7 @@ export const DsaDashboard = () => {
 
     const fetchCode360Data = async () => {
       try {
-        const response = await fetch('/api/code360')
+        const response = await fetch('/api/code360', { cache: 'no-store' })
         const data = await response.json()
         if (data && data.solved) {
           setStats((prevStats) =>
@@ -230,7 +243,7 @@ export const DsaDashboard = () => {
 
     const fetchGFGData = async () => {
       try {
-        const response = await fetch('/api/gfg')
+        const response = await fetch('/api/gfg', { cache: 'no-store' })
         const data = await response.json()
         if (data && data.solved) {
           setStats((prevStats) =>
@@ -262,7 +275,7 @@ export const DsaDashboard = () => {
 
     const fetchKaggleData = async () => {
       try {
-        const response = await fetch('/api/kaggle')
+        const response = await fetch('/api/kaggle', { cache: 'no-store' })
         const data = await response.json()
         if (data) {
           setStats((prevStats) =>
@@ -295,11 +308,45 @@ export const DsaDashboard = () => {
       }
     }
 
+    const fetchDockerData = async () => {
+      try {
+        const response = await fetch('/api/docker', { cache: 'no-store' })
+        const data = await response.json()
+        if (data) {
+          setStats((prevStats) =>
+            prevStats.map((stat) => {
+              if (stat.platform === 'Docker') {
+                const totalPulls = data.profile?.pullCount || 0
+                return {
+                  ...stat,
+                  solved: `${totalPulls.toLocaleString()} Pulls`,
+                  rating: `${data.profile?.reposCount || 0} Images`,
+                  link: data.link || stat.link,
+                }
+              }
+              return stat
+            })
+          )
+        }
+      } catch (error) {
+        console.error('Failed to fetch Docker stats:', error)
+        setStats((prevStats) =>
+          prevStats.map((stat) => {
+            if (stat.platform === 'Docker') {
+              return { ...stat, solved: '96 Pulls', rating: '3 Images' }
+            }
+            return stat
+          })
+        )
+      }
+    }
+
     fetchLeetCodeData()
     fetchGitHubData()
     fetchCode360Data()
     fetchGFGData()
     fetchKaggleData()
+    fetchDockerData()
   }, [])
 
   return (
@@ -386,33 +433,35 @@ export const DsaDashboard = () => {
                  </CardContent>
                </div>
 
-               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-border/50">
-                 {stats.filter(s => ['GitHub', 'Kaggle'].includes(s.platform)).map((stat, index) => {
-                    const isGitHub = stat.platform === 'GitHub';
-                    const targetLink = isGitHub ? '#projects-github' : '#projects-kaggle';
-                    return (
-                      <a
-                        key={index}
-                        href={targetLink}
-                        className="group/stat block bg-foreground/5 p-4 rounded-2xl hover:bg-foreground/10 transition-colors"
-                      >
-                        <div className="flex items-center gap-2 mb-2 text-sm font-medium text-muted-foreground group-hover/stat:text-foreground transition-colors">
-                          {stat.icon} {stat.platform}
-                        </div>
-                        <div className="flex items-end justify-between">
-                          <div className="text-2xl font-bold text-foreground group-hover/stat:text-primary transition-colors">
-                            {stat.solved}
-                          </div>
-                          <div className="text-xs text-primary/80 flex items-center gap-1">
-                            <Trophy className="w-3 h-3" /> {stat.rating}
-                          </div>
-                        </div>
-                      </a>
-                    );
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-border/50">
+                  {stats.filter(s => ['GitHub', 'Kaggle', 'Docker'].includes(s.platform)).map((stat, index) => {
+                     let targetLink = '#projects';
+                     if (stat.platform === 'GitHub') targetLink = '#projects-github';
+                     else if (stat.platform === 'Kaggle') targetLink = '#projects-kaggle';
+                     else if (stat.platform === 'Docker') targetLink = '#projects-docker';
+                     return (
+                       <a
+                         key={index}
+                         href={targetLink}
+                         className="group/stat block bg-foreground/5 p-4 rounded-2xl hover:bg-foreground/10 transition-colors"
+                       >
+                         <div className="flex items-center gap-2 mb-2 text-sm font-medium text-muted-foreground group-hover/stat:text-foreground transition-colors">
+                           {stat.icon} {stat.platform}
+                         </div>
+                         <div className="flex items-end justify-between">
+                           <div className="text-2xl font-bold text-foreground group-hover/stat:text-primary transition-colors">
+                             {stat.solved}
+                           </div>
+                           <div className="text-xs text-primary/80 flex items-center gap-1">
+                             <Trophy className="w-3 h-3" /> {stat.rating}
+                           </div>
+                         </div>
+                       </a>
+                     );
                   })}
-               </div>
-             </Card>
-           </div>
+                </div>
+              </Card>
+            </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">

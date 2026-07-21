@@ -453,6 +453,64 @@ async function syncKaggle() {
   }
 }
 
+// 6. Docker Sync
+async function syncDocker() {
+  const username = process.env.DOCKER_USERNAME || 'iampanditji';
+  console.log(`[Sync] Fetching Docker Hub for ${username}...`);
+  try {
+    const res = await fetchWithTimeout(`https://hub.docker.com/v2/repositories/${username}/?page_size=100`);
+    if (!res.ok) {
+      throw new Error(`Docker Hub API returned status: ${res.status}`);
+    }
+    const data = await res.json();
+    let repositories = [];
+    let pullCount = 0;
+    let starCount = 0;
+    
+    if (data && Array.isArray(data.results)) {
+      repositories = data.results.map(repo => {
+        const date = new Date(repo.last_updated);
+        const lastUpdated = date.toLocaleDateString('en-US', {
+          month: 'short',
+          year: 'numeric'
+        });
+        
+        pullCount += repo.pull_count || 0;
+        starCount += repo.star_count || 0;
+        
+        let tags = ['Docker', 'Image'];
+        if (repo.categories && Array.isArray(repo.categories)) {
+          tags = repo.categories.map(c => c.name);
+        }
+        if (tags.length === 0) tags = ['Docker', 'Image'];
+
+        return {
+          title: repo.name,
+          description: repo.description || 'Public Docker image hosted on Docker Hub.',
+          url: `https://hub.docker.com/r/${username}/${repo.name}`,
+          starCount: repo.star_count || 0,
+          pullCount: repo.pull_count || 0,
+          lastUpdated,
+          tags,
+          type: 'docker'
+        };
+      });
+    }
+
+    cache.docker = {
+      username,
+      link: `https://hub.docker.com/u/${username}`,
+      pullCount,
+      starCount,
+      reposCount: repositories.length,
+      repositories
+    };
+    console.log('[Sync] Docker synced successfully!');
+  } catch (err) {
+    console.error('[Sync] Docker sync failed, keeping cache:', err.message);
+  }
+}
+
 // Main execution flow
 async function main() {
   console.log('[Sync] Starting dynamic statistics synchronization...');
@@ -462,6 +520,7 @@ async function main() {
   await syncGFG();
   await syncGitHub();
   await syncKaggle();
+  await syncDocker();
 
   // Ensure data folder exists
   const dir = path.dirname(CACHE_FILE_PATH);
@@ -475,3 +534,4 @@ async function main() {
 }
 
 main();
+

@@ -166,19 +166,24 @@ export async function GET() {
       cancerDate = cancerDb.lastUpdated
     }
 
-    // Set notebooks list using accurate real data and dynamic dates
-    const notebooks = REAL_NOTEBOOKS.map(nb => {
-      let lastUpdated = 'Jul 2026'
-      if (nb.notebookUrl.includes('laptop-battery-health')) {
-        lastUpdated = laptopDate
-      } else if (nb.notebookUrl.includes('breast-cancer')) {
-        lastUpdated = cancerDate
-      }
-      return {
-        ...nb,
-        lastUpdated
-      }
-    })
+    // Set notebooks list: use cached notebooks if available, otherwise fallback to REAL_NOTEBOOKS with dynamic dates
+    const cachedData = getCachedData();
+    const cachedNotebooks = cachedData?.notebooks;
+    const notebooks = (cachedNotebooks && cachedNotebooks.length > 0)
+      ? cachedNotebooks
+      : REAL_NOTEBOOKS.map(nb => {
+          let lastUpdated = 'Jul 2026'
+          if (nb.notebookUrl.includes('laptop-battery-health')) {
+            lastUpdated = laptopDate
+          } else if (nb.notebookUrl.includes('breast-cancer')) {
+            lastUpdated = cancerDate
+          }
+          return {
+            ...nb,
+            lastUpdated
+          }
+        })
+
 
     // Return the accurate profile metrics
     const profile = {
