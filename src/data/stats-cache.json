@@ -295,7 +295,7 @@
   "docker": {
     "username": "iampanditji",
     "link": "https://hub.docker.com/u/iampanditji",
-    "pullCount": 96,
+    "pullCount": 97,
     "starCount": 1,
     "reposCount": 3,
     "repositories": [
@@ -304,7 +304,7 @@
         "description": "Simple Node.js project with Docker and Docker Hub integration.",
         "url": "https://hub.docker.com/r/iampanditji/simple-node-project",
         "starCount": 1,
-        "pullCount": 20,
+        "pullCount": 21,
         "lastUpdated": "Jul 2026",
         "tags": [
           "Web servers",
