@@ -46,7 +46,7 @@
     "link": "https://www.kaggle.com/dharmendrapandit12/",
     "profile": {
       "tier": "Novice",
-      "datasetCount": 2,
+      "datasetCount": 3,
       "notebookCount": 2,
       "followers": 0
     },
@@ -77,6 +77,19 @@
         "lastUpdated": "Jul 2026",
         "notebookUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/laptop-battery-health-dataset",
         "kaggleUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/laptop-battery-health-dataset",
+        "type": "dataset"
+      },
+      {
+        "title": "Credit Card Customer Behavior Segmentation Dataset",
+        "description": "The dataset simulates real-world customer profiles, spending behavior",
+        "datasetName": "Credit Card Customer Behavior Segmentation Dataset",
+        "tags": [
+          "Dataset",
+          "CSV"
+        ],
+        "lastUpdated": "Jul 2026",
+        "notebookUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/credit-card-customer-behavior-segmentation-dataset",
+        "kaggleUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/credit-card-customer-behavior-segmentation-dataset",
         "type": "dataset"
       }
     ],
