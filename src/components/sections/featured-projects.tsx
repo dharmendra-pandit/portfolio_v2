@@ -11,7 +11,7 @@ import { ProjectSkeleton } from '@/components/ui/project-skeleton'
 import { Button } from '@/components/ui/button'
 
 export const FeaturedProjects = () => {
-  const [activeTab, setActiveTab] = useState<'github' | 'kaggle' | 'docker'>('kaggle')
+  const [activeTab, setActiveTab] = useState<'github' | 'kaggle' | 'docker'>('github')
   const [kaggleSubTab, setKaggleSubTab] = useState<'notebooks' | 'datasets'>('notebooks')
   const [projects, setProjects] = useState<any[]>([])
   const [kaggleNotebooks, setKaggleNotebooks] = useState<KaggleNotebook[]>([])

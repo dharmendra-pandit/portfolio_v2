@@ -2,181 +2,189 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowRight, Mail, MapPin, Phone } from 'lucide-react'
+import { ArrowRight, Mail, MapPin, Phone, Check, Copy } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { FaGithub, FaLinkedin } from 'react-icons/fa'
+import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa'
 
 export const Contact = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' })
+  const [copied, setCopied] = useState(false)
+
+  const handleCopyEmail = (e: React.MouseEvent) => {
+    e.preventDefault()
+    navigator.clipboard.writeText('dharmendra193728@gmail.com')
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2500)
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     const { name, email, message } = formData
-    const mailtoUrl = `mailto:dharmendra193728@gmail.com?subject=New Message from ${name} (${email})&body=${encodeURIComponent(message)}`
+    const mailtoUrl = `mailto:dharmendra193728@gmail.com?subject=New Inquiry from ${name} (${email})&body=${encodeURIComponent(message)}`
     window.location.href = mailtoUrl
   }
 
   return (
-    <section id="contact" className="relative min-h-screen w-full py-48 flex items-center justify-center overflow-hidden">
+    <section id="contact" className="relative min-h-screen w-full py-36 flex items-center justify-center overflow-hidden border-t border-white/5">
       <div className="container px-4 mx-auto max-w-5xl flex flex-col items-center relative z-10">
-        <div className="flex flex-col items-center text-center mb-20">
+        <div className="flex flex-col items-center text-center mb-16">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter mb-6 text-foreground"
+            className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight mb-6 font-heading"
           >
-            Get in <span className="text-foreground">touch.</span>
+            Let's <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-indigo-300 to-purple-400">Connect.</span>
           </motion.h2>
+
           <motion.p 
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="text-xl md:text-2xl text-muted-foreground max-w-2xl font-light"
+            transition={{ delay: 0.1 }}
+            className="text-lg md:text-xl text-muted-foreground max-w-2xl font-normal leading-relaxed"
           >
-            I'm currently looking for new opportunities. Whether you have a
-            question or just want to say hi, I'll try my best to get back to
-            you!
+            Available for full-time engineering opportunities, AI/ML systems research, and freelance technical consultation.
           </motion.p>
         </div>
 
-        {/* Contact Details (Centered Grid/Flex) */}
+        {/* Contact Quick Details */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-16 mb-20 w-full"
+          transition={{ duration: 0.5 }}
+          className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 mb-16 w-full"
         >
-          <a
-            href="mailto:dharmendra193728@gmail.com"
-            className="flex flex-col items-center gap-4 group cursor-pointer text-center"
+          <button
+            onClick={handleCopyEmail}
+            className="flex flex-col items-center gap-3 group cursor-pointer text-center"
           >
-            <div className="w-16 h-16 rounded-full bg-foreground/5 border border-border flex items-center justify-center text-foreground group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all shadow-[0_0_15px_rgba(255,255,255,0.05)]">
-              <Mail className="w-6 h-6" />
+            <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-500 transition-all shadow-lg">
+              {copied ? <Check className="w-5 h-5 text-emerald-400" /> : <Copy className="w-5 h-5" />}
             </div>
             <div>
-              <p className="text-sm font-medium text-muted-foreground uppercase tracking-widest mb-1">
-                Email
+              <p className="text-xs font-semibold text-neutral-400 uppercase tracking-widest mb-1 flex items-center justify-center gap-1">
+                Email {copied && <span className="text-emerald-400 lowercase font-mono text-xs">(copied!)</span>}
               </p>
-              <p className="text-lg text-foreground font-medium group-hover:text-primary transition-colors">
+              <p className="text-base text-white font-medium group-hover:text-blue-400 transition-colors">
                 dharmendra193728@gmail.com
+              </p>
+            </div>
+          </button>
+
+          <a href="tel:+916204298947" className="flex flex-col items-center gap-3 group cursor-pointer text-center">
+            <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-emerald-400 group-hover:bg-emerald-600 group-hover:text-white group-hover:border-emerald-500 transition-all shadow-lg">
+              <Phone className="w-5 h-5" />
+            </div>
+            <div>
+              <p className="text-xs font-semibold text-neutral-400 uppercase tracking-widest mb-1">
+                Phone
+              </p>
+              <p className="text-base text-white font-medium group-hover:text-emerald-400 transition-colors">
+                +91-6204298947
               </p>
             </div>
           </a>
 
-          <div className="flex flex-col items-center gap-4 group cursor-pointer text-center">
-            <div className="w-16 h-16 rounded-full bg-foreground/5 border border-border flex items-center justify-center text-foreground group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all shadow-[0_0_15px_rgba(255,255,255,0.05)]">
-              <Phone className="w-6 h-6" />
+          <div className="flex flex-col items-center gap-3 group text-center">
+            <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-purple-400 shadow-lg">
+              <MapPin className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-sm font-medium text-muted-foreground uppercase tracking-widest mb-1">
-                Phone
-              </p>
-              <p className="text-lg text-foreground font-medium group-hover:text-primary transition-colors">
-                +91-6204298947
-              </p>
-            </div>
-          </div>
-
-          <div className="flex flex-col items-center gap-4 group cursor-pointer text-center">
-            <div className="w-16 h-16 rounded-full bg-foreground/5 border border-border flex items-center justify-center text-foreground group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all shadow-[0_0_15px_rgba(255,255,255,0.05)]">
-              <MapPin className="w-6 h-6" />
-            </div>
-            <div>
-              <p className="text-sm font-medium text-muted-foreground uppercase tracking-widest mb-1">
+              <p className="text-xs font-semibold text-neutral-400 uppercase tracking-widest mb-1">
                 Location
               </p>
-              <p className="text-lg text-foreground font-medium group-hover:text-primary transition-colors">
-                Jaipur, Rajasthan
+              <p className="text-base text-white font-medium">
+                Jaipur, Rajasthan, India
               </p>
             </div>
           </div>
         </motion.div>
 
-        {/* Contact Form (Centered) */}
+        {/* Form Container */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="relative group w-full max-w-3xl"
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="relative group w-full max-w-2xl"
         >
-          <div className="absolute -inset-1 bg-gradient-to-r from-foreground/20 to-foreground/5 rounded-[2.5rem] blur opacity-0 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
+          <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-[2.5rem] blur opacity-0 group-hover:opacity-100 transition duration-700 pointer-events-none" />
           
-          <div className="relative p-8 md:p-12 bg-foreground/5 border border-border rounded-[2rem] backdrop-blur-xl">
-            <form
-              className="space-y-10 flex flex-col items-center"
-              onSubmit={handleSubmit}
-            >
-              <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-10">
+          <div className="relative p-8 sm:p-10 glass-card border border-white/10 rounded-[2rem] shadow-2xl">
+            <form className="space-y-6 flex flex-col items-center" onSubmit={handleSubmit}>
+              <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
                 <Input
-                  placeholder="Name"
+                  placeholder="Your Name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   required
-                  className="bg-background/50 hover:bg-background/80 border-border/50 hover:border-border rounded-2xl h-14 px-6 text-lg text-foreground placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary focus-visible:bg-background transition-all text-center md:text-left shadow-sm"
+                  className="bg-white/5 border-white/10 hover:border-white/20 rounded-xl h-12 px-5 text-sm text-white placeholder:text-neutral-500 focus-visible:ring-1 focus-visible:ring-blue-500 focus-visible:border-blue-500 transition-all shadow-sm"
                 />
                 <Input
                   type="email"
-                  placeholder="Email"
+                  placeholder="Your Email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   required
-                  className="bg-background/50 hover:bg-background/80 border-border/50 hover:border-border rounded-2xl h-14 px-6 text-lg text-foreground placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary focus-visible:bg-background transition-all text-center md:text-left shadow-sm"
+                  className="bg-white/5 border-white/10 hover:border-white/20 rounded-xl h-12 px-5 text-sm text-white placeholder:text-neutral-500 focus-visible:ring-1 focus-visible:ring-blue-500 focus-visible:border-blue-500 transition-all shadow-sm"
                 />
               </div>
               <div className="w-full">
                 <Textarea
-                  placeholder="Message"
+                  placeholder="Your Message..."
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   required
-                  className="bg-background/50 hover:bg-background/80 border-border/50 hover:border-border rounded-3xl min-h-[160px] px-6 py-5 text-lg text-foreground placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary focus-visible:bg-background transition-all resize-none text-center md:text-left shadow-sm"
+                  className="bg-white/5 border-white/10 hover:border-white/20 rounded-2xl min-h-[140px] px-5 py-4 text-sm text-white placeholder:text-neutral-500 focus-visible:ring-1 focus-visible:ring-blue-500 focus-visible:border-blue-500 transition-all resize-none shadow-sm"
                 />
               </div>
 
-              <div className="pt-10 w-full flex flex-col items-center gap-10">
-                <button type="submit" className="flex items-center gap-4 text-2xl font-medium text-foreground group hover:text-foreground/80 transition-colors">
-                  Send Message
-                  <div className="w-14 h-14 rounded-full bg-foreground/5 border border-border flex items-center justify-center group-hover:bg-foreground group-hover:text-background group-hover:border-foreground transition-all group-hover:translate-x-2">
-                    <ArrowRight className="w-6 h-6" />
-                  </div>
+              <div className="pt-4 w-full flex flex-col items-center gap-8">
+                <button
+                  type="submit"
+                  className="inline-flex items-center gap-3 px-8 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold text-sm shadow-lg hover:shadow-blue-500/20 transition-all cursor-pointer"
+                >
+                  <span>Send Direct Message</span>
+                  <ArrowRight className="w-4 h-4" />
                 </button>
 
-                {/* Social Links Centered at bottom */}
-                <div className="flex items-center gap-8 mt-4">
+                <div className="flex items-center gap-4 pt-4 border-t border-white/5 w-full justify-center">
                   <a
                     href="https://github.com/dharmendra-pandit"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-foreground transition-colors p-3 hover:bg-foreground/5 rounded-full"
+                    aria-label="GitHub"
+                    className="text-neutral-400 hover:text-white transition-colors p-2.5 hover:bg-white/5 rounded-full"
                   >
-                    <FaGithub className="w-7 h-7" />
+                    <FaGithub className="w-5 h-5" />
                   </a>
                   <a
                     href="https://linkedin.com/in/dharmendra-pandit1"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-foreground transition-colors p-3 hover:bg-foreground/5 rounded-full"
+                    aria-label="LinkedIn"
+                    className="text-neutral-400 hover:text-white transition-colors p-2.5 hover:bg-white/5 rounded-full"
                   >
-                    <FaLinkedin className="w-7 h-7" />
+                    <FaLinkedin className="w-5 h-5" />
+                  </a>
+                  <a
+                    href="https://x.com/Dharmendra62042"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Twitter"
+                    className="text-neutral-400 hover:text-white transition-colors p-2.5 hover:bg-white/5 rounded-full"
+                  >
+                    <FaTwitter className="w-5 h-5" />
                   </a>
                 </div>
-                <div className="flex flex-col items-center mt-2 gap-3">
-                  <p className="text-sm text-muted-foreground">
-                    © 2026 Dharmendra Pandit.
+
+                <div className="flex flex-col items-center gap-2">
+                  <p className="text-xs text-neutral-400 font-medium">
+                    © 2026 Dharmendra Pandit. All rights reserved.
                   </p>
-                  <div className="flex flex-col items-center gap-1">
-                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">Daily / Total Visitors</p>
-                    <img 
-                      src="https://hits.sh/dharmendra-pandit.vercel.app.svg?view=today-total&style=for-the-badge&label=visitors&color=263759&labelColor=1f2937" 
-                      alt="visitor counter" 
-                      className="opacity-70 hover:opacity-100 transition-opacity rounded-md"
-                    />
-                  </div>
                 </div>
               </div>
             </form>
@@ -186,3 +194,4 @@ export const Contact = () => {
     </section>
   )
 }
+

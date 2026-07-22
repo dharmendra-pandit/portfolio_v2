@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Plus_Jakarta_Sans, Space_Grotesk, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 import { CustomCursor } from '@/components/ui/custom-cursor'
@@ -9,9 +9,16 @@ import { AnimatedBackground } from '@/components/ui/animated-background'
 import { CursorGlow } from '@/components/ui/cursor-glow'
 import { Navbar } from '@/components/layout/navbar'
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const fontSans = Plus_Jakarta_Sans({
+  variable: '--font-sans',
   subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700', '800'],
+})
+
+const fontHeading = Space_Grotesk({
+  variable: '--font-heading',
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
 })
 
 const geistMono = Geist_Mono({
@@ -20,9 +27,9 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Dharmendra Pandit | Portfolio',
+  title: 'Dharmendra Pandit | Software Engineer & AI/ML Portfolio',
   description:
-    'Futuristic developer portfolio of Dharmendra Pandit - AI & ML, DevOps & Backend Engineer.',
+    'Futuristic developer portfolio of Dharmendra Pandit - AI & ML Systems, Full Stack Engineering, DevOps & Algorithm Specialist.',
 }
 
 export default function RootLayout({
@@ -33,7 +40,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      className={`${fontSans.variable} ${fontHeading.variable} ${geistMono.variable} antialiased`}
       suppressHydrationWarning
     >
       <body
