@@ -76,9 +76,9 @@ export const DockerCard = ({ repo, index }: { repo: DockerRepository; index: num
 
           {/* Metrics section */}
           <div className="flex items-center gap-4 mb-6 text-xs font-medium text-muted-foreground">
-            <div className="flex items-center gap-1 bg-foreground/5 px-2.5 py-1 rounded-lg border border-border">
-              <Download className="w-3.5 h-3.5 text-[#2496ED]" />
-              <span>{repo.pullCount.toLocaleString()} Pulls</span>
+            <div className="flex items-center gap-1.5 bg-[#2496ED]/10 text-[#2496ED] px-3 py-1 rounded-lg border border-[#2496ED]/20 font-semibold">
+              <FaDocker className="w-3.5 h-3.5" />
+              <span>Container Image</span>
             </div>
             {repo.starCount > 0 && (
               <div className="flex items-center gap-1 bg-foreground/5 px-2.5 py-1 rounded-lg border border-border">

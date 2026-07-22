@@ -2,7 +2,7 @@
 
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { FileText, ChevronDown, Sparkles, ArrowRight, Code2, Cpu, Globe } from 'lucide-react'
+import { FileText, ChevronDown, ArrowRight, Code2, Cpu, Globe, Terminal } from 'lucide-react'
 import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa'
 import { MagneticButton } from '@/components/ui/magnetic-button'
 import { Button } from '@/components/ui/button'
@@ -24,18 +24,15 @@ export const Hero = () => {
         style={{ y, opacity }}
         className="container relative z-10 mx-auto px-4 flex flex-col items-center text-center"
       >
-        {/* Availability Badge */}
+        {/* Status Badge */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-xs sm:text-sm font-medium text-emerald-400 backdrop-blur-xl mb-8 shadow-[0_0_25px_rgba(16,185,129,0.15)]"
+          className="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-xs sm:text-sm font-medium text-blue-400 backdrop-blur-xl mb-8 shadow-sm"
         >
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-          </span>
-          <span>Available for Full-Time & Engineering Roles</span>
+          <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
+          <span>Software Engineer & Full-Stack Developer</span>
         </motion.div>
 
         {/* Main Heading */}
@@ -53,10 +50,10 @@ export const Hero = () => {
           </span>
         </motion.h1>
 
-        {/* Animated Subtitle */}
+        {/* Subtitle */}
         <div className="h-auto min-h-12 mb-8 flex items-center justify-center">
           <TypingAnimation 
-            text="Software Engineer • AI & ML Developer • DevOps Specialist"
+            text="Full-Stack Web • Backend Systems • Machine Learning"
             className="text-lg sm:text-2xl md:text-3xl font-semibold text-neutral-300 text-center tracking-tight"
             delay={0.8}
             duration={0.04}
@@ -68,10 +65,10 @@ export const Hero = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2.2, duration: 0.8 }}
-          className="max-w-2xl text-base sm:text-lg md:text-xl text-muted-foreground mb-10 text-center leading-relaxed"
+          className="max-w-2xl text-base sm:text-lg md:text-xl text-neutral-400 mb-10 text-center leading-relaxed"
         >
-          Building scalable production software, deep learning ML pipelines, and cloud microservices. 
-          Driven by algorithmic excellence with 148+ solved problem profiles.
+          Engineering production software applications, scalable backend microservices, and machine learning models.
+          Strong foundation in Data Structures, Algorithms (148+ Solved), and System Design.
         </motion.p>
 
         {/* Tech Stack Pills Carousel */}
@@ -85,8 +82,8 @@ export const Hero = () => {
             { label: 'Next.js 16', icon: Globe },
             { label: 'TypeScript', icon: Code2 },
             { label: 'Python & PyTorch', icon: Cpu },
-            { label: 'FastAPI & Node', icon: Sparkles },
-            { label: 'Docker & Kubernetes', icon: Cpu },
+            { label: 'FastAPI & Node', icon: Terminal },
+            { label: 'Docker & Microservices', icon: Cpu },
           ].map((pill, i) => (
             <span
               key={i}

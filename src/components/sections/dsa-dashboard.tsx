@@ -64,7 +64,7 @@ const defaultStats = [
     platform: 'Docker',
     solved: 'Loading...',
     icon: <FaDocker className="w-5 h-5 text-foreground" />,
-    rating: 'Pulls',
+    rating: 'Container Images',
     link: 'https://hub.docker.com/u/iampanditji',
   },
   {
@@ -102,7 +102,7 @@ export const DsaDashboard = () => {
       const num = parseInt(stat.solved)
       return acc + (isNaN(num) ? 0 : num)
     } else if (stat.platform === 'Docker') {
-      const num = parseInt(stat.solved)
+      const num = parseInt(stat.solved.split(' ')[0])
       return acc + (isNaN(num) ? 0 : num)
     } else if (stat.platform === 'Kaggle') {
       const num = parseInt(stat.solved.split(' ')[0])
@@ -316,11 +316,11 @@ export const DsaDashboard = () => {
           setStats((prevStats) =>
             prevStats.map((stat) => {
               if (stat.platform === 'Docker') {
-                const totalPulls = data.profile?.pullCount || 0
+                const totalImages = data.profile?.reposCount || 3
                 return {
                   ...stat,
-                  solved: `${totalPulls.toLocaleString()} Pulls`,
-                  rating: `${data.profile?.reposCount || 0} Images`,
+                  solved: `${totalImages} Images`,
+                  rating: 'Docker Hub',
                   link: data.link || stat.link,
                 }
               }
@@ -333,7 +333,7 @@ export const DsaDashboard = () => {
         setStats((prevStats) =>
           prevStats.map((stat) => {
             if (stat.platform === 'Docker') {
-              return { ...stat, solved: '96 Pulls', rating: '3 Images' }
+              return { ...stat, solved: '3 Images', rating: 'Docker Hub' }
             }
             return stat
           })
@@ -357,18 +357,18 @@ export const DsaDashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter mb-6 text-foreground"
+            className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tight mb-6 text-foreground font-heading"
           >
-            Coding <span className="text-foreground/80">Profile.</span>
+            Developer <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">Activity.</span>
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="max-w-2xl mx-auto text-lg text-muted-foreground"
+            transition={{ delay: 0.1 }}
+            className="max-w-2xl mx-auto text-base sm:text-lg text-neutral-400"
           >
-            Consistency is the key to mastery in AI & ML, DevOps, and algorithmic problem-solving. Here is my open-source contribution and problem-solving journey.
+            Track record across algorithmic problem solving, open-source code repositories, machine learning datasets, and containerized deployments.
           </motion.p>
         </div>
 

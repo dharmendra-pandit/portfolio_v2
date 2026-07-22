@@ -102,18 +102,18 @@ export const FeaturedProjects = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter mb-6 text-foreground"
+            className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tight mb-6 text-foreground font-heading"
           >
-            Showcase <span className="text-foreground/80">Gallery.</span>
+            Featured <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">Projects.</span>
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="max-w-2xl mx-auto text-lg text-muted-foreground mb-12"
+            transition={{ delay: 0.1 }}
+            className="max-w-2xl mx-auto text-base sm:text-lg text-neutral-400 mb-12"
           >
-            Explore my production repositories, open-source work, and machine learning notebook kernels synced dynamically.
+            Explore full-stack web applications, machine learning code repositories, and container images with live demo links.
           </motion.p>
 
           {/* Platform Tab Switcher */}

@@ -107,10 +107,10 @@ export const Skills = () => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-semibold text-neutral-300 mb-6 shadow-md"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-semibold text-neutral-300 mb-6 shadow-sm"
           >
-            <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-            <span>Technical Capabilities</span>
+            <Code2 className="w-3.5 h-3.5 text-blue-400" />
+            <span>Technologies & Skills</span>
           </motion.div>
 
           <motion.h2
@@ -119,7 +119,7 @@ export const Skills = () => {
             viewport={{ once: true }}
             className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tight mb-6 font-heading"
           >
-            Engineering <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">Toolkit.</span>
+            Skills & <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">Tech Stack.</span>
           </motion.h2>
 
           <motion.p 
@@ -127,10 +127,9 @@ export const Skills = () => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="max-w-2xl mx-auto text-base sm:text-lg text-muted-foreground mb-10 leading-relaxed"
+            className="max-w-2xl mx-auto text-base sm:text-lg text-neutral-400 mb-10 leading-relaxed"
           >
-            Specialized engineering stack bridging machine learning intelligence, high-throughput backend services, 
-            and resilient DevOps automation.
+            Core programming languages, frameworks, cloud infrastructure, and database systems I use to build production software.
           </motion.p>
 
           {/* Category Filter Tabs */}
