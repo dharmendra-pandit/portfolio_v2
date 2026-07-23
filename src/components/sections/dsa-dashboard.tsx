@@ -375,12 +375,12 @@ export const DsaDashboard = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto mb-6">
            {/* Total Summaries Box 1 */}
            <div className="relative group">
-             <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/20 to-primary/5 rounded-3xl blur opacity-50 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
+             <div className="absolute -inset-0.5 bg-gradient-to-r from-foreground/10 to-transparent rounded-3xl blur opacity-50 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
              <Card className="relative h-full p-6 bg-foreground/5 border border-foreground/5 rounded-3xl backdrop-blur-3xl overflow-hidden shadow-lg flex flex-col justify-between">
                <div>
                  <CardHeader className="p-0 pb-2 border-none">
                    <CardTitle className="text-lg font-medium text-muted-foreground flex items-center gap-3">
-                     <div className="p-2.5 bg-primary/10 rounded-xl border border-primary/20 text-primary">
+                     <div className="p-2.5 bg-foreground/10 rounded-xl border border-foreground/20 text-foreground">
                        <Code2 className="w-6 h-6" />
                      </div>
                      Total Problems Solved
@@ -393,19 +393,29 @@ export const DsaDashboard = () => {
                  </CardContent>
                </div>
                
-               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-border/50">
+               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-border/50">
                  {stats.filter(s => ['LeetCode', 'GeeksforGeeks', 'Code360'].includes(s.platform)).map((stat, index) => (
-                   <a key={index} href={stat.link} target="_blank" rel="noopener noreferrer" className="group/stat block bg-foreground/5 p-4 rounded-2xl hover:bg-foreground/10 transition-colors">
-                     <div className="flex items-center gap-2 mb-2 text-sm font-medium text-muted-foreground group-hover/stat:text-foreground transition-colors">
-                       {stat.icon} {stat.platform}
+                   <a 
+                     key={index} 
+                     href={stat.link} 
+                     target="_blank" 
+                     rel="noopener noreferrer" 
+                     className="group/stat flex flex-col justify-between bg-foreground/5 p-4 rounded-2xl border border-foreground/5 hover:bg-foreground/10 hover:border-foreground/15 transition-all"
+                   >
+                     <div className="flex items-center justify-between gap-1 mb-3">
+                       <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground group-hover/stat:text-foreground transition-colors shrink-0">
+                         {stat.icon}
+                         <span>{stat.platform}</span>
+                       </div>
+                       {stat.rating && (
+                         <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-foreground/10 text-foreground/80 flex items-center gap-1 shrink-0 max-w-[100px] truncate">
+                           <Trophy className="w-2.5 h-2.5 shrink-0" />
+                           <span className="truncate">{stat.rating}</span>
+                         </span>
+                       )}
                      </div>
-                     <div className="flex items-end justify-between">
-                       <div className="text-2xl font-bold text-foreground group-hover/stat:text-primary transition-colors">
-                         {stat.solved}
-                       </div>
-                       <div className="text-xs text-primary/80 flex items-center gap-1">
-                         <Trophy className="w-3 h-3" /> {stat.rating}
-                       </div>
+                     <div className="text-xl font-bold text-foreground group-hover/stat:text-white transition-colors tracking-tight">
+                       {stat.solved}
                      </div>
                    </a>
                  ))}
@@ -415,12 +425,12 @@ export const DsaDashboard = () => {
            
            {/* Total Summaries Box 2 */}
            <div className="relative group">
-             <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/20 to-primary/5 rounded-3xl blur opacity-50 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
+             <div className="absolute -inset-0.5 bg-gradient-to-r from-foreground/10 to-transparent rounded-3xl blur opacity-50 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
              <Card className="relative h-full p-6 bg-foreground/5 border border-foreground/5 rounded-3xl backdrop-blur-3xl overflow-hidden shadow-lg flex flex-col justify-between">
                <div>
                  <CardHeader className="p-0 pb-2 border-none">
                    <CardTitle className="text-lg font-medium text-muted-foreground flex items-center gap-3">
-                     <div className="p-2.5 bg-primary/10 rounded-xl border border-primary/20 text-primary">
+                     <div className="p-2.5 bg-foreground/10 rounded-xl border border-foreground/20 text-foreground">
                        <FaGithub className="w-6 h-6" />
                      </div>
                      Total Projects
@@ -433,7 +443,7 @@ export const DsaDashboard = () => {
                  </CardContent>
                </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-border/50">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-border/50">
                   {stats.filter(s => ['GitHub', 'Kaggle', 'Docker'].includes(s.platform)).map((stat, index) => {
                      let targetLink = '#projects';
                      if (stat.platform === 'GitHub') targetLink = '#projects-github';
@@ -443,18 +453,22 @@ export const DsaDashboard = () => {
                        <a
                          key={index}
                          href={targetLink}
-                         className="group/stat block bg-foreground/5 p-4 rounded-2xl hover:bg-foreground/10 transition-colors"
+                         className="group/stat flex flex-col justify-between bg-foreground/5 p-4 rounded-2xl border border-foreground/5 hover:bg-foreground/10 hover:border-foreground/15 transition-all"
                        >
-                         <div className="flex items-center gap-2 mb-2 text-sm font-medium text-muted-foreground group-hover/stat:text-foreground transition-colors">
-                           {stat.icon} {stat.platform}
+                         <div className="flex items-center justify-between gap-1 mb-3">
+                           <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground group-hover/stat:text-foreground transition-colors shrink-0">
+                             {stat.icon}
+                             <span>{stat.platform}</span>
+                           </div>
+                           {stat.rating && (
+                             <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-foreground/10 text-foreground/80 flex items-center gap-1 shrink-0 max-w-[100px] truncate">
+                               <Trophy className="w-2.5 h-2.5 shrink-0" />
+                               <span className="truncate">{stat.rating}</span>
+                             </span>
+                           )}
                          </div>
-                         <div className="flex items-end justify-between">
-                           <div className="text-2xl font-bold text-foreground group-hover/stat:text-primary transition-colors">
-                             {stat.solved}
-                           </div>
-                           <div className="text-xs text-primary/80 flex items-center gap-1">
-                             <Trophy className="w-3 h-3" /> {stat.rating}
-                           </div>
+                         <div className="text-xl font-bold text-foreground group-hover/stat:text-white transition-colors tracking-tight">
+                           {stat.solved}
                          </div>
                        </a>
                      );

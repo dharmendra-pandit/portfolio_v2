@@ -91,10 +91,8 @@ export const FeaturedProjects = () => {
       id="projects"
       className="relative py-48 flex items-center justify-center overflow-hidden border-t border-border/20"
     >
-      {/* Dynamic background glow based on active tab */}
-      <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-[120px] pointer-events-none transition-all duration-1000 ${
-        activeTab === 'github' ? 'bg-primary/5' : activeTab === 'docker' ? 'bg-[#2496ED]/5' : 'bg-[#20BEFF]/5'
-      }`} />
+      {/* Dynamic monochrome background glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-[120px] pointer-events-none bg-foreground/5 transition-all duration-1000" />
 
       <div className="container px-4 mx-auto relative z-10">
         <div className="text-center mb-16">
