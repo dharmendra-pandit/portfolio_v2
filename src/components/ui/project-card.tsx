@@ -20,9 +20,9 @@ export type Project = {
 
 const getProjectIcon = (name: string) => {
   const lowerName = name.toLowerCase()
-  if (lowerName.includes('web') || lowerName.includes('site') || lowerName.includes('campus') || lowerName.includes('career')) return <Globe className="w-5 h-5 text-indigo-400" />
-  if (lowerName.includes('data') || lowerName.includes('assistant') || lowerName.includes('generator')) return <Database className="w-5 h-5 text-purple-400" />
-  return <Code2 className="w-5 h-5 text-blue-400" />
+  if (lowerName.includes('web') || lowerName.includes('site') || lowerName.includes('campus') || lowerName.includes('career')) return <Globe className="w-5 h-5 text-white" />
+  if (lowerName.includes('data') || lowerName.includes('assistant') || lowerName.includes('generator')) return <Database className="w-5 h-5 text-white" />
+  return <Code2 className="w-5 h-5 text-white" />
 }
 
 export const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
@@ -43,7 +43,7 @@ export const ProjectCard = ({ project, index }: { project: Project; index: numbe
       whileHover={{ y: -6 }}
       className="relative group h-full flex flex-col"
     >
-      <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-[2rem] blur-md opacity-0 group-hover:opacity-100 transition duration-500 pointer-events-none" />
+      <div className="absolute -inset-0.5 bg-white/10 rounded-[2rem] blur-md opacity-0 group-hover:opacity-100 transition duration-500 pointer-events-none" />
       
       <Card className="relative flex-grow flex flex-col glass-card border border-white/10 rounded-[2rem] overflow-hidden shadow-2xl transition-all duration-300">
         {/* Project Thumbnail Image Header */}
@@ -65,9 +65,9 @@ export const ProjectCard = ({ project, index }: { project: Project; index: numbe
                 href={project.homepageUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-500/40 text-emerald-400 text-xs font-semibold"
+                className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-semibold"
               >
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
                 <span>Live App</span>
               </a>
             ) : (
@@ -95,13 +95,13 @@ export const ProjectCard = ({ project, index }: { project: Project; index: numbe
           {/* Metrics section */}
           <div className="flex items-center gap-4 mb-6 text-xs font-medium text-neutral-400 bg-white/[0.03] px-3.5 py-2.5 rounded-xl border border-white/5">
             {project.stargazerCount > 0 && (
-              <div className="flex items-center gap-1.5 text-amber-400">
-                <Star className="w-3.5 h-3.5 fill-amber-400" /> {project.stargazerCount} Stars
+              <div className="flex items-center gap-1.5 text-white">
+                <Star className="w-3.5 h-3.5 fill-white text-white" /> {project.stargazerCount} Stars
               </div>
             )}
 
             {project.forkCount > 0 && (
-              <div className="flex items-center gap-1.5 text-purple-400">
+              <div className="flex items-center gap-1.5 text-white">
                 <GitFork className="w-3.5 h-3.5" /> {project.forkCount} Forks
               </div>
             )}
@@ -119,8 +119,7 @@ export const ProjectCard = ({ project, index }: { project: Project; index: numbe
                 className="flex items-center gap-1.5 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs font-medium text-neutral-300"
               >
                 <span 
-                  className="w-2 h-2 rounded-full" 
-                  style={{ backgroundColor: lang.color || '#3b82f6' }} 
+                  className="w-2 h-2 rounded-full bg-white" 
                 />
                 {lang.name}
               </span>
@@ -155,7 +154,7 @@ export const ProjectCard = ({ project, index }: { project: Project; index: numbe
                 <Button
                   variant="default"
                   size="sm"
-                  className="w-full flex items-center justify-center gap-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-md cursor-pointer border-0"
+                  className="w-full flex items-center justify-center gap-1.5 rounded-xl bg-white text-black font-bold hover:bg-neutral-200 text-xs shadow-md cursor-pointer border-0"
                 >
                   <span>Live App</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />

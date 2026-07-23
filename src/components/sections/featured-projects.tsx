@@ -104,7 +104,7 @@ export const FeaturedProjects = () => {
             viewport={{ once: true }}
             className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tight mb-6 text-foreground font-heading"
           >
-            Featured <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">Projects.</span>
+            Featured <span className="text-gradient">Projects.</span>
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0 }}
@@ -126,7 +126,7 @@ export const FeaturedProjects = () => {
                 }}
                 className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 cursor-pointer ${
                   activeTab === 'github'
-                    ? 'bg-foreground text-background shadow-md'
+                    ? 'bg-foreground text-background shadow-md font-bold'
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
@@ -140,7 +140,7 @@ export const FeaturedProjects = () => {
                 }}
                 className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 cursor-pointer ${
                   activeTab === 'kaggle'
-                    ? 'bg-gradient-to-r from-[#20BEFF] to-[#008AFF] text-white shadow-md border-0'
+                    ? 'bg-foreground text-background shadow-md font-bold'
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
@@ -154,7 +154,7 @@ export const FeaturedProjects = () => {
                 }}
                 className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 cursor-pointer ${
                   activeTab === 'docker'
-                    ? 'bg-gradient-to-r from-[#2496ED] to-[#008AFF] text-white shadow-md border-0'
+                    ? 'bg-foreground text-background shadow-md font-bold'
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
@@ -268,9 +268,9 @@ export const FeaturedProjects = () => {
                   <Button
                     variant="outline"
                     size="lg"
-                    className="px-8 py-6 rounded-2xl border-border bg-background hover:bg-muted dark:border-input dark:bg-input/30 dark:hover:bg-input/50 transition-all font-semibold gap-2 shadow-[0_4px_20px_rgba(36,150,237,0.05)] cursor-pointer text-sm"
+                    className="px-8 py-6 rounded-2xl border-border bg-background hover:bg-muted dark:border-input dark:bg-input/30 dark:hover:bg-input/50 transition-all font-semibold gap-2 shadow-[0_4px_20px_rgba(255,255,255,0.05)] cursor-pointer text-sm"
                   >
-                    <FaDocker className="w-5 h-5 text-[#2496ED]" />
+                    <FaDocker className="w-5 h-5 text-foreground" />
                     <span>View Docker Hub Profile</span>
                   </Button>
                 </a>
@@ -286,9 +286,9 @@ export const FeaturedProjects = () => {
                   <Button
                     variant="outline"
                     size="lg"
-                    className="w-full sm:w-auto px-6 py-5 rounded-2xl border-border bg-background hover:bg-muted dark:border-input dark:bg-input/30 dark:hover:bg-input/50 transition-all font-semibold gap-2 shadow-[0_4px_20px_rgba(32,190,255,0.03)] cursor-pointer text-xs"
+                    className="w-full sm:w-auto px-6 py-5 rounded-2xl border-border bg-background hover:bg-muted dark:border-input dark:bg-input/30 dark:hover:bg-input/50 transition-all font-semibold gap-2 shadow-[0_4px_20px_rgba(255,255,255,0.03)] cursor-pointer text-xs"
                   >
-                    <User className="w-4 h-4 text-[#20BEFF]" />
+                    <User className="w-4 h-4 text-foreground" />
                     <span>Kaggle Profile</span>
                   </Button>
                 </a>
@@ -302,9 +302,9 @@ export const FeaturedProjects = () => {
                   <Button
                     variant="outline"
                     size="lg"
-                    className="w-full sm:w-auto px-6 py-5 rounded-2xl border-border bg-background hover:bg-muted dark:border-input dark:bg-input/30 dark:hover:bg-input/50 transition-all font-semibold gap-2 shadow-[0_4px_20px_rgba(32,190,255,0.03)] cursor-pointer text-xs"
+                    className="w-full sm:w-auto px-6 py-5 rounded-2xl border-border bg-background hover:bg-muted dark:border-input dark:bg-input/30 dark:hover:bg-input/50 transition-all font-semibold gap-2 shadow-[0_4px_20px_rgba(255,255,255,0.03)] cursor-pointer text-xs"
                   >
-                    <Database className="w-4 h-4 text-[#20BEFF]" />
+                    <Database className="w-4 h-4 text-foreground" />
                     <span>Kaggle Datasets</span>
                   </Button>
                 </a>
@@ -318,9 +318,9 @@ export const FeaturedProjects = () => {
                   <Button
                     variant="outline"
                     size="lg"
-                    className="w-full sm:w-auto px-6 py-5 rounded-2xl border-border bg-background hover:bg-muted dark:border-input dark:bg-input/30 dark:hover:bg-input/50 transition-all font-semibold gap-2 shadow-[0_4px_20px_rgba(32,190,255,0.03)] cursor-pointer text-xs"
+                    className="w-full sm:w-auto px-6 py-5 rounded-2xl border-border bg-background hover:bg-muted dark:border-input dark:bg-input/30 dark:hover:bg-input/50 transition-all font-semibold gap-2 shadow-[0_4px_20px_rgba(255,255,255,0.03)] cursor-pointer text-xs"
                   >
-                    <Code2 className="w-4 h-4 text-[#20BEFF]" />
+                    <Code2 className="w-4 h-4 text-foreground" />
                     <span>Kaggle Notebooks & Code</span>
                   </Button>
                 </a>

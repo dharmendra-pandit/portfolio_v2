@@ -20,26 +20,11 @@ export interface KaggleNotebook {
 export const KaggleCard = ({ notebook, index }: { notebook: KaggleNotebook; index: number }) => {
   const isDataset = notebook.type === 'dataset'
 
-  // Premium dynamic color configurations based on resource type
-  const glowColor = isDataset 
-    ? 'from-[#FF9E00]/30 to-[#FF6B00]/10' 
-    : 'from-[#20BEFF]/30 to-[#008AFF]/10'
-    
-  const logoColor = isDataset 
-    ? 'text-[#FF9E00]' 
-    : 'text-[#20BEFF]'
-    
-  const titleGradient = isDataset 
-    ? 'group-hover:to-[#FF9E00]' 
-    : 'group-hover:to-[#20BEFF]'
-    
-  const iconColor = isDataset 
-    ? 'text-[#FF9E00]' 
-    : 'text-[#20BEFF]'
-    
-  const buttonBg = isDataset 
-    ? 'from-[#FF9E00] to-[#FF6B00] shadow-[#FF9E00]/10' 
-    : 'from-[#20BEFF] to-[#008AFF] shadow-[#20BEFF]/10'
+  // Premium monochrome configurations
+  const glowColor = 'from-white/10 to-white/5'
+  const logoColor = 'text-foreground'
+  const titleGradient = 'group-hover:to-neutral-300'
+  const iconColor = 'text-foreground'
 
   return (
     <motion.div
@@ -62,11 +47,7 @@ export const KaggleCard = ({ notebook, index }: { notebook: KaggleNotebook; inde
             </div>
             
             <div className="flex items-center gap-2">
-              <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg border ${
-                isDataset 
-                  ? 'bg-[#FF9E00]/10 text-[#FF9E00] border-[#FF9E00]/20' 
-                  : 'bg-[#20BEFF]/10 text-[#20BEFF] border-[#20BEFF]/20'
-              }`}>
+              <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg border bg-foreground/10 text-foreground border-foreground/20">
                 {isDataset ? 'Dataset' : 'Notebook'}
               </span>
               <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground bg-foreground/5 py-1.5 px-3 rounded-full border border-border">
@@ -133,7 +114,7 @@ export const KaggleCard = ({ notebook, index }: { notebook: KaggleNotebook; inde
               <Button
                 variant="default"
                 size="sm"
-                className={`w-full flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r ${buttonBg} text-white font-medium hover:brightness-110 border-0 shadow-lg transition-all text-xs cursor-pointer`}
+                className="w-full flex items-center justify-center gap-1.5 rounded-xl bg-white text-black font-bold hover:bg-neutral-200 border-0 shadow-lg transition-all text-xs cursor-pointer"
               >
                 <FaKaggle className="w-3.5 h-3.5" />
                 <span>On Kaggle</span>

@@ -359,7 +359,7 @@ export const DsaDashboard = () => {
             viewport={{ once: true }}
             className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tight mb-6 text-foreground font-heading"
           >
-            Developer <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">Activity.</span>
+            Developer <span className="text-gradient">Activity.</span>
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0 }}

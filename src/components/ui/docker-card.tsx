@@ -18,12 +18,11 @@ export interface DockerRepository {
 }
 
 export const DockerCard = ({ repo, index }: { repo: DockerRepository; index: number }) => {
-  // Premium Docker brand dynamic color configurations
-  const glowColor = 'from-[#2496ED]/30 to-[#008AFF]/10'
-  const logoColor = 'text-[#2496ED]'
-  const titleGradient = 'group-hover:to-[#2496ED]'
-  const iconColor = 'text-[#2496ED]'
-  const buttonBg = 'from-[#2496ED] to-[#008AFF] shadow-[#2496ED]/10'
+  // Premium monochrome configurations
+  const glowColor = 'from-white/10 to-white/5'
+  const logoColor = 'text-foreground'
+  const titleGradient = 'group-hover:to-neutral-300'
+  const iconColor = 'text-foreground'
 
   return (
     <motion.div
@@ -46,7 +45,7 @@ export const DockerCard = ({ repo, index }: { repo: DockerRepository; index: num
             </div>
             
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg border bg-[#2496ED]/10 text-[#2496ED] border-[#2496ED]/20">
+              <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg border bg-foreground/10 text-foreground border-foreground/20">
                 Container Image
               </span>
               <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground bg-foreground/5 py-1.5 px-3 rounded-full border border-border">
@@ -76,13 +75,13 @@ export const DockerCard = ({ repo, index }: { repo: DockerRepository; index: num
 
           {/* Metrics section */}
           <div className="flex items-center gap-4 mb-6 text-xs font-medium text-muted-foreground">
-            <div className="flex items-center gap-1.5 bg-[#2496ED]/10 text-[#2496ED] px-3 py-1 rounded-lg border border-[#2496ED]/20 font-semibold">
+            <div className="flex items-center gap-1.5 bg-foreground/10 text-foreground px-3 py-1 rounded-lg border border-foreground/20 font-semibold">
               <FaDocker className="w-3.5 h-3.5" />
               <span>Container Image</span>
             </div>
             {repo.starCount > 0 && (
               <div className="flex items-center gap-1 bg-foreground/5 px-2.5 py-1 rounded-lg border border-border">
-                <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" />
+                <Star className="w-3.5 h-3.5 text-foreground fill-foreground" />
                 <span>{repo.starCount} Stars</span>
               </div>
             )}
@@ -127,7 +126,7 @@ export const DockerCard = ({ repo, index }: { repo: DockerRepository; index: num
               <Button
                 variant="default"
                 size="sm"
-                className={`w-full flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r ${buttonBg} text-white font-medium hover:brightness-110 border-0 shadow-lg transition-all text-xs cursor-pointer`}
+                className="w-full flex items-center justify-center gap-1.5 rounded-xl bg-white text-black font-bold hover:bg-neutral-200 border-0 shadow-lg transition-all text-xs cursor-pointer"
               >
                 <FaDocker className="w-3.5 h-3.5" />
                 <span>On Docker Hub</span>

@@ -29,9 +29,9 @@ export const Hero = () => {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-xs sm:text-sm font-medium text-blue-400 backdrop-blur-xl mb-8 shadow-sm"
+          className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs sm:text-sm font-medium text-white backdrop-blur-xl mb-8 shadow-sm"
         >
-          <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
+          <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
           <span>Software Engineer & Full-Stack Developer</span>
         </motion.div>
 
@@ -42,10 +42,10 @@ export const Hero = () => {
           transition={{ duration: 0.8, delay: 0.1 }}
           className="text-5xl sm:text-7xl md:text-8xl lg:text-[10rem] font-black tracking-tight leading-[0.9] mb-6 font-heading"
         >
-          <span className="bg-clip-text text-transparent bg-gradient-to-b from-white via-neutral-200 to-neutral-500">
+          <span className="bg-clip-text text-transparent bg-gradient-to-b from-white via-neutral-200 to-neutral-400">
             Dharmendra
           </span><br />
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-indigo-300 to-purple-400">
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-neutral-300 to-neutral-500">
             Pandit.
           </span>
         </motion.h1>
@@ -89,7 +89,7 @@ export const Hero = () => {
               key={i}
               className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-neutral-300 backdrop-blur-md hover:bg-white/10 transition-colors"
             >
-              <pill.icon className="w-3.5 h-3.5 text-blue-400" />
+              <pill.icon className="w-3.5 h-3.5 text-white" />
               <span>{pill.label}</span>
             </span>
           ))}
@@ -105,7 +105,7 @@ export const Hero = () => {
           <MagneticButton>
             <Button
               size="lg"
-              className="rounded-full h-14 px-8 text-base font-semibold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white shadow-[0_0_40px_rgba(79,70,229,0.35)] transition-all cursor-pointer border-0 gap-2"
+              className="rounded-full h-14 px-8 text-base font-semibold bg-white text-black hover:bg-neutral-200 shadow-[0_0_30px_rgba(255,255,255,0.2)] transition-all cursor-pointer border-0 gap-2"
               onClick={() => {
                 document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })
               }}
@@ -118,7 +118,7 @@ export const Hero = () => {
             <Button
               size="lg"
               variant="outline"
-              className="rounded-full h-14 px-8 text-base font-semibold border-white/15 bg-white/5 backdrop-blur-md hover:bg-white/10 text-white transition-all cursor-pointer"
+              className="rounded-full h-14 px-8 text-base font-semibold border-white/20 bg-white/5 backdrop-blur-md hover:bg-white/10 text-white transition-all cursor-pointer"
               onClick={() => {
                 document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
               }}
@@ -131,9 +131,9 @@ export const Hero = () => {
               href="/Dharmendra_Pandit_Software_Engineer_Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-full h-14 px-8 text-base border border-white/15 bg-white/5 backdrop-blur-md hover:bg-white/10 text-white transition-all duration-300 font-semibold cursor-pointer"
+              className="inline-flex items-center justify-center rounded-full h-14 px-8 text-base border border-white/20 bg-white/5 backdrop-blur-md hover:bg-white/10 text-white transition-all duration-300 font-semibold cursor-pointer"
             >
-              <FileText className="w-4 h-4 mr-2 text-blue-400" />
+              <FileText className="w-4 h-4 mr-2 text-white" />
               Resume
             </a>
           </MagneticButton>

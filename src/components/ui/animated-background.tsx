@@ -51,7 +51,7 @@ export const AnimatedBackground = () => {
     let particles: Particle[] = []
     const particleCount = Math.min(Math.floor((width * height) / 18000), 70)
 
-    const colors = ['rgba(255, 255, 255, 0.4)', 'rgba(56, 189, 248, 0.4)', 'rgba(168, 85, 247, 0.3)']
+    const colors = ['rgba(255, 255, 255, 0.6)', 'rgba(255, 255, 255, 0.3)', 'rgba(180, 180, 180, 0.4)']
 
     const initParticles = () => {
       particles = []
@@ -138,9 +138,9 @@ export const AnimatedBackground = () => {
       {/* Grid Pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800c_1px,transparent_1px),linear-gradient(to_bottom,#8080800c_1px,transparent_1px)] bg-[size:32px_32px]" />
 
-      {/* Ambient Radial Color Nebulae */}
-      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none animate-pulse-glow" />
-      <div className="absolute bottom-1/3 right-1/4 w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[160px] pointer-events-none animate-pulse-glow" style={{ animationDelay: '2s' }} />
+      {/* Ambient Radial Monochrome Glow */}
+      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-white/[0.04] rounded-full blur-[140px] pointer-events-none animate-pulse-glow" />
+      <div className="absolute bottom-1/3 right-1/4 w-[600px] h-[600px] bg-neutral-500/10 rounded-full blur-[160px] pointer-events-none animate-pulse-glow" style={{ animationDelay: '2s' }} />
 
       {/* Soft vignetting overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-transparent to-background/80" />

@@ -35,7 +35,7 @@ export const Contact = () => {
             viewport={{ once: true }}
             className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight mb-6 font-heading"
           >
-            Let's <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-indigo-300 to-purple-400">Connect.</span>
+            Let's <span className="text-gradient">Connect.</span>
           </motion.h2>
 
           <motion.p 
@@ -61,35 +61,35 @@ export const Contact = () => {
             onClick={handleCopyEmail}
             className="flex flex-col items-center gap-3 group cursor-pointer text-center"
           >
-            <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-500 transition-all shadow-lg">
-              {copied ? <Check className="w-5 h-5 text-emerald-400" /> : <Copy className="w-5 h-5" />}
+            <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white group-hover:bg-white group-hover:text-black group-hover:border-white transition-all shadow-lg">
+              {copied ? <Check className="w-5 h-5 text-white" /> : <Copy className="w-5 h-5" />}
             </div>
             <div>
               <p className="text-xs font-semibold text-neutral-400 uppercase tracking-widest mb-1 flex items-center justify-center gap-1">
-                Email {copied && <span className="text-emerald-400 lowercase font-mono text-xs">(copied!)</span>}
+                Email {copied && <span className="text-white lowercase font-mono text-xs">(copied!)</span>}
               </p>
-              <p className="text-base text-white font-medium group-hover:text-blue-400 transition-colors">
+              <p className="text-base text-white font-medium group-hover:text-white transition-colors">
                 dharmendra193728@gmail.com
               </p>
             </div>
           </button>
 
           <a href="tel:+916204298947" className="flex flex-col items-center gap-3 group cursor-pointer text-center">
-            <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-emerald-400 group-hover:bg-emerald-600 group-hover:text-white group-hover:border-emerald-500 transition-all shadow-lg">
+            <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white group-hover:bg-white group-hover:text-black group-hover:border-white transition-all shadow-lg">
               <Phone className="w-5 h-5" />
             </div>
             <div>
               <p className="text-xs font-semibold text-neutral-400 uppercase tracking-widest mb-1">
                 Phone
               </p>
-              <p className="text-base text-white font-medium group-hover:text-emerald-400 transition-colors">
+              <p className="text-base text-white font-medium group-hover:text-white transition-colors">
                 +91-6204298947
               </p>
             </div>
           </a>
 
           <div className="flex flex-col items-center gap-3 group text-center">
-            <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-purple-400 shadow-lg">
+            <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white shadow-lg">
               <MapPin className="w-5 h-5" />
             </div>
             <div>
@@ -111,7 +111,7 @@ export const Contact = () => {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="relative group w-full max-w-2xl"
         >
-          <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-[2.5rem] blur opacity-0 group-hover:opacity-100 transition duration-700 pointer-events-none" />
+          <div className="absolute -inset-1 bg-gradient-to-r from-white/20 via-neutral-400/20 to-white/10 rounded-[2.5rem] blur opacity-0 group-hover:opacity-100 transition duration-700 pointer-events-none" />
           
           <div className="relative p-8 sm:p-10 glass-card border border-white/10 rounded-[2rem] shadow-2xl">
             <form className="space-y-6 flex flex-col items-center" onSubmit={handleSubmit}>
@@ -121,7 +121,7 @@ export const Contact = () => {
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   required
-                  className="bg-white/5 border-white/10 hover:border-white/20 rounded-xl h-12 px-5 text-sm text-white placeholder:text-neutral-500 focus-visible:ring-1 focus-visible:ring-blue-500 focus-visible:border-blue-500 transition-all shadow-sm"
+                  className="bg-white/5 border-white/10 hover:border-white/20 rounded-xl h-12 px-5 text-sm text-white placeholder:text-neutral-500 focus-visible:ring-1 focus-visible:ring-white focus-visible:border-white transition-all shadow-sm"
                 />
                 <Input
                   type="email"
@@ -129,7 +129,7 @@ export const Contact = () => {
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   required
-                  className="bg-white/5 border-white/10 hover:border-white/20 rounded-xl h-12 px-5 text-sm text-white placeholder:text-neutral-500 focus-visible:ring-1 focus-visible:ring-blue-500 focus-visible:border-blue-500 transition-all shadow-sm"
+                  className="bg-white/5 border-white/10 hover:border-white/20 rounded-xl h-12 px-5 text-sm text-white placeholder:text-neutral-500 focus-visible:ring-1 focus-visible:ring-white focus-visible:border-white transition-all shadow-sm"
                 />
               </div>
               <div className="w-full">
@@ -138,14 +138,14 @@ export const Contact = () => {
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   required
-                  className="bg-white/5 border-white/10 hover:border-white/20 rounded-2xl min-h-[140px] px-5 py-4 text-sm text-white placeholder:text-neutral-500 focus-visible:ring-1 focus-visible:ring-blue-500 focus-visible:border-blue-500 transition-all resize-none shadow-sm"
+                  className="bg-white/5 border-white/10 hover:border-white/20 rounded-2xl min-h-[140px] px-5 py-4 text-sm text-white placeholder:text-neutral-500 focus-visible:ring-1 focus-visible:ring-white focus-visible:border-white transition-all resize-none shadow-sm"
                 />
               </div>
 
               <div className="pt-4 w-full flex flex-col items-center gap-8">
                 <button
                   type="submit"
-                  className="inline-flex items-center gap-3 px-8 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold text-sm shadow-lg hover:shadow-blue-500/20 transition-all cursor-pointer"
+                  className="inline-flex items-center gap-3 px-8 py-3.5 rounded-xl bg-white text-black font-bold text-sm hover:bg-neutral-200 shadow-lg transition-all cursor-pointer"
                 >
                   <span>Send Direct Message</span>
                   <ArrowRight className="w-4 h-4" />
