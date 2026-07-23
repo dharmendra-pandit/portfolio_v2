@@ -53,7 +53,7 @@ export const Experience = () => {
   })
 
   return (
-    <section ref={containerRef} id="experience" className="relative py-48 overflow-hidden">
+    <section ref={containerRef} id="experience" className="relative py-24 sm:py-36 overflow-hidden">
       <div className="container px-4 mx-auto relative z-10">
         <div className="text-center mb-20">
           <motion.h2

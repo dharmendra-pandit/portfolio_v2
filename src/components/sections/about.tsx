@@ -13,7 +13,7 @@ export const About = () => {
   return (
     <section
       id="about"
-      className="relative py-48 flex items-center justify-center overflow-hidden"
+      className="relative py-24 sm:py-36 flex items-center justify-center overflow-hidden"
     >
       <div className="container px-4 mx-auto relative z-10">
         <div className="text-center mb-20">

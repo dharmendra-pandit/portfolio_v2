@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Home, User, Code2, Briefcase, Mail, Moon, Sun } from 'lucide-react'
+import { Home, User, Code2, Briefcase, Mail, Moon, Sun, FileText } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { cn } from '@/lib/utils'
 
@@ -84,13 +84,13 @@ export const Navbar = () => {
             )}
             aria-label={item.name}
           >
-            {active === item.name && (
+            {active === item.name ? (
               <motion.div
                 layoutId="nav-pill"
                 className="absolute inset-0 bg-foreground/10 rounded-full"
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
               />
-            )}
+            ) : null}
             <item.icon className="w-5 h-5 relative z-10" />
             
             {/* Tooltip */}
@@ -100,7 +100,20 @@ export const Navbar = () => {
           </button>
         ))}
 
-        <div className="w-[1px] h-8 bg-border mx-2" />
+        <a
+          href="/Dharmendra_Pandit_Software_Engineer_Resume.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="relative p-3 rounded-full flex items-center justify-center text-muted-foreground hover:text-primary transition-colors group"
+          aria-label="Download Resume"
+        >
+          <FileText className="w-5 h-5 relative z-10" />
+          <span className="absolute -top-10 left-1/2 -translate-x-1/2 px-2 py-1 bg-background/90 backdrop-blur-md border border-border rounded-md text-xs opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+            Resume (PDF)
+          </span>
+        </a>
+
+        <div className="w-[1px] h-8 bg-border mx-1" />
 
         <button
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}

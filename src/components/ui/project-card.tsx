@@ -20,9 +20,9 @@ export type Project = {
 
 const getProjectIcon = (name: string) => {
   const lowerName = name.toLowerCase()
-  if (lowerName.includes('web') || lowerName.includes('site') || lowerName.includes('campus') || lowerName.includes('career')) return <Globe className="w-5 h-5 text-white" />
-  if (lowerName.includes('data') || lowerName.includes('assistant') || lowerName.includes('generator')) return <Database className="w-5 h-5 text-white" />
-  return <Code2 className="w-5 h-5 text-white" />
+  if (lowerName.includes('web') || lowerName.includes('site') || lowerName.includes('campus') || lowerName.includes('career')) return <Globe className="w-5 h-5 text-foreground" />
+  if (lowerName.includes('data') || lowerName.includes('assistant') || lowerName.includes('generator')) return <Database className="w-5 h-5 text-foreground" />
+  return <Code2 className="w-5 h-5 text-foreground" />
 }
 
 export const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
@@ -42,18 +42,18 @@ export const ProjectCard = ({ project, index }: { project: Project; index: numbe
       whileHover={{ y: -8, scale: 1.01 }}
       className="relative group h-full flex flex-col"
     >
-      <div className="absolute -inset-0.5 bg-foreground/15 rounded-[2rem] blur-md opacity-0 group-hover:opacity-100 transition duration-500 pointer-events-none" />
+      <div className="absolute -inset-0.5 bg-foreground/10 rounded-[2rem] blur-md opacity-0 group-hover:opacity-100 transition duration-500 pointer-events-none" />
       
-      <Card className="relative flex-grow flex flex-col p-7 glass-card border border-foreground/10 rounded-[2rem] overflow-hidden shadow-2xl transition-all duration-300">
+      <Card className="relative flex-grow flex flex-col p-7 bg-card border border-border/60 rounded-[2rem] overflow-hidden shadow-lg transition-all duration-300">
         <CardContent className="p-0 relative z-10 flex flex-col h-full border-none">
           {/* Header section with Icon, Title, and Status Badge */}
           <div className="flex items-start justify-between gap-3 mb-5">
             <div className="flex items-center gap-3">
-              <div className="p-3 bg-foreground/5 rounded-2xl border border-foreground/10 text-foreground group-hover:scale-110 transition-all duration-300 shadow-sm">
+              <div className="p-3 bg-foreground/5 rounded-2xl border border-border text-foreground group-hover:scale-110 transition-all duration-300 shadow-sm">
                 {getProjectIcon(project.name)}
               </div>
               <div>
-                <h3 className="text-xl font-bold text-foreground capitalize tracking-tight line-clamp-1 group-hover:text-white transition-colors">
+                <h3 className="text-xl font-bold text-foreground capitalize tracking-tight line-clamp-1 group-hover:text-primary transition-colors">
                   {formattedTitle}
                 </h3>
                 <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-0.5 font-mono">
@@ -68,9 +68,9 @@ export const ProjectCard = ({ project, index }: { project: Project; index: numbe
                 href={project.homepageUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="shrink-0 flex items-center gap-1.5 px-3 py-1 rounded-full bg-foreground/10 border border-foreground/20 text-foreground text-xs font-semibold hover:bg-foreground/20 transition-all"
+                className="shrink-0 flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold hover:bg-primary/20 transition-all"
               >
-                <span className="w-2 h-2 rounded-full bg-foreground animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
                 <span>Live App</span>
               </a>
             ) : (
@@ -129,7 +129,7 @@ export const ProjectCard = ({ project, index }: { project: Project; index: numbe
               <Button
                 variant="outline"
                 size="sm"
-                className="w-full flex items-center justify-center gap-1.5 rounded-xl border-border bg-background hover:bg-muted text-xs font-semibold cursor-pointer transition-all"
+                className="w-full flex items-center justify-center gap-1.5 rounded-xl border-border bg-background hover:bg-muted text-foreground text-xs font-semibold cursor-pointer transition-all"
               >
                 <FaGithub className="w-3.5 h-3.5 text-foreground" />
                 <span>Source Code</span>

@@ -51,8 +51,6 @@ export const AnimatedBackground = () => {
     let particles: Particle[] = []
     const particleCount = Math.min(Math.floor((width * height) / 18000), 70)
 
-    const colors = ['rgba(255, 255, 255, 0.6)', 'rgba(255, 255, 255, 0.3)', 'rgba(180, 180, 180, 0.4)']
-
     const initParticles = () => {
       particles = []
       for (let i = 0; i < particleCount; i++) {
@@ -63,7 +61,7 @@ export const AnimatedBackground = () => {
           vy: (Math.random() - 0.5) * 0.4,
           radius: Math.random() * 1.8 + 0.8,
           alpha: Math.random() * 0.5 + 0.2,
-          color: colors[Math.floor(Math.random() * colors.length)],
+          color: '',
         })
       }
     }
@@ -72,6 +70,8 @@ export const AnimatedBackground = () => {
 
     const render = () => {
       ctx.clearRect(0, 0, width, height)
+      const isDark = document.documentElement.classList.contains('dark')
+      const rgb = isDark ? '255, 255, 255' : '0, 0, 0'
 
       // Draw subtle connections
       for (let i = 0; i < particles.length; i++) {
@@ -84,7 +84,7 @@ export const AnimatedBackground = () => {
             ctx.beginPath()
             ctx.moveTo(particles[i].x, particles[i].y)
             ctx.lineTo(particles[j].x, particles[j].y)
-            ctx.strokeStyle = `rgba(255, 255, 255, ${0.12 * (1 - dist / 120)})`
+            ctx.strokeStyle = `rgba(${rgb}, ${0.08 * (1 - dist / 120)})`
             ctx.lineWidth = 0.6
             ctx.stroke()
           }
@@ -112,7 +112,7 @@ export const AnimatedBackground = () => {
 
         ctx.beginPath()
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2)
-        ctx.fillStyle = p.color
+        ctx.fillStyle = `rgba(${rgb}, ${p.alpha * (isDark ? 0.6 : 0.35)})`
         ctx.fill()
       }
 

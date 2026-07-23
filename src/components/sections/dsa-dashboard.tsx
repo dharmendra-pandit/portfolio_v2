@@ -84,10 +84,15 @@ const defaultStats = [
 ]
 
 export const DsaDashboard = () => {
+  const [mounted, setMounted] = useState(false)
   const [stats, setStats] = useState(defaultStats)
   const [leetcodeActivity, setLeetcodeActivity] = useState<any[]>(getInitialActivityData())
   const [activityData, setActivityData] = useState(defaultActivityData)
   const [projectActivityData, setProjectActivityData] = useState(defaultProjectActivityData)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const totalProblems = stats.reduce((acc, stat) => {
     if (['LeetCode', 'Code360', 'GeeksforGeeks'].includes(stat.platform)) {
@@ -350,9 +355,9 @@ export const DsaDashboard = () => {
   }, [])
 
   return (
-    <section id="dashboard" className="relative min-h-screen py-48 flex items-center justify-center overflow-hidden">
+    <section id="dashboard" className="relative py-24 sm:py-36 flex items-center justify-center overflow-hidden">
       <div className="container px-4 mx-auto relative z-10">
-        <div className="text-center mb-20">
+        <div className="text-center mb-16">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -366,7 +371,7 @@ export const DsaDashboard = () => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="max-w-2xl mx-auto text-base sm:text-lg text-neutral-400"
+            className="max-w-2xl mx-auto text-base sm:text-lg text-muted-foreground"
           >
             Track record across algorithmic problem solving, open-source code repositories, machine learning datasets, and containerized deployments.
           </motion.p>
@@ -376,12 +381,12 @@ export const DsaDashboard = () => {
            {/* Total Summaries Box 1 */}
            <div className="relative group">
              <div className="absolute -inset-0.5 bg-gradient-to-r from-foreground/10 to-transparent rounded-3xl blur opacity-50 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
-             <Card className="relative h-full p-6 bg-foreground/5 border border-foreground/5 rounded-3xl backdrop-blur-3xl overflow-hidden shadow-lg flex flex-col justify-between">
+             <Card className="relative h-full p-6 bg-card border border-border/60 rounded-3xl backdrop-blur-3xl overflow-hidden shadow-lg flex flex-col justify-between">
                <div>
                  <CardHeader className="p-0 pb-2 border-none">
                    <CardTitle className="text-lg font-medium text-muted-foreground flex items-center gap-3">
-                     <div className="p-2.5 bg-foreground/10 rounded-xl border border-foreground/20 text-foreground">
-                       <Code2 className="w-6 h-6" />
+                     <div className="p-2.5 bg-foreground/5 rounded-xl border border-border text-foreground">
+                       <Code2 className="w-6 h-6 text-foreground" />
                      </div>
                      Total Problems Solved
                    </CardTitle>
@@ -393,28 +398,30 @@ export const DsaDashboard = () => {
                  </CardContent>
                </div>
                
-               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-border/50">
+               <div className="grid grid-cols-1 min-[400px]:grid-cols-3 gap-3 pt-4 border-t border-border/50">
                  {stats.filter(s => ['LeetCode', 'GeeksforGeeks', 'Code360'].includes(s.platform)).map((stat, index) => (
                    <a 
                      key={index} 
                      href={stat.link} 
                      target="_blank" 
                      rel="noopener noreferrer" 
-                     className="group/stat flex flex-col justify-between bg-foreground/5 p-4 rounded-2xl border border-foreground/5 hover:bg-foreground/10 hover:border-foreground/15 transition-all"
+                     className="group/stat flex flex-col justify-between bg-muted/30 hover:bg-muted/60 p-3.5 rounded-2xl border border-border/60 hover:border-border transition-all overflow-hidden min-w-0"
                    >
-                     <div className="flex items-center justify-between gap-1 mb-3">
-                       <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground group-hover/stat:text-foreground transition-colors shrink-0">
-                         {stat.icon}
-                         <span>{stat.platform}</span>
+                     <div className="flex flex-col gap-1.5 min-w-0">
+                       <div className="flex items-center gap-1.5 text-xs font-semibold text-foreground min-w-0">
+                         <span className="shrink-0">{stat.icon}</span>
+                         <span className="truncate">{stat.platform}</span>
                        </div>
                        {stat.rating && (
-                         <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-foreground/10 text-foreground/80 flex items-center gap-1 shrink-0 max-w-[100px] truncate">
-                           <Trophy className="w-2.5 h-2.5 shrink-0" />
-                           <span className="truncate">{stat.rating}</span>
-                         </span>
+                         <div className="min-w-0">
+                           <span className="inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 max-w-full truncate">
+                             <Trophy className="w-2.5 h-2.5 shrink-0 text-primary" />
+                             <span className="truncate">{stat.rating}</span>
+                           </span>
+                         </div>
                        )}
                      </div>
-                     <div className="text-xl font-bold text-foreground group-hover/stat:text-white transition-colors tracking-tight">
+                     <div className="text-xl font-extrabold text-foreground tracking-tight mt-2">
                        {stat.solved}
                      </div>
                    </a>
@@ -426,12 +433,12 @@ export const DsaDashboard = () => {
            {/* Total Summaries Box 2 */}
            <div className="relative group">
              <div className="absolute -inset-0.5 bg-gradient-to-r from-foreground/10 to-transparent rounded-3xl blur opacity-50 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
-             <Card className="relative h-full p-6 bg-foreground/5 border border-foreground/5 rounded-3xl backdrop-blur-3xl overflow-hidden shadow-lg flex flex-col justify-between">
+             <Card className="relative h-full p-6 bg-card border border-border/60 rounded-3xl backdrop-blur-3xl overflow-hidden shadow-lg flex flex-col justify-between">
                <div>
                  <CardHeader className="p-0 pb-2 border-none">
                    <CardTitle className="text-lg font-medium text-muted-foreground flex items-center gap-3">
-                     <div className="p-2.5 bg-foreground/10 rounded-xl border border-foreground/20 text-foreground">
-                       <FaGithub className="w-6 h-6" />
+                     <div className="p-2.5 bg-foreground/5 rounded-xl border border-border text-foreground">
+                       <FaGithub className="w-6 h-6 text-foreground" />
                      </div>
                      Total Projects
                    </CardTitle>
@@ -443,7 +450,7 @@ export const DsaDashboard = () => {
                  </CardContent>
                </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-border/50">
+                <div className="grid grid-cols-1 min-[400px]:grid-cols-3 gap-3 pt-4 border-t border-border/50">
                   {stats.filter(s => ['GitHub', 'Kaggle', 'Docker'].includes(s.platform)).map((stat, index) => {
                      let targetLink = '#projects';
                      if (stat.platform === 'GitHub') targetLink = '#projects-github';
@@ -453,21 +460,23 @@ export const DsaDashboard = () => {
                        <a
                          key={index}
                          href={targetLink}
-                         className="group/stat flex flex-col justify-between bg-foreground/5 p-4 rounded-2xl border border-foreground/5 hover:bg-foreground/10 hover:border-foreground/15 transition-all"
+                         className="group/stat flex flex-col justify-between bg-muted/30 hover:bg-muted/60 p-3.5 rounded-2xl border border-border/60 hover:border-border transition-all overflow-hidden min-w-0"
                        >
-                         <div className="flex items-center justify-between gap-1 mb-3">
-                           <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground group-hover/stat:text-foreground transition-colors shrink-0">
-                             {stat.icon}
-                             <span>{stat.platform}</span>
+                         <div className="flex flex-col gap-1.5 min-w-0">
+                           <div className="flex items-center gap-1.5 text-xs font-semibold text-foreground min-w-0">
+                             <span className="shrink-0">{stat.icon}</span>
+                             <span className="truncate">{stat.platform}</span>
                            </div>
                            {stat.rating && (
-                             <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-foreground/10 text-foreground/80 flex items-center gap-1 shrink-0 max-w-[100px] truncate">
-                               <Trophy className="w-2.5 h-2.5 shrink-0" />
-                               <span className="truncate">{stat.rating}</span>
-                             </span>
+                             <div className="min-w-0">
+                               <span className="inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 max-w-full truncate">
+                                 <Trophy className="w-2.5 h-2.5 shrink-0 text-primary" />
+                                 <span className="truncate">{stat.rating}</span>
+                               </span>
+                             </div>
                            )}
                          </div>
-                         <div className="text-xl font-bold text-foreground group-hover/stat:text-white transition-colors tracking-tight">
+                         <div className="text-xl font-extrabold text-foreground tracking-tight mt-2">
                            {stat.solved}
                          </div>
                        </a>
@@ -478,29 +487,27 @@ export const DsaDashboard = () => {
             </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-
-          {/* Chart Section */}
-          <div className="lg:col-span-4 grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="h-full"
-            >
-              <Card className="h-full p-8 bg-foreground/5 border border-foreground/5 rounded-[2.5rem] backdrop-blur-3xl transition-all duration-500 hover:border-foreground/10 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-                <CardHeader className="p-0 pb-8 border-none">
-                  <CardTitle className="text-2xl font-bold text-foreground">
-                    Problems Solved (Last 7 Months)
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="w-full p-0 border-none">
-                  <div className="h-[350px] w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto mt-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="h-full"
+          >
+            <Card className="h-full p-6 sm:p-8 bg-card border border-border/60 rounded-[2rem] sm:rounded-[2.5rem] backdrop-blur-3xl transition-all duration-500 hover:border-border shadow-md">
+              <CardHeader className="p-0 pb-6 border-none">
+                <CardTitle className="text-xl sm:text-2xl font-bold text-foreground">
+                  Problems Solved (Last 7 Months)
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="w-full p-0 border-none">
+                <div className="h-[300px] sm:h-[350px] w-full flex items-center justify-center">
+                  {mounted ? (
                     <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
                       <AreaChart
                         data={activityData}
-                        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+                        margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
                       >
                         <defs>
                           <linearGradient
@@ -513,7 +520,7 @@ export const DsaDashboard = () => {
                             <stop
                               offset="5%"
                               stopColor="var(--primary)"
-                              stopOpacity={0.5}
+                              stopOpacity={0.4}
                             />
                             <stop
                               offset="95%"
@@ -524,25 +531,26 @@ export const DsaDashboard = () => {
                         </defs>
                         <XAxis
                           dataKey="name"
-                          stroke="#888888"
+                          stroke="var(--muted-foreground)"
                           fontSize={12}
                           tickLine={false}
                           axisLine={false}
                           dy={10}
                         />
                         <YAxis
-                          stroke="#888888"
+                          stroke="var(--muted-foreground)"
                           fontSize={12}
                           tickLine={false}
                           axisLine={false}
                           tickFormatter={(value) => `${value}`}
-                          dx={-10}
+                          dx={-5}
                         />
                         <Tooltip
                           contentStyle={{
-                            backgroundColor: 'var(--background)',
-                            border: '1px solid var(--border)',
+                            backgroundColor: 'var(--card)',
+                            borderColor: 'var(--border)',
                             borderRadius: '12px',
+                            color: 'var(--card-foreground)',
                             backdropFilter: 'blur(10px)'
                           }}
                           itemStyle={{ color: 'var(--foreground)', fontWeight: 'bold' }}
@@ -557,44 +565,49 @@ export const DsaDashboard = () => {
                         />
                       </AreaChart>
                     </ResponsiveContainer>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
+                  ) : (
+                    <div className="h-full w-full bg-muted/20 animate-pulse rounded-xl" />
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="h-full"
-            >
-              <Card className="h-full p-8 bg-foreground/5 border border-foreground/5 rounded-[2.5rem] backdrop-blur-3xl transition-all duration-500 hover:border-foreground/10 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-                <CardHeader className="p-0 pb-8 border-none">
-                  <CardTitle className="text-2xl font-bold text-foreground">
-                    Projects (Quarterly Basis)
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="w-full p-0 border-none">
-                  <div className="h-[350px] w-full">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="h-full"
+          >
+            <Card className="h-full p-6 sm:p-8 bg-card border border-border/60 rounded-[2rem] sm:rounded-[2.5rem] backdrop-blur-3xl transition-all duration-500 hover:border-border shadow-md">
+              <CardHeader className="p-0 pb-6 border-none">
+                <CardTitle className="text-xl sm:text-2xl font-bold text-foreground">
+                  Projects (Quarterly Basis)
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="w-full p-0 border-none">
+                <div className="h-[300px] sm:h-[350px] w-full flex items-center justify-center">
+                  {mounted ? (
                     <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
                       <AreaChart
                         data={projectActivityData}
-                        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+                        margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
                       >
                         <defs>
                           <linearGradient id="colorProjects" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.5} />
+                            <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.4} />
                             <stop offset="95%" stopColor="var(--primary)" stopOpacity={0} />
                           </linearGradient>
                         </defs>
-                        <XAxis dataKey="name" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} dy={10} />
-                        <YAxis stroke="#888888" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `${value}`} dx={-10} />
+                        <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} dy={10} />
+                        <YAxis stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `${value}`} dx={-5} />
                         <Tooltip
                           contentStyle={{
-                            backgroundColor: 'var(--background)',
-                            border: '1px solid var(--border)',
+                            backgroundColor: 'var(--card)',
+                            borderColor: 'var(--border)',
                             borderRadius: '12px',
+                            color: 'var(--card-foreground)',
                             backdropFilter: 'blur(10px)'
                           }}
                           itemStyle={{ color: 'var(--foreground)', fontWeight: 'bold' }}
@@ -602,11 +615,13 @@ export const DsaDashboard = () => {
                         <Area type="monotone" dataKey="projects" stroke="var(--primary)" strokeWidth={3} fillOpacity={1} fill="url(#colorProjects)" />
                       </AreaChart>
                     </ResponsiveContainer>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </div>
+                  ) : (
+                    <div className="h-full w-full bg-muted/20 animate-pulse rounded-xl" />
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
         </div>
       </div>
     </section>

@@ -89,7 +89,7 @@ export const FeaturedProjects = () => {
   return (
     <section
       id="projects"
-      className="relative py-48 flex items-center justify-center overflow-hidden border-t border-border/20"
+      className="relative py-24 sm:py-36 flex items-center justify-center overflow-hidden border-t border-border/40"
     >
       {/* Dynamic monochrome background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-[120px] pointer-events-none bg-foreground/5 transition-all duration-1000" />
@@ -109,7 +109,7 @@ export const FeaturedProjects = () => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="max-w-2xl mx-auto text-base sm:text-lg text-neutral-400 mb-12"
+            className="max-w-2xl mx-auto text-base sm:text-lg text-muted-foreground mb-12"
           >
             Explore full-stack web applications, machine learning code repositories, and container images with live demo links.
           </motion.p>
