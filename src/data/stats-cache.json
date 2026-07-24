@@ -1,7 +1,7 @@
 {
   "leetcode": {
-    "totalSolved": "78",
-    "ranking": "Rank 1933180",
+    "totalSolved": "79",
+    "ranking": "Rank 1934787",
     "activityData": [
       {
         "name": "Jan",
@@ -29,7 +29,7 @@
       },
       {
         "name": "Jul",
-        "solved": 42
+        "solved": 43
       }
     ]
   },
@@ -38,8 +38,8 @@
     "rating": "Champion"
   },
   "gfg": {
-    "solved": "53",
-    "rating": "Score 123"
+    "solved": "55",
+    "rating": "Score 129"
   },
   "kaggle": {
     "username": "dharmendrapandit12",
