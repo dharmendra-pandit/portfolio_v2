@@ -1,7 +1,7 @@
 {
   "leetcode": {
     "totalSolved": "79",
-    "ranking": "Rank 1920062",
+    "ranking": "Rank 1921843",
     "activityData": [
       {
         "name": "Jan",
@@ -52,6 +52,19 @@
     },
     "datasets": [
       {
+        "title": "Credit Card Customer Behavior Segmentation Dataset",
+        "description": "The dataset simulates real-world customer profiles, spending behavior",
+        "datasetName": "Credit Card Customer Behavior Segmentation Dataset",
+        "tags": [
+          "Dataset",
+          "CSV"
+        ],
+        "lastUpdated": "Jul 2026",
+        "notebookUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/credit-card-customer-behavior-segmentation-dataset",
+        "kaggleUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/credit-card-customer-behavior-segmentation-dataset",
+        "type": "dataset"
+      },
+      {
         "title": "Synthetic Bank Loan Approval Dataset (20K Records)",
         "description": "A realistic synthetic dataset for loan approval prediction and machine learning",
         "datasetName": "Synthetic Bank Loan Approval Dataset (20K Records)",
@@ -77,19 +90,6 @@
         "lastUpdated": "Jul 2026",
         "notebookUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/laptop-battery-health-dataset",
         "kaggleUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/laptop-battery-health-dataset",
-        "type": "dataset"
-      },
-      {
-        "title": "Credit Card Customer Behavior Segmentation Dataset",
-        "description": "The dataset simulates real-world customer profiles, spending behavior",
-        "datasetName": "Credit Card Customer Behavior Segmentation Dataset",
-        "tags": [
-          "Dataset",
-          "CSV"
-        ],
-        "lastUpdated": "Jul 2026",
-        "notebookUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/credit-card-customer-behavior-segmentation-dataset",
-        "kaggleUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/credit-card-customer-behavior-segmentation-dataset",
         "type": "dataset"
       }
     ],
