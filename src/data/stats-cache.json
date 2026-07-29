@@ -308,7 +308,7 @@
   "docker": {
     "username": "iampanditji",
     "link": "https://hub.docker.com/u/iampanditji",
-    "pullCount": 99,
+    "pullCount": 100,
     "starCount": 1,
     "reposCount": 3,
     "repositories": [
@@ -331,7 +331,7 @@
         "description": "Node.js and Express backend API for the Simple Blog Post application with MongoDB integration.",
         "url": "https://hub.docker.com/r/iampanditji/simple-blogpost-backend",
         "starCount": 0,
-        "pullCount": 42,
+        "pullCount": 43,
         "lastUpdated": "Jul 2026",
         "tags": [
           "API management",
