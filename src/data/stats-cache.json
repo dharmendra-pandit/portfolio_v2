@@ -4,10 +4,6 @@
     "ranking": "Rank 1928838",
     "activityData": [
       {
-        "name": "Jan",
-        "solved": 0
-      },
-      {
         "name": "Feb",
         "solved": 13
       },
@@ -30,6 +26,10 @@
       {
         "name": "Jul",
         "solved": 43
+      },
+      {
+        "name": "Aug",
+        "solved": 0
       }
     ]
   },
