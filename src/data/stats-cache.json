@@ -321,7 +321,7 @@
   "docker": {
     "username": "iampanditji",
     "link": "https://hub.docker.com/u/iampanditji",
-    "pullCount": 103,
+    "pullCount": 105,
     "starCount": 1,
     "reposCount": 3,
     "repositories": [
@@ -344,7 +344,7 @@
         "description": "Node.js and Express backend API for the Simple Blog Post application with MongoDB integration.",
         "url": "https://hub.docker.com/r/iampanditji/simple-blogpost-backend",
         "starCount": 0,
-        "pullCount": 44,
+        "pullCount": 45,
         "lastUpdated": "Jul 2026",
         "tags": [
           "API management",
@@ -358,7 +358,7 @@
         "description": "Production-ready React frontend served with Nginx, providing a fast and responsive user interface ",
         "url": "https://hub.docker.com/r/iampanditji/simple-blogpost-frontend",
         "starCount": 0,
-        "pullCount": 38,
+        "pullCount": 39,
         "lastUpdated": "Jul 2026",
         "tags": [
           "Web servers",
