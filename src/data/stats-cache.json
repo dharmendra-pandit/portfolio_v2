@@ -46,7 +46,7 @@
     "link": "https://www.kaggle.com/dharmendrapandit12/",
     "profile": {
       "tier": "Novice",
-      "datasetCount": 3,
+      "datasetCount": 4,
       "notebookCount": 2,
       "followers": 0
     },
@@ -90,6 +90,19 @@
         "lastUpdated": "Jul 2026",
         "notebookUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/synthetic-bank-loan-approval-dataset-20k-records",
         "kaggleUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/synthetic-bank-loan-approval-dataset-20k-records",
+        "type": "dataset"
+      },
+      {
+        "title": "Food Delivery Time Prediction Dataset",
+        "description": "A realistic synthetic food delivery dataset with 50,000 orders",
+        "datasetName": "Food Delivery Time Prediction Dataset",
+        "tags": [
+          "Dataset",
+          "CSV"
+        ],
+        "lastUpdated": "Aug 2026",
+        "notebookUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/food-delivery-time-prediction-dataset",
+        "kaggleUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/food-delivery-time-prediction-dataset",
         "type": "dataset"
       }
     ],
