@@ -38,8 +38,8 @@
     "rating": "Champion"
   },
   "gfg": {
-    "solved": "55",
-    "rating": "Score 129"
+    "solved": "57",
+    "rating": "Score 133"
   },
   "kaggle": {
     "username": "dharmendrapandit12",
@@ -62,6 +62,19 @@
         "lastUpdated": "Jul 2026",
         "notebookUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/credit-card-customer-behavior-segmentation-dataset",
         "kaggleUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/credit-card-customer-behavior-segmentation-dataset",
+        "type": "dataset"
+      },
+      {
+        "title": "Food Delivery Time Prediction Dataset",
+        "description": "A realistic synthetic food delivery dataset with 50,000 orders",
+        "datasetName": "Food Delivery Time Prediction Dataset",
+        "tags": [
+          "Dataset",
+          "CSV"
+        ],
+        "lastUpdated": "Aug 2026",
+        "notebookUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/food-delivery-time-prediction-dataset",
+        "kaggleUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/food-delivery-time-prediction-dataset",
         "type": "dataset"
       },
       {
@@ -90,19 +103,6 @@
         "lastUpdated": "Jul 2026",
         "notebookUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/synthetic-bank-loan-approval-dataset-20k-records",
         "kaggleUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/synthetic-bank-loan-approval-dataset-20k-records",
-        "type": "dataset"
-      },
-      {
-        "title": "Food Delivery Time Prediction Dataset",
-        "description": "A realistic synthetic food delivery dataset with 50,000 orders",
-        "datasetName": "Food Delivery Time Prediction Dataset",
-        "tags": [
-          "Dataset",
-          "CSV"
-        ],
-        "lastUpdated": "Aug 2026",
-        "notebookUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/food-delivery-time-prediction-dataset",
-        "kaggleUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/food-delivery-time-prediction-dataset",
         "type": "dataset"
       }
     ],
@@ -142,7 +142,7 @@
   },
   "github": {
     "username": "dharmendra-pandit",
-    "publicRepos": "28",
+    "publicRepos": "29",
     "projectActivityData": [
       {
         "name": "Q1 '25",
@@ -166,7 +166,7 @@
       },
       {
         "name": "Q3 '26",
-        "projects": 3
+        "projects": 4
       }
     ],
     "projects": [
