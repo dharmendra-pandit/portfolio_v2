@@ -52,19 +52,6 @@
     },
     "datasets": [
       {
-        "title": "Credit Card Customer Behavior Segmentation Dataset",
-        "description": "The dataset simulates real-world customer profiles, spending behavior",
-        "datasetName": "Credit Card Customer Behavior Segmentation Dataset",
-        "tags": [
-          "Dataset",
-          "CSV"
-        ],
-        "lastUpdated": "Jul 2026",
-        "notebookUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/credit-card-customer-behavior-segmentation-dataset",
-        "kaggleUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/credit-card-customer-behavior-segmentation-dataset",
-        "type": "dataset"
-      },
-      {
         "title": "Food Delivery Time Prediction Dataset",
         "description": "A realistic synthetic food delivery dataset with 50,000 orders",
         "datasetName": "Food Delivery Time Prediction Dataset",
@@ -75,6 +62,19 @@
         "lastUpdated": "Aug 2026",
         "notebookUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/food-delivery-time-prediction-dataset",
         "kaggleUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/food-delivery-time-prediction-dataset",
+        "type": "dataset"
+      },
+      {
+        "title": "Credit Card Customer Behavior Segmentation Dataset",
+        "description": "The dataset simulates real-world customer profiles, spending behavior",
+        "datasetName": "Credit Card Customer Behavior Segmentation Dataset",
+        "tags": [
+          "Dataset",
+          "CSV"
+        ],
+        "lastUpdated": "Jul 2026",
+        "notebookUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/credit-card-customer-behavior-segmentation-dataset",
+        "kaggleUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/credit-card-customer-behavior-segmentation-dataset",
         "type": "dataset"
       },
       {
@@ -321,7 +321,7 @@
   "docker": {
     "username": "iampanditji",
     "link": "https://hub.docker.com/u/iampanditji",
-    "pullCount": 105,
+    "pullCount": 108,
     "starCount": 1,
     "reposCount": 3,
     "repositories": [
@@ -330,7 +330,7 @@
         "description": "Simple Node.js project with Docker and Docker Hub integration.",
         "url": "https://hub.docker.com/r/iampanditji/simple-node-project",
         "starCount": 1,
-        "pullCount": 21,
+        "pullCount": 22,
         "lastUpdated": "Jul 2026",
         "tags": [
           "Web servers",
@@ -344,7 +344,7 @@
         "description": "Node.js and Express backend API for the Simple Blog Post application with MongoDB integration.",
         "url": "https://hub.docker.com/r/iampanditji/simple-blogpost-backend",
         "starCount": 0,
-        "pullCount": 45,
+        "pullCount": 46,
         "lastUpdated": "Jul 2026",
         "tags": [
           "API management",
@@ -358,7 +358,7 @@
         "description": "Production-ready React frontend served with Nginx, providing a fast and responsive user interface ",
         "url": "https://hub.docker.com/r/iampanditji/simple-blogpost-frontend",
         "starCount": 0,
-        "pullCount": 39,
+        "pullCount": 40,
         "lastUpdated": "Jul 2026",
         "tags": [
           "Web servers",
