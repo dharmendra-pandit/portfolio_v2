@@ -142,7 +142,7 @@
   },
   "github": {
     "username": "dharmendra-pandit",
-    "publicRepos": "29",
+    "publicRepos": "30",
     "projectActivityData": [
       {
         "name": "Q1 '25",
@@ -166,7 +166,7 @@
       },
       {
         "name": "Q3 '26",
-        "projects": 4
+        "projects": 5
       }
     ],
     "projects": [
@@ -321,7 +321,7 @@
   "docker": {
     "username": "iampanditji",
     "link": "https://hub.docker.com/u/iampanditji",
-    "pullCount": 108,
+    "pullCount": 109,
     "starCount": 1,
     "reposCount": 3,
     "repositories": [
@@ -358,7 +358,7 @@
         "description": "Production-ready React frontend served with Nginx, providing a fast and responsive user interface ",
         "url": "https://hub.docker.com/r/iampanditji/simple-blogpost-frontend",
         "starCount": 0,
-        "pullCount": 40,
+        "pullCount": 41,
         "lastUpdated": "Jul 2026",
         "tags": [
           "Web servers",
