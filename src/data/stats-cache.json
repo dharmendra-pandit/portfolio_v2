@@ -175,9 +175,9 @@
         "description": "A full-stack application for generating AI training datasets by scraping web content. This project combines a Node.js/Express backend with a Next.js frontend to provide an intuitive interface for dataset creation through web scraping.",
         "url": "https://github.com/dharmendra-pandit/AI-Dataset-Generator",
         "homepageUrl": null,
-        "stargazerCount": 2,
+        "stargazerCount": 1,
         "forkCount": 0,
-        "updatedAt": "2026-04-13T05:26:35Z",
+        "updatedAt": "2026-08-19T15:03:20Z",
         "primaryLanguage": {
           "name": "JavaScript",
           "color": "#f1e05a"
@@ -204,9 +204,9 @@
         "description": "AI Knowledge Assistant is a small Node.js and Express service that lets you upload a PDF, break it into chunks, generate embeddings with Google Gemini, and answer questions against the uploaded content.",
         "url": "https://github.com/dharmendra-pandit/AI-Knowledge-Assistant",
         "homepageUrl": null,
-        "stargazerCount": 2,
+        "stargazerCount": 1,
         "forkCount": 0,
-        "updatedAt": "2026-04-13T05:26:16Z",
+        "updatedAt": "2026-08-19T15:03:15Z",
         "primaryLanguage": {
           "name": "JavaScript",
           "color": "#f1e05a"
@@ -225,9 +225,9 @@
         "description": "CampusPost is a modern campus community platform that enables students to share posts, connect with peers, and engage in campus discussions in real time. Built with a responsive full-stack architecture for seamless social interaction and collaboration.",
         "url": "https://github.com/dharmendra-pandit/Campus-Post",
         "homepageUrl": "https://campus-post.vercel.app",
-        "stargazerCount": 2,
+        "stargazerCount": 1,
         "forkCount": 0,
-        "updatedAt": "2026-05-21T11:56:03Z",
+        "updatedAt": "2026-08-19T15:03:18Z",
         "primaryLanguage": {
           "name": "JavaScript",
           "color": "#f1e05a"
@@ -254,9 +254,9 @@
         "description": "An intelligent Applicant Tracking System (ATS) calculator that evaluates resumes against job descriptions using a hybrid AI architecture. The system combines Python's FastAPI backend for intelligent document processing with a Telegram Bot interface for seamless user interaction.",
         "url": "https://github.com/dharmendra-pandit/Dr.-Audit---AI-Resume-Health-Checker",
         "homepageUrl": null,
-        "stargazerCount": 2,
+        "stargazerCount": 1,
         "forkCount": 0,
-        "updatedAt": "2026-04-13T05:26:21Z",
+        "updatedAt": "2026-08-19T15:03:17Z",
         "primaryLanguage": null,
         "languages": {
           "nodes": []
