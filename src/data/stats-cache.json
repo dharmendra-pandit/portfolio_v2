@@ -1,12 +1,8 @@
 {
   "leetcode": {
     "totalSolved": "79",
-    "ranking": "Rank 1974814",
+    "ranking": "Rank 1976287",
     "activityData": [
-      {
-        "name": "Feb",
-        "solved": 13
-      },
       {
         "name": "Mar",
         "solved": 3
@@ -29,6 +25,10 @@
       },
       {
         "name": "Aug",
+        "solved": 0
+      },
+      {
+        "name": "Sep",
         "solved": 0
       }
     ]
