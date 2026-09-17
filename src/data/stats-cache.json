@@ -333,8 +333,8 @@
         "pullCount": 23,
         "lastUpdated": "Jul 2026",
         "tags": [
-          "Monitoring & observability",
           "Web servers",
+          "Monitoring & observability",
           "Web analytics"
         ],
         "type": "docker"
@@ -361,8 +361,8 @@
         "pullCount": 43,
         "lastUpdated": "Jul 2026",
         "tags": [
-          "Databases & storage",
           "Web servers",
+          "Databases & storage",
           "Web analytics"
         ],
         "type": "docker"
