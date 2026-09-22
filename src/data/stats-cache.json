@@ -321,7 +321,7 @@
   "docker": {
     "username": "iampanditji",
     "link": "https://hub.docker.com/u/iampanditji",
-    "pullCount": 121,
+    "pullCount": 122,
     "starCount": 1,
     "reposCount": 3,
     "repositories": [
@@ -358,7 +358,7 @@
         "description": "Production-ready React frontend served with Nginx, providing a fast and responsive user interface ",
         "url": "https://hub.docker.com/r/iampanditji/simple-blogpost-frontend",
         "starCount": 0,
-        "pullCount": 45,
+        "pullCount": 46,
         "lastUpdated": "Jul 2026",
         "tags": [
           "Databases & storage",
