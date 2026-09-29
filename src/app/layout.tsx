@@ -1,35 +1,38 @@
-import type { Metadata } from 'next'
-import { Plus_Jakarta_Sans, Space_Grotesk, Geist_Mono } from 'next/font/google'
+import type { Metadata, Viewport } from 'next'
+import { Montserrat, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 import { CustomCursor } from '@/components/ui/custom-cursor'
 import { SmoothLoader } from '@/components/ui/smooth-loader'
 import { SmoothScroll } from '@/components/ui/smooth-scroll'
-import { AnimatedBackground } from '@/components/ui/animated-background'
-import { CursorGlow } from '@/components/ui/cursor-glow'
 import { Navbar } from '@/components/layout/navbar'
+import { ChatAssistant } from '@/components/ui/chat-assistant'
 
-const fontSans = Plus_Jakarta_Sans({
+const fontSans = Montserrat({
   variable: '--font-sans',
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700', '800'],
+  display: 'swap',
 })
 
-const fontHeading = Space_Grotesk({
-  variable: '--font-heading',
+const fontMono = JetBrains_Mono({
+  variable: '--font-mono',
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-})
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+  weight: ['400', '500'],
+  display: 'swap',
 })
 
 export const metadata: Metadata = {
-  title: 'Dharmendra Pandit | Software Engineer & AI/ML Portfolio',
+  title: 'Dharmendra Pandit | Software Engineer',
   description:
-    'Futuristic developer portfolio of Dharmendra Pandit - AI & ML Systems, Full Stack Engineering, DevOps & Algorithm Specialist.',
+    'Portfolio of Dharmendra Pandit — software engineer working across AI/ML systems, backend engineering, DevOps and algorithms.',
+}
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: dark)', color: '#121f28' },
+    { media: '(prefers-color-scheme: light)', color: '#f6f2ef' },
+  ],
 }
 
 export default function RootLayout({
@@ -38,28 +41,21 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${fontSans.variable} ${fontHeading.variable} ${geistMono.variable} antialiased`}
-      suppressHydrationWarning
-    >
-      <body
-        className="bg-background text-foreground overflow-x-hidden selection:bg-primary/30 relative"
-        suppressHydrationWarning
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
+    <html lang="en" className={`${fontSans.variable} ${fontMono.variable} antialiased`} suppressHydrationWarning>
+      <body className="relative overflow-x-clip bg-background text-foreground" suppressHydrationWarning>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <SmoothScroll>
-            <AnimatedBackground />
-            <CursorGlow />
+            <a
+              href="#about"
+              className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[110] focus:rounded-[3px] focus:bg-coral focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-[#121f28]"
+            >
+              Skip to content
+            </a>
+            <SmoothLoader />
             <CustomCursor />
             <Navbar />
-            <SmoothLoader />
             {children}
+            <ChatAssistant />
           </SmoothScroll>
         </ThemeProvider>
       </body>

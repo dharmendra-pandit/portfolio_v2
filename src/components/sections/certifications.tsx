@@ -1,100 +1,53 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { Award, ExternalLink } from 'lucide-react'
-import { Card, CardContent } from '@/components/ui/card'
-import { AnimatedText } from '@/components/ui/animated-text'
-
-const certs = [
-  {
-    title: 'AI & ML',
-    issuer: 'freeCodeCamp',
-    date: '2026',
-    link: '#',
-  },
-  {
-    title: 'DevOps',
-    issuer: 'Kunal Kushwaha',
-    date: '2026',
-    link: '#',
-  },
-  {
-    title: 'GenAI',
-    issuer: 'Inceptiondb',
-    date: '2026',
-    link: '#',
-  },
-  {
-    title: 'MERN Stack',
-    issuer: 'Udemy',
-    date: '2025',
-    link: '#',
-  },
-  {
-    title: 'Python',
-    issuer: 'Code and Debug',
-    date: '2026',
-    link: '#',
-  },
-  {
-    title: 'Java',
-    issuer: 'Code Hunt',
-    date: '2026',
-    link: '#',
-  },
-]
+import { motion } from 'motion/react'
+import { Award } from 'lucide-react'
+import { SectionHeading } from '@/components/ui/section-heading'
+import { CERTIFICATIONS as CERTS } from '@/data/portfolio'
 
 export const Certifications = () => {
   return (
-    <section className="relative py-24 sm:py-36 flex items-center justify-center overflow-hidden">
-      <div className="container px-4 mx-auto relative z-10">
-        <div className="text-center mb-16">
-          <AnimatedText
-            text="Certifications."
-            className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter mb-4"
-            el="h2"
-          />
-        </div>
+    <section id="certifications" className="relative overflow-hidden bg-surface py-24 sm:py-32">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <SectionHeading eyebrow="Always learning" title="Certifications" />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {certs.map((cert, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+        <motion.ul
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: '-80px' }}
+          variants={{ show: { transition: { staggerChildren: 0.07 } } }}
+          className="mx-auto mt-16 max-w-5xl border-t border-border"
+        >
+          {CERTS.map((cert, i) => (
+            <motion.li
+              key={cert.title}
+              variants={{
+                hidden: { opacity: 0, y: 24 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
+              }}
+              className="group relative isolate grid grid-cols-[2.5rem_1fr_auto] items-center gap-4 border-b border-border px-2 py-6 sm:grid-cols-[4rem_1fr_1fr_auto] sm:px-4 sm:py-7"
             >
-              <Card className="h-full p-6 bg-foreground/5 border border-foreground/5 rounded-3xl backdrop-blur-3xl group hover:border-foreground/10 transition-all duration-500 cursor-pointer relative overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-                <div className="absolute inset-0 bg-gradient-to-br from-foreground/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <CardContent className="p-0 relative z-10 flex flex-col items-start gap-4 border-none">
-                  <div className="p-3 bg-foreground/5 rounded-xl border border-border group-hover:scale-110 transition-transform duration-500">
-                    <Award className="w-8 h-8 text-foreground" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold mb-1 group-hover:text-foreground/80 transition-colors">
-                      {cert.title}
-                    </h3>
-                    <p className="text-muted-foreground text-sm">
-                      {cert.issuer}
-                    </p>
-                  </div>
-                  <div className="mt-auto pt-4 flex justify-between w-full items-center">
-                    <span className="text-xs text-muted-foreground/60">
-                      {cert.date}
-                    </span>
-                    <a
-                      href={cert.link}
-                      className="text-foreground hover:text-foreground/80 transition-colors"
-                    >
-                      <ExternalLink className="w-5 h-5" />
-                    </a>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
+              <span
+                aria-hidden
+                className="absolute inset-0 -z-10 origin-left scale-x-0 bg-pill transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:scale-x-100"
+              />
+              <span className="font-mono text-sm text-coral-ink">{String(i + 1).padStart(2, '0')}</span>
+              <div className="transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:translate-x-2">
+                <h3 className="flex items-center gap-3 text-lg font-semibold text-foreground sm:text-2xl">
+                  {cert.title}
+                  <Award
+                    aria-hidden
+                    strokeWidth={1.5}
+                    className="size-5 -translate-x-2 text-coral-ink opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100"
+                  />
+                </h3>
+                <p className="mt-1 text-sm text-muted-foreground sm:hidden">{cert.issuer}</p>
+              </div>
+              <p className="hidden text-muted-foreground sm:block">{cert.issuer}</p>
+              <span className="font-mono text-sm text-muted-foreground">{cert.date}</span>
+            </motion.li>
           ))}
-        </div>
+        </motion.ul>
       </div>
     </section>
   )
