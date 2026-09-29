@@ -35,7 +35,7 @@ export const Contact = () => {
 
   return (
     <section id="contact" className="relative overflow-hidden py-24 sm:py-36">
-      <div className="mx-auto grid max-w-7xl gap-x-20 gap-y-12 px-5 sm:px-8 lg:grid-cols-2">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-x-20 gap-y-12 px-5 sm:px-8 lg:grid-cols-2">
         {/* Heading + details */}
         <div className="lg:row-span-1">
           <SectionHeading align="left" eyebrow="Contact" title="Have a project? Let's talk!" />
@@ -67,11 +67,11 @@ export const Contact = () => {
                     </motion.span>
                   </AnimatePresence>
                 </IconBox>
-                <span>
+                <span className="min-w-0">
                   <span className="block text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                     Email {copied && <span className="normal-case tracking-normal text-coral-ink">— copied</span>}
                   </span>
-                  <span className="text-foreground transition-colors group-hover:text-coral-ink">{EMAIL}</span>
+                  <span className="break-all text-foreground transition-colors group-hover:text-coral-ink">{EMAIL}</span>
                 </span>
               </button>
               <span aria-live="polite" className="sr-only">

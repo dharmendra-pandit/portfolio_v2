@@ -61,7 +61,7 @@ export const ProjectRow = ({ project, index }: { project: ProjectRowData; index:
   return (
     <article
       ref={root}
-      className="group grid items-center gap-12 lg:grid-cols-2 lg:gap-20"
+      className="group grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-20"
       aria-labelledby={`project-${project.id}`}
     >
       {/* Copy */}
@@ -131,7 +131,7 @@ function Terminal({ data }: { data: ProjectRowData['terminal'] }) {
         <span className="size-2.5 rounded-full bg-[#ff715b]" />
         <span className="size-2.5 rounded-full bg-[#f5c38a]/80" />
         <span className="size-2.5 rounded-full bg-[#6b7d8a]/60" />
-        <span className="ml-3 truncate font-mono text-[11px] text-[#8d9ba7]">{data.title}</span>
+        <span className="ml-3 min-w-0 truncate font-mono text-[11px] text-[#8d9ba7]">{data.title}</span>
       </div>
       <div className="min-h-[15rem] space-y-1.5 px-5 py-5 font-mono text-[12px] leading-relaxed sm:min-h-[17rem] sm:text-[13px]">
         {data.lines.map((line, i) => (
@@ -177,7 +177,7 @@ function TerminalRow({ line }: { line: TerminalLine }) {
 }
 
 export const ProjectRowSkeleton = ({ flip }: { flip?: boolean }) => (
-  <div className="grid animate-pulse items-center gap-12 lg:grid-cols-2 lg:gap-20" aria-hidden>
+  <div className="grid animate-pulse grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-20" aria-hidden>
     <div className={cn('space-y-5', flip && 'lg:order-2')}>
       <div className="h-4 w-8 rounded bg-pill" />
       <div className="h-8 w-2/3 rounded bg-pill" />

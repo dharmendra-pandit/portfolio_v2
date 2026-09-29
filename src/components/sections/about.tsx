@@ -91,7 +91,7 @@ export const About = ({ stats }: { stats: AboutStats }) => {
             ))}
           </div>
 
-          <dl className="mt-12 grid grid-cols-3 gap-4 sm:gap-10">
+          <dl className="mt-12 grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 sm:gap-8 xl:gap-10">
             <Stat value={stats.problemsSolved} suffix="+" label="DSA problems solved" />
             <Stat value={stats.publicRepos} suffix="+" label="Public repositories" />
             <Stat value={stats.cgpa} decimals={2} suffix="/10" label="University CGPA" />
@@ -106,7 +106,7 @@ function Stat({ value, suffix, label, decimals = 0 }: { value: number; suffix: s
   return (
     <div data-stat className="flex flex-col-reverse justify-end gap-2">
       <dt className="max-w-[9rem] text-sm leading-snug text-muted-foreground sm:text-base">{label}</dt>
-      <dd className="flex items-baseline text-3xl font-bold tabular-nums tracking-tight text-foreground sm:text-4xl">
+      <dd className="flex items-baseline whitespace-nowrap text-3xl font-bold tabular-nums tracking-tight text-foreground sm:text-4xl lg:text-3xl xl:text-4xl">
         <Counter value={value} decimals={decimals} />
         <span className="ml-1 text-coral-ink">{suffix}</span>
       </dd>

@@ -1,3 +1,4 @@
+import { PROFILE } from '@/data/portfolio'
 import { SYSTEM_PROMPT, REFUSAL } from '@/lib/assistant/knowledge'
 import { cacheKey, checkQuestion } from '@/lib/assistant/guard'
 
@@ -30,6 +31,50 @@ function rateLimited(ip: string) {
   hits.set(ip, recent)
   if (hits.size > 5000) hits.delete(hits.keys().next().value!)
   return false
+}
+
+// ---------- Weekly budget: hard cap on DeepSeek calls across all visitors ----------
+
+const WEEKLY_LIMIT = 50
+const WEEKLY_LIMIT_REPLY = `The assistant has answered all the questions it can this week. Please email Dharmendra at ${PROFILE.email} — he'd be happy to help.`
+let localWeek = { id: '', count: 0 }
+
+/** UTC date of this week's Monday, e.g. "2026-09-28". */
+function weekId(now = new Date()) {
+  const monday = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()))
+  monday.setUTCDate(monday.getUTCDate() - ((monday.getUTCDay() + 6) % 7))
+  return monday.toISOString().slice(0, 10)
+}
+
+/**
+ * Reserves one model call from this week's budget; false once it's spent.
+ * Uses Upstash Redis (REST) when configured so the count is shared by every
+ * serverless instance; otherwise falls back to a per-instance counter.
+ */
+async function takeWeeklySlot() {
+  const id = weekId()
+  const url = process.env.UPSTASH_REDIS_REST_URL ?? process.env.KV_REST_API_URL
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN ?? process.env.KV_REST_API_TOKEN
+
+  if (url && token) {
+    try {
+      const key = `chat:week:${id}`
+      const res = await fetch(`${url}/pipeline`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+        body: JSON.stringify([['INCR', key], ['EXPIRE', key, 8 * 24 * 60 * 60]]),
+        signal: AbortSignal.timeout(3_000),
+      })
+      const [incr] = (await res.json()) as { result?: number }[]
+      if (typeof incr?.result === 'number') return incr.result <= WEEKLY_LIMIT
+    } catch (err) {
+      console.error('[chat] weekly counter unavailable, using in-memory count', err)
+    }
+  }
+
+  if (localWeek.id !== id) localWeek = { id, count: 0 }
+  localWeek.count += 1
+  return localWeek.count <= WEEKLY_LIMIT
 }
 
 // First-turn answers are identical for everyone (suggested questions especially),
@@ -109,6 +154,8 @@ export async function POST(request: Request) {
 
   const apiKey = process.env.DEEPSEEK_API_KEY
   if (!apiKey) return text('The assistant is not configured yet.', { status: 503 })
+
+  if (!(await takeWeeklySlot())) return text(WEEKLY_LIMIT_REPLY, { status: 429, source: 'budget' })
 
   // Trim history: only recent turns, and clip long assistant replies.
   const history = messages.slice(-HISTORY_TURNS).map((m) => ({
