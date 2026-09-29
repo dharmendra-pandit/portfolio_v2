@@ -1,89 +1,26 @@
 'use client'
 
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import {
-  FaPython,
-  FaDatabase,
-  FaRobot,
-  FaTools,
-  FaServer,
-  FaInfinity
-} from 'react-icons/fa'
-import { Code2, Sparkles, Layers } from 'lucide-react'
+import { AnimatePresence, LayoutGroup, motion } from 'motion/react'
+import { BrainCircuit, Server, Infinity as InfinityIcon, Database, Binary, Braces, Wrench } from 'lucide-react'
+import { SectionHeading } from '@/components/ui/section-heading'
+import { SKILL_CATEGORIES } from '@/data/portfolio'
+import { cn } from '@/lib/utils'
 
-const skillCategories = [
-  {
-    id: 'ai-ml',
-    title: 'AI & ML',
-    icon: <FaRobot className="w-6 h-6 text-foreground" />,
-    skills: [
-      'Machine Learning',
-      'Deep Learning',
-      'NLP & LLMs',
-      'Computer Vision',
-      'Hugging Face',
-      'Prompt Engineering',
-      'RAG Systems',
-      'LangChain',
-      'TensorFlow',
-      'PyTorch',
-    ],
-  },
-  {
-    id: 'backend',
-    title: 'Backend Engineering',
-    icon: <FaServer className="w-6 h-6 text-foreground" />,
-    skills: [
-      'Node.js',
-      'Express.js',
-      'FastAPI',
-      'REST APIs',
-      'Microservices',
-      'System Design',
-      'Data Pipelines',
-    ],
-  },
-  {
-    id: 'devops',
-    title: 'DevOps & Cloud',
-    icon: <FaInfinity className="w-6 h-6 text-foreground" />,
-    skills: ['Docker', 'Kubernetes', 'CI/CD', 'GitHub Actions', 'AWS', 'Linux', 'Terraform'],
-  },
-  {
-    id: 'databases',
-    title: 'Databases & Storage',
-    icon: <FaDatabase className="w-6 h-6 text-foreground" />,
-    skills: ['MongoDB', 'MySQL', 'PostgreSQL', 'Redis', 'Vector DBs (FAISS)'],
-  },
-  {
-    id: 'dsa',
-    title: 'Data Structures & Algorithms',
-    icon: <Code2 className="w-6 h-6 text-foreground" />,
-    skills: ['Problem Solving (148+ Solved)', 'Algorithm Design', 'Time/Space Complexity', 'Graph Theory', 'Dynamic Programming'],
-  },
-  {
-    id: 'languages',
-    title: 'Programming Languages',
-    icon: <FaPython className="w-6 h-6 text-foreground" />,
-    skills: ['Java', 'Python', 'TypeScript', 'JavaScript', 'C++'],
-  },
-  {
-    id: 'tools',
-    title: 'Tools & Ecosystem',
-    icon: <FaTools className="w-6 h-6 text-foreground" />,
-    skills: [
-      'Git & GitHub',
-      'Vercel',
-      'Postman',
-      'VS Code',
-      'Jupyter',
-    ],
-  },
-]
+const ICONS: Record<(typeof SKILL_CATEGORIES)[number]['id'], typeof Server> = {
+  'ai-ml': BrainCircuit,
+  backend: Server,
+  devops: InfinityIcon,
+  databases: Database,
+  dsa: Binary,
+  languages: Braces,
+  tools: Wrench,
+}
 
-const filterTabs = [
-  { id: 'all', label: 'All Stack' },
+const CATEGORIES = SKILL_CATEGORIES.map((c) => ({ ...c, icon: ICONS[c.id] }))
+
+const TABS = [
+  { id: 'all', label: 'All' },
   { id: 'ai-ml', label: 'AI & ML' },
   { id: 'backend', label: 'Backend' },
   { id: 'devops', label: 'DevOps' },
@@ -91,104 +28,86 @@ const filterTabs = [
   { id: 'languages', label: 'Languages' },
 ]
 
-export const Skills = () => {
-  const [selectedTab, setSelectedTab] = useState('all')
+const EASE = [0.16, 1, 0.3, 1] as const
 
-  const filteredCategories = selectedTab === 'all'
-    ? skillCategories
-    : skillCategories.filter(cat => cat.id === selectedTab)
+export const Skills = () => {
+  const [tab, setTab] = useState('all')
+  const visible = tab === 'all' ? CATEGORIES : CATEGORIES.filter((c) => c.id === tab)
 
   return (
-    <section id="skills" className="relative py-24 sm:py-36 flex items-center justify-center overflow-hidden border-t border-border/40">
-      <div className="container px-4 mx-auto relative z-10">
-        <div className="text-center mb-16">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-foreground/5 border border-border text-xs font-semibold text-foreground mb-6 shadow-sm"
-          >
-            <Code2 className="w-3.5 h-3.5 text-foreground" />
-            <span>Technologies & Skills</span>
-          </motion.div>
+    <section id="skills" className="relative overflow-hidden py-24 sm:py-32">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <SectionHeading
+          eyebrow="What I work with"
+          title="Skills & Stack"
+          description="The languages, frameworks, cloud tooling and data systems I reach for when building production software."
+        />
 
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tight mb-6 font-heading text-foreground"
-          >
-            Skills & <span className="text-gradient">Tech Stack.</span>
-          </motion.h2>
-
-          <motion.p 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="max-w-2xl mx-auto text-base sm:text-lg text-muted-foreground mb-10 leading-relaxed"
-          >
-            Core programming languages, frameworks, cloud infrastructure, and database systems I use to build production software.
-          </motion.p>
-
-          {/* Category Filter Tabs */}
-          <div className="flex flex-wrap items-center justify-center gap-2 p-1.5 bg-foreground/5 border border-border rounded-2xl backdrop-blur-md max-w-fit mx-auto">
-            {filterTabs.map((tab) => (
+        <LayoutGroup id="skills-tabs">
+          <div role="group" aria-label="Filter skills" className="mt-12 flex flex-wrap justify-center gap-x-1 gap-y-2">
+            {TABS.map((t) => (
               <button
-                key={tab.id}
-                onClick={() => setSelectedTab(tab.id)}
-                className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-300 cursor-pointer ${
-                  selectedTab === tab.id
-                    ? 'bg-foreground text-background font-bold shadow-md'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-foreground/10'
-                }`}
+                key={t.id}
+                type="button"
+                aria-pressed={tab === t.id}
+                onClick={() => setTab(t.id)}
+                className={cn(
+                  'relative px-4 py-2.5 text-sm font-medium transition-colors duration-300',
+                  tab === t.id ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
+                )}
               >
-                {tab.label}
+                {t.label}
+                {tab === t.id && (
+                  <motion.span
+                    layoutId="skills-tab-indicator"
+                    className="absolute inset-x-4 bottom-0 h-[2px] bg-coral"
+                    transition={{ type: 'spring', stiffness: 400, damping: 34 }}
+                  />
+                )}
               </button>
             ))}
           </div>
-        </div>
+        </LayoutGroup>
 
-        {/* Skill Cards Grid */}
-        <motion.div 
-          layout
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto"
-        >
-          <AnimatePresence mode="popLayout">
-            {filteredCategories.map((category, index) => (
-              <motion.div
-                key={category.id}
+        <motion.div layout className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <AnimatePresence mode="popLayout" initial={false}>
+            {visible.map((cat, i) => (
+              <motion.article
+                key={cat.id}
                 layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                whileHover={{ y: -6 }}
-                className="relative group p-8 rounded-[2rem] bg-card border border-border/60 overflow-hidden shadow-lg transition-all"
+                initial={{ opacity: 0, y: 32 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.2 } }}
+                transition={{ duration: 0.8, ease: EASE, delay: (i % 3) * 0.08 }}
+                className="group relative overflow-hidden rounded-md border border-border bg-card p-7 transition-colors duration-500 hover:border-coral/40"
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-foreground/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                
-                <div className="relative z-10 flex items-center gap-4 mb-8">
-                  <div className="p-3.5 bg-foreground/5 rounded-2xl border border-border group-hover:scale-110 transition-all duration-500 shadow-sm text-foreground">
-                    {category.icon}
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground">
-                    {category.title}
-                  </h3>
+                <span
+                  aria-hidden
+                  className="absolute inset-x-0 top-0 h-[2px] origin-left scale-x-0 bg-coral transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:scale-x-100"
+                />
+                <div className="flex items-center justify-between">
+                  <cat.icon
+                    aria-hidden
+                    strokeWidth={1.4}
+                    className="size-8 text-foreground transition-colors duration-300 group-hover:text-coral-ink"
+                  />
+                  <span className="font-mono text-xs text-muted-foreground">
+                    {String(CATEGORIES.indexOf(cat) + 1).padStart(2, '0')}
+                  </span>
                 </div>
-
-                <div className="relative z-10 flex flex-wrap gap-2">
-                  {category.skills.map((skill, i) => (
-                    <span
-                      key={i}
-                      className="px-3.5 py-1.5 bg-foreground/5 border border-border rounded-full text-xs font-medium text-foreground hover:bg-foreground/10 transition-all duration-300 cursor-default shadow-sm backdrop-blur-md"
+                <h3 className="mt-6 text-lg font-semibold text-foreground">{cat.title}</h3>
+                <ul className="mt-5 flex flex-wrap gap-2">
+                  {cat.skills.map((skill) => (
+                    <li
+                      key={skill}
+                      className="rounded-full bg-pill px-3.5 py-1.5 text-[13px] font-medium text-foreground/85 transition-colors duration-300 hover:bg-coral hover:text-[#121f28]"
                     >
                       {skill}
-                    </span>
+                    </li>
                   ))}
-                </div>
-              </motion.div>
+                </ul>
+              </motion.article>
             ))}
           </AnimatePresence>
         </motion.div>
@@ -196,4 +115,3 @@ export const Skills = () => {
     </section>
   )
 }
-

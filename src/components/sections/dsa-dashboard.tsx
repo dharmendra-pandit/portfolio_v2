@@ -1,18 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-} from 'recharts'
-import { Code2, Trophy, Star, Target } from 'lucide-react'
+import { useState, useEffect, useMemo } from 'react'
+import { motion } from 'motion/react'
+import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
+import { ArrowUpRight, Code2, Target } from 'lucide-react'
 import { FaGithub, FaKaggle, FaDocker } from 'react-icons/fa'
+import { SectionHeading } from '@/components/ui/section-heading'
+import { scrollToSection } from '@/lib/scroll'
+import { useMounted } from '@/lib/use-mounted'
 
 // Initialize activity data with last 7 months set to 0
 const getInitialActivityData = () => {
@@ -42,57 +37,52 @@ const defaultStats = [
   {
     platform: 'LeetCode',
     solved: 'Loading...',
-    icon: <Code2 className="w-5 h-5 text-foreground" />,
+    icon: <Code2 className="size-4" />,
     rating: '...',
     link: 'https://leetcode.com/dpbth/',
   },
   {
     platform: 'GitHub',
     solved: 'Loading...',
-    icon: <FaGithub className="w-5 h-5 text-foreground" />,
+    icon: <FaGithub className="size-4" />,
     rating: 'Repositories',
     link: 'https://github.com/dharmendra-pandit',
   },
   {
     platform: 'Kaggle',
     solved: 'Loading...',
-    icon: <FaKaggle className="w-5 h-5 text-foreground" />,
+    icon: <FaKaggle className="size-4" />,
     rating: '...',
     link: 'https://www.kaggle.com/dharmendrapandit12',
   },
   {
     platform: 'Docker',
     solved: 'Loading...',
-    icon: <FaDocker className="w-5 h-5 text-foreground" />,
+    icon: <FaDocker className="size-4" />,
     rating: 'Container Images',
     link: 'https://hub.docker.com/u/iampanditji',
   },
   {
     platform: 'Code360',
     solved: 'Loading...',
-    icon: <Target className="w-5 h-5 text-foreground" />,
+    icon: <Target className="size-4" />,
     rating: '...',
     link: 'https://www.naukri.com/code360/profile/panditbth',
   },
   {
     platform: 'GeeksforGeeks',
     solved: 'Loading...',
-    icon: <Target className="w-5 h-5 text-foreground" />,
+    icon: <Target className="size-4" />,
     rating: '...',
     link: 'https://www.geeksforgeeks.org/profile/iampanditbth?tab=activity',
   },
 ]
 
 export const DsaDashboard = () => {
-  const [mounted, setMounted] = useState(false)
+  const mounted = useMounted()
   const [stats, setStats] = useState(defaultStats)
-  const [leetcodeActivity, setLeetcodeActivity] = useState<any[]>(getInitialActivityData())
-  const [activityData, setActivityData] = useState(defaultActivityData)
+  const [leetcodeActivity, setLeetcodeActivity] = useState<{ name: string; solved: number }[]>(defaultActivityData)
   const [projectActivityData, setProjectActivityData] = useState(defaultProjectActivityData)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   const totalProblems = stats.reduce((acc, stat) => {
     if (['LeetCode', 'Code360', 'GeeksforGeeks'].includes(stat.platform)) {
@@ -117,7 +107,7 @@ export const DsaDashboard = () => {
   }, 0)
 
   // Dynamically compute combined activity data of LeetCode, GFG, and Code360
-  useEffect(() => {
+  const activityData = useMemo(() => {
     const gfgStat = stats.find(s => s.platform === 'GeeksforGeeks')
     const code360Stat = stats.find(s => s.platform === 'Code360')
 
@@ -131,7 +121,7 @@ export const DsaDashboard = () => {
     const gfgRatios = [0.03, 0.04, 0.035, 0.045, 0.038, 0.042, 0.03]
     const code360Ratios = [0.035, 0.045, 0.04, 0.05, 0.042, 0.048, 0.035]
 
-    const combined = leetcodeActivity.map((m, idx) => {
+    return leetcodeActivity.map((m, idx) => {
       const gfgSolved = Math.round(gfgTotal * (gfgRatios[idx] || 0.03))
       const code360Solved = Math.round(code360Total * (code360Ratios[idx] || 0.035))
       return {
@@ -139,7 +129,6 @@ export const DsaDashboard = () => {
         solved: m.solved + gfgSolved + code360Solved
       }
     })
-    setActivityData(combined)
   }, [leetcodeActivity, stats])
 
   useEffect(() => {
@@ -354,276 +343,241 @@ export const DsaDashboard = () => {
     fetchDockerData()
   }, [])
 
+  const problemStats = stats.filter((s) => ['LeetCode', 'GeeksforGeeks', 'Code360'].includes(s.platform))
+  const projectStats = stats.filter((s) => ['GitHub', 'Kaggle', 'Docker'].includes(s.platform))
+  const projectAnchor: Record<string, string> = {
+    GitHub: '#projects-github',
+    Kaggle: '#projects-kaggle',
+    Docker: '#projects-docker',
+  }
+
   return (
-    <section id="dashboard" className="relative py-24 sm:py-36 flex items-center justify-center overflow-hidden">
-      <div className="container px-4 mx-auto relative z-10">
-        <div className="text-center mb-16">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tight mb-6 text-foreground font-heading"
-          >
-            Developer <span className="text-gradient">Activity.</span>
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="max-w-2xl mx-auto text-base sm:text-lg text-muted-foreground"
-          >
-            Track record across algorithmic problem solving, open-source code repositories, machine learning datasets, and containerized deployments.
-          </motion.p>
+    <section id="dashboard" className="relative overflow-hidden bg-surface py-24 sm:py-32">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <SectionHeading
+          eyebrow="By the numbers"
+          title="Developer Activity"
+          description="A live track record across algorithmic problem solving, open-source repositories, ML datasets and containerised deployments."
+        />
+
+        <div className="mt-16 grid grid-cols-1 gap-5 lg:grid-cols-2">
+          <SummaryPanel title="Problems solved" icon={<Code2 className="size-4" />} total={totalProblems} delay={0}>
+            {problemStats.map((stat) => (
+              <PlatformTile key={stat.platform} stat={stat} href={stat.link} external />
+            ))}
+          </SummaryPanel>
+
+          <SummaryPanel title="Projects shipped" icon={<FaGithub className="size-4" />} total={totalProjects} delay={0.1}>
+            {projectStats.map((stat) => {
+              const hash = projectAnchor[stat.platform] ?? '#projects'
+              return (
+                <PlatformTile
+                  key={stat.platform}
+                  stat={stat}
+                  href={hash}
+                  onNavigate={() => {
+                    // featured-projects listens for these hashes to switch tabs
+                    window.location.hash = hash
+                    scrollToSection('projects')
+                  }}
+                />
+              )
+            })}
+          </SummaryPanel>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto mb-6">
-           {/* Total Summaries Box 1 */}
-           <div className="relative group">
-             <div className="absolute -inset-0.5 bg-gradient-to-r from-foreground/10 to-transparent rounded-3xl blur opacity-50 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
-             <Card className="relative h-full p-6 bg-card border border-border/60 rounded-3xl backdrop-blur-3xl overflow-hidden shadow-lg flex flex-col justify-between">
-               <div>
-                 <CardHeader className="p-0 pb-2 border-none">
-                   <CardTitle className="text-lg font-medium text-muted-foreground flex items-center gap-3">
-                     <div className="p-2.5 bg-foreground/5 rounded-xl border border-border text-foreground">
-                       <Code2 className="w-6 h-6 text-foreground" />
-                     </div>
-                     Total Problems Solved
-                   </CardTitle>
-                 </CardHeader>
-                 <CardContent className="p-0 border-none mt-4 mb-6">
-                   <div className="text-5xl font-black text-foreground">
-                     {totalProblems > 0 ? totalProblems : '...'}
-                   </div>
-                 </CardContent>
-               </div>
-               
-               <div className="grid grid-cols-1 min-[400px]:grid-cols-3 gap-3 pt-4 border-t border-border/50">
-                 {stats.filter(s => ['LeetCode', 'GeeksforGeeks', 'Code360'].includes(s.platform)).map((stat, index) => (
-                   <a 
-                     key={index} 
-                     href={stat.link} 
-                     target="_blank" 
-                     rel="noopener noreferrer" 
-                     className="group/stat flex flex-col justify-between bg-muted/30 hover:bg-muted/60 p-3.5 rounded-2xl border border-border/60 hover:border-border transition-all overflow-hidden min-w-0"
-                   >
-                     <div className="flex flex-col gap-1.5 min-w-0">
-                       <div className="flex items-center gap-1.5 text-xs font-semibold text-foreground min-w-0">
-                         <span className="shrink-0">{stat.icon}</span>
-                         <span className="truncate">{stat.platform}</span>
-                       </div>
-                       {stat.rating && (
-                         <div className="min-w-0">
-                           <span className="inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 max-w-full truncate">
-                             <Trophy className="w-2.5 h-2.5 shrink-0 text-primary" />
-                             <span className="truncate">{stat.rating}</span>
-                           </span>
-                         </div>
-                       )}
-                     </div>
-                     <div className="text-xl font-extrabold text-foreground tracking-tight mt-2">
-                       {stat.solved}
-                     </div>
-                   </a>
-                 ))}
-               </div>
-             </Card>
-           </div>
-           
-           {/* Total Summaries Box 2 */}
-           <div className="relative group">
-             <div className="absolute -inset-0.5 bg-gradient-to-r from-foreground/10 to-transparent rounded-3xl blur opacity-50 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
-             <Card className="relative h-full p-6 bg-card border border-border/60 rounded-3xl backdrop-blur-3xl overflow-hidden shadow-lg flex flex-col justify-between">
-               <div>
-                 <CardHeader className="p-0 pb-2 border-none">
-                   <CardTitle className="text-lg font-medium text-muted-foreground flex items-center gap-3">
-                     <div className="p-2.5 bg-foreground/5 rounded-xl border border-border text-foreground">
-                       <FaGithub className="w-6 h-6 text-foreground" />
-                     </div>
-                     Total Projects
-                   </CardTitle>
-                 </CardHeader>
-                 <CardContent className="p-0 border-none mt-4 mb-6">
-                   <div className="text-5xl font-black text-foreground">
-                     {totalProjects > 0 ? totalProjects : '...'}
-                   </div>
-                 </CardContent>
-               </div>
+        <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-2">
+          <ChartPanel title="Problems solved" caption="Last 7 months" mounted={mounted} delay={0.15}>
+            <AreaChart data={activityData} margin={{ top: 10, right: 8, left: -22, bottom: 0 }}>
+              <ChartDefs id="fillSolved" />
+              <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="3 6" />
+              <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} dy={10} />
+              <YAxis stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} dx={-5} />
+              <Tooltip content={<ChartTooltip unit="solved" />} cursor={{ stroke: 'var(--coral)', strokeOpacity: 0.4 }} />
+              <Area
+                type="monotone"
+                dataKey="solved"
+                stroke="var(--coral)"
+                strokeWidth={2.5}
+                fill="url(#fillSolved)"
+                activeDot={{ r: 5, fill: 'var(--coral)', stroke: 'var(--card)', strokeWidth: 2 }}
+              />
+            </AreaChart>
+          </ChartPanel>
 
-                <div className="grid grid-cols-1 min-[400px]:grid-cols-3 gap-3 pt-4 border-t border-border/50">
-                  {stats.filter(s => ['GitHub', 'Kaggle', 'Docker'].includes(s.platform)).map((stat, index) => {
-                     let targetLink = '#projects';
-                     if (stat.platform === 'GitHub') targetLink = '#projects-github';
-                     else if (stat.platform === 'Kaggle') targetLink = '#projects-kaggle';
-                     else if (stat.platform === 'Docker') targetLink = '#projects-docker';
-                     return (
-                       <a
-                         key={index}
-                         href={targetLink}
-                         className="group/stat flex flex-col justify-between bg-muted/30 hover:bg-muted/60 p-3.5 rounded-2xl border border-border/60 hover:border-border transition-all overflow-hidden min-w-0"
-                       >
-                         <div className="flex flex-col gap-1.5 min-w-0">
-                           <div className="flex items-center gap-1.5 text-xs font-semibold text-foreground min-w-0">
-                             <span className="shrink-0">{stat.icon}</span>
-                             <span className="truncate">{stat.platform}</span>
-                           </div>
-                           {stat.rating && (
-                             <div className="min-w-0">
-                               <span className="inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 max-w-full truncate">
-                                 <Trophy className="w-2.5 h-2.5 shrink-0 text-primary" />
-                                 <span className="truncate">{stat.rating}</span>
-                               </span>
-                             </div>
-                           )}
-                         </div>
-                         <div className="text-xl font-extrabold text-foreground tracking-tight mt-2">
-                           {stat.solved}
-                         </div>
-                       </a>
-                     );
-                  })}
-                </div>
-              </Card>
-            </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto mt-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="h-full"
-          >
-            <Card className="h-full p-6 sm:p-8 bg-card border border-border/60 rounded-[2rem] sm:rounded-[2.5rem] backdrop-blur-3xl transition-all duration-500 hover:border-border shadow-md">
-              <CardHeader className="p-0 pb-6 border-none">
-                <CardTitle className="text-xl sm:text-2xl font-bold text-foreground">
-                  Problems Solved (Last 7 Months)
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="w-full p-0 border-none">
-                <div className="h-[300px] sm:h-[350px] w-full flex items-center justify-center">
-                  {mounted ? (
-                    <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
-                      <AreaChart
-                        data={activityData}
-                        margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
-                      >
-                        <defs>
-                          <linearGradient
-                            id="colorSolved"
-                            x1="0"
-                            y1="0"
-                            x2="0"
-                            y2="1"
-                          >
-                            <stop
-                              offset="5%"
-                              stopColor="var(--primary)"
-                              stopOpacity={0.4}
-                            />
-                            <stop
-                              offset="95%"
-                              stopColor="var(--primary)"
-                              stopOpacity={0}
-                            />
-                          </linearGradient>
-                        </defs>
-                        <XAxis
-                          dataKey="name"
-                          stroke="var(--muted-foreground)"
-                          fontSize={12}
-                          tickLine={false}
-                          axisLine={false}
-                          dy={10}
-                        />
-                        <YAxis
-                          stroke="var(--muted-foreground)"
-                          fontSize={12}
-                          tickLine={false}
-                          axisLine={false}
-                          tickFormatter={(value) => `${value}`}
-                          dx={-5}
-                        />
-                        <Tooltip
-                          contentStyle={{
-                            backgroundColor: 'var(--card)',
-                            borderColor: 'var(--border)',
-                            borderRadius: '12px',
-                            color: 'var(--card-foreground)',
-                            backdropFilter: 'blur(10px)'
-                          }}
-                          itemStyle={{ color: 'var(--foreground)', fontWeight: 'bold' }}
-                        />
-                        <Area
-                          type="monotone"
-                          dataKey="solved"
-                          stroke="var(--primary)"
-                          strokeWidth={3}
-                          fillOpacity={1}
-                          fill="url(#colorSolved)"
-                        />
-                      </AreaChart>
-                    </ResponsiveContainer>
-                  ) : (
-                    <div className="h-full w-full bg-muted/20 animate-pulse rounded-xl" />
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="h-full"
-          >
-            <Card className="h-full p-6 sm:p-8 bg-card border border-border/60 rounded-[2rem] sm:rounded-[2.5rem] backdrop-blur-3xl transition-all duration-500 hover:border-border shadow-md">
-              <CardHeader className="p-0 pb-6 border-none">
-                <CardTitle className="text-xl sm:text-2xl font-bold text-foreground">
-                  Projects (Quarterly Basis)
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="w-full p-0 border-none">
-                <div className="h-[300px] sm:h-[350px] w-full flex items-center justify-center">
-                  {mounted ? (
-                    <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
-                      <AreaChart
-                        data={projectActivityData}
-                        margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
-                      >
-                        <defs>
-                          <linearGradient id="colorProjects" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.4} />
-                            <stop offset="95%" stopColor="var(--primary)" stopOpacity={0} />
-                          </linearGradient>
-                        </defs>
-                        <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} dy={10} />
-                        <YAxis stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `${value}`} dx={-5} />
-                        <Tooltip
-                          contentStyle={{
-                            backgroundColor: 'var(--card)',
-                            borderColor: 'var(--border)',
-                            borderRadius: '12px',
-                            color: 'var(--card-foreground)',
-                            backdropFilter: 'blur(10px)'
-                          }}
-                          itemStyle={{ color: 'var(--foreground)', fontWeight: 'bold' }}
-                        />
-                        <Area type="monotone" dataKey="projects" stroke="var(--primary)" strokeWidth={3} fillOpacity={1} fill="url(#colorProjects)" />
-                      </AreaChart>
-                    </ResponsiveContainer>
-                  ) : (
-                    <div className="h-full w-full bg-muted/20 animate-pulse rounded-xl" />
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+          <ChartPanel title="Projects" caption="Quarterly" mounted={mounted} delay={0.25}>
+            <AreaChart data={projectActivityData} margin={{ top: 10, right: 8, left: -22, bottom: 0 }}>
+              <ChartDefs id="fillProjects" />
+              <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="3 6" />
+              <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} dy={10} />
+              <YAxis stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} dx={-5} allowDecimals={false} />
+              <Tooltip content={<ChartTooltip unit="projects" />} cursor={{ stroke: 'var(--coral)', strokeOpacity: 0.4 }} />
+              <Area
+                type="monotone"
+                dataKey="projects"
+                stroke="var(--coral)"
+                strokeWidth={2.5}
+                fill="url(#fillProjects)"
+                activeDot={{ r: 5, fill: 'var(--coral)', stroke: 'var(--card)', strokeWidth: 2 }}
+              />
+            </AreaChart>
+          </ChartPanel>
         </div>
       </div>
     </section>
+  )
+}
+
+type Stat = (typeof defaultStats)[number]
+const EASE = [0.16, 1, 0.3, 1] as const
+
+function SummaryPanel({
+  title,
+  icon,
+  total,
+  delay,
+  children,
+}: {
+  title: string
+  icon: React.ReactNode
+  total: number
+  delay: number
+  children: React.ReactNode
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 32 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.9, ease: EASE, delay }}
+      className="flex flex-col rounded-md border border-border bg-card p-6 sm:p-8"
+    >
+      <p className="flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+        <span className="text-coral-ink">{icon}</span>
+        {title}
+      </p>
+      <motion.p
+        key={total}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: EASE }}
+        className="mt-4 text-5xl font-bold tabular-nums tracking-tight text-foreground sm:text-6xl"
+      >
+        {total > 0 ? total : '—'}
+        {total > 0 && <span className="ml-1 text-coral-ink">+</span>}
+      </motion.p>
+      <div className="mt-8 grid grid-cols-1 gap-3 border-t border-border pt-6 min-[420px]:grid-cols-3">{children}</div>
+    </motion.div>
+  )
+}
+
+function PlatformTile({
+  stat,
+  href,
+  external,
+  onNavigate,
+}: {
+  stat: Stat
+  href: string
+  external?: boolean
+  onNavigate?: () => void
+}) {
+  return (
+    <a
+      href={href}
+      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+      onClick={
+        onNavigate
+          ? (e) => {
+              e.preventDefault()
+              onNavigate()
+            }
+          : undefined
+      }
+      className="group flex min-w-0 flex-col justify-between gap-3 rounded-[4px] border border-transparent bg-pill/70 p-4 transition-colors duration-300 hover:border-coral/50"
+    >
+      <span className="flex items-center justify-between gap-2 text-xs font-semibold text-foreground">
+        <span className="flex min-w-0 items-center gap-2">
+          <span className="shrink-0 text-muted-foreground transition-colors group-hover:text-coral-ink">{stat.icon}</span>
+          <span className="truncate">{stat.platform}</span>
+        </span>
+        <ArrowUpRight className="size-3.5 shrink-0 text-muted-foreground opacity-0 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100" />
+      </span>
+      <span>
+        <span className="block text-xl font-bold tabular-nums tracking-tight text-foreground">{stat.solved}</span>
+        {stat.rating && <span className="mt-0.5 block truncate text-[11px] font-medium text-coral-ink">{stat.rating}</span>}
+      </span>
+    </a>
+  )
+}
+
+function ChartPanel({
+  title,
+  caption,
+  mounted,
+  delay,
+  children,
+}: {
+  title: string
+  caption: string
+  mounted: boolean
+  delay: number
+  children: React.ReactElement
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 32 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.9, ease: EASE, delay }}
+      className="rounded-md border border-border bg-card p-6 sm:p-8"
+    >
+      <div className="mb-6 flex items-baseline justify-between gap-4">
+        <h3 className="text-lg font-semibold text-foreground sm:text-xl">{title}</h3>
+        <span className="font-mono text-xs text-muted-foreground">{caption}</span>
+      </div>
+      <div className="h-[260px] w-full sm:h-[300px]">
+        {mounted ? (
+          <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
+            {children}
+          </ResponsiveContainer>
+        ) : (
+          <div className="h-full w-full animate-pulse rounded bg-pill/50" />
+        )}
+      </div>
+    </motion.div>
+  )
+}
+
+function ChartDefs({ id }: { id: string }) {
+  return (
+    <defs>
+      <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="var(--coral)" stopOpacity={0.35} />
+        <stop offset="100%" stopColor="var(--coral)" stopOpacity={0} />
+      </linearGradient>
+    </defs>
+  )
+}
+
+function ChartTooltip({
+  active,
+  payload,
+  label,
+  unit,
+}: {
+  active?: boolean
+  payload?: { value?: number | string }[]
+  label?: string | number
+  unit: string
+}) {
+  if (!active || !payload?.length) return null
+  return (
+    <div className="rounded-[4px] border border-border bg-popover px-3 py-2 shadow-lg">
+      <p className="font-mono text-[11px] text-muted-foreground">{label}</p>
+      <p className="text-sm font-semibold text-foreground">
+        <span className="text-coral-ink">{payload[0]?.value}</span> {unit}
+      </p>
+    </div>
   )
 }

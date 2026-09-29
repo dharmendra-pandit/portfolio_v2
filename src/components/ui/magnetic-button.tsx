@@ -1,49 +1,45 @@
-"use client";
+'use client'
 
-import { useRef, useState } from "react";
-import { motion, HTMLMotionProps } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { useRef } from 'react'
+import { motion, useMotionValue, useSpring, type HTMLMotionProps } from 'motion/react'
+import { cn } from '@/lib/utils'
 
-interface MagneticButtonProps extends HTMLMotionProps<"div"> {
-  children: React.ReactNode;
-  className?: string;
-  intensity?: number;
+interface MagneticButtonProps extends HTMLMotionProps<'div'> {
+  children: React.ReactNode
+  className?: string
+  intensity?: number
 }
 
-export function MagneticButton({
-  children,
-  className,
-  intensity = 0.3,
-  ...props
-}: MagneticButtonProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+/** Pulls its child toward the pointer. Motion values only — no React re-renders per frame. */
+export function MagneticButton({ children, className, intensity = 0.25, ...props }: MagneticButtonProps) {
+  const ref = useRef<HTMLDivElement>(null)
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+  const springX = useSpring(x, { stiffness: 220, damping: 16, mass: 0.2 })
+  const springY = useSpring(y, { stiffness: 220, damping: 16, mass: 0.2 })
 
-  const handleMouse = (e: React.MouseEvent<HTMLDivElement>) => {
-    const { clientX, clientY } = e;
-    const { height, width, left, top } = ref.current!.getBoundingClientRect();
-    const middleX = clientX - (left + width / 2);
-    const middleY = clientY - (top + height / 2);
-    setPosition({ x: middleX * intensity, y: middleY * intensity });
-  };
+  const handleMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType !== 'mouse' || !ref.current) return
+    const { left, top, width, height } = ref.current.getBoundingClientRect()
+    x.set((e.clientX - (left + width / 2)) * intensity)
+    y.set((e.clientY - (top + height / 2)) * intensity)
+  }
 
   const reset = () => {
-    setPosition({ x: 0, y: 0 });
-  };
-
-  const { x, y } = position;
+    x.set(0)
+    y.set(0)
+  }
 
   return (
     <motion.div
       ref={ref}
-      onMouseMove={handleMouse}
-      onMouseLeave={reset}
-      animate={{ x, y }}
-      transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
-      className={cn("relative inline-flex items-center justify-center", className)}
+      onPointerMove={handleMove}
+      onPointerLeave={reset}
+      style={{ x: springX, y: springY }}
+      className={cn('relative inline-flex', className)}
       {...props}
     >
       {children}
     </motion.div>
-  );
+  )
 }

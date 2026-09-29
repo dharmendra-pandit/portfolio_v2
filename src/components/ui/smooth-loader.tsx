@@ -1,47 +1,86 @@
-"use client";
+'use client'
 
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useRef, useState } from 'react'
+import { gsap, useGSAP } from '@/lib/gsap'
+import { markIntroDone } from '@/lib/intro'
 
 export const SmoothLoader = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const root = useRef<HTMLDivElement>(null)
+  const [hidden, setHidden] = useState(false)
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000); // 2 seconds loading screen
+  useGSAP(
+    () => {
+      const finish = () => {
+        markIntroDone()
+        setHidden(true)
+      }
 
-    return () => clearTimeout(timer);
-  }, []);
+      // Opened in a background tab: nobody is watching the curtain, so skip it and
+      // let the hero intro play the moment the tab becomes visible.
+      if (document.visibilityState === 'hidden') {
+        finish()
+        return
+      }
+
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      if (reduceMotion) {
+        gsap.to(root.current, { autoAlpha: 0, duration: 0.3, delay: 0.2, onComplete: finish })
+        return
+      }
+
+      const counter = { value: 0 }
+      const tl = gsap.timeline({ defaults: { ease: 'expo.out' } })
+
+      tl.from('[data-loader-word] > span', { yPercent: 110, duration: 0.9, stagger: 0.06 })
+        .from('[data-loader-dot]', { scale: 0, duration: 0.6, ease: 'back.out(3)' }, '-=0.45')
+        .to(
+          counter,
+          {
+            value: 100,
+            duration: 1.1,
+            ease: 'power2.inOut',
+            onUpdate: () => {
+              const el = root.current?.querySelector('[data-loader-count]')
+              if (el) el.textContent = String(Math.round(counter.value)).padStart(3, '0')
+            },
+          },
+          0.1,
+        )
+        .fromTo('[data-loader-bar]', { scaleX: 0 }, { scaleX: 1, duration: 1.1, ease: 'power2.inOut' }, 0.1)
+        .to('[data-loader-word] > span, [data-loader-dot]', { yPercent: -110, duration: 0.6, ease: 'expo.in', stagger: 0.03 }, '+=0.1')
+        .to(root.current, { yPercent: -100, duration: 0.9, ease: 'expo.inOut' }, '-=0.25')
+        .call(markIntroDone, [], '-=0.45')
+        .call(finish)
+    },
+    { scope: root },
+  )
+
+  if (hidden) return null
 
   return (
-    <AnimatePresence>
-      {isLoading && (
-        <motion.div
-          key="loader"
-          initial={{ opacity: 1 }}
-          exit={{ opacity: 0, y: -50 }}
-          transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background"
-        >
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="flex flex-col items-center gap-4"
-          >
-            <div className="w-16 h-16 border-4 border-foreground/20 border-t-foreground rounded-full animate-spin" />
-            <motion.h1 
-              className="text-2xl font-bold tracking-widest text-foreground uppercase"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              System Initializing
-            </motion.h1>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-};
+    <div
+      ref={root}
+      aria-hidden
+      className="loader-failsafe fixed inset-0 z-[100] flex items-center justify-center bg-background"
+    >
+      <div className="flex items-end overflow-hidden">
+        <p data-loader-word className="flex overflow-hidden text-5xl sm:text-7xl font-bold tracking-tight text-foreground">
+          {'Hello'.split('').map((c, i) => (
+            <span key={i} className="inline-block">
+              {c}
+            </span>
+          ))}
+        </p>
+        <span data-loader-dot className="mb-2 sm:mb-3 ml-1.5 inline-block size-3 sm:size-4 rounded-full bg-coral" />
+      </div>
+
+      <span
+        data-loader-count
+        className="absolute bottom-8 right-6 sm:right-10 font-mono text-sm tabular-nums text-muted-foreground"
+      >
+        000
+      </span>
+      <span data-loader-bar className="absolute bottom-0 left-0 h-[3px] w-full origin-left bg-coral" />
+    </div>
+  )
+}
