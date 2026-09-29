@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { ArrowUp, MessageCircle, X } from 'lucide-react'
 import { PROFILE } from '@/data/portfolio'
 import { useIntroDone } from '@/lib/intro'
+import { getLenis } from '@/lib/scroll'
 import { cn } from '@/lib/utils'
 
 type Msg = { role: 'user' | 'assistant'; content: string }
@@ -23,6 +24,9 @@ const SUGGESTIONS = [
 ]
 const LIMIT_MESSAGE = `Thanks for chatting! You've used all ${MAX_QUESTIONS} questions for today. To know more, email Dharmendra at ${PROFILE.email} or connect on ${PROFILE.links.linkedin.replace(/^https?:\/\/(www\.)?/, '')} — he'd be happy to hear from you.`
 const EASE = [0.16, 1, 0.3, 1] as const
+// Phones in either orientation get a full-screen panel. Matches the `compact` variant in globals.css.
+const COMPACT_QUERY = '(max-width: 639.98px), (max-height: 539.98px)'
+const isCompact = () => window.matchMedia(COMPACT_QUERY).matches
 
 // Questions are counted per browser for a day, so a reload doesn't reset the limit.
 function loadUsage(): Usage {
@@ -54,13 +58,44 @@ export const ChatAssistant = () => {
   const [usage, setUsage] = useState(loadUsage)
   const remaining = Math.max(0, MAX_QUESTIONS - usage.count)
   const limitReached = remaining === 0
+  const panel = useRef<HTMLDivElement>(null)
   const scroller = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const launcher = useRef<HTMLButtonElement>(null)
   const abort = useRef<AbortController | null>(null)
 
   useEffect(() => {
-    if (open) setTimeout(() => inputRef.current?.focus(), 250)
+    if (!open) return
+    if (!isCompact()) {
+      const timer = setTimeout(() => inputRef.current?.focus(), 250)
+      return () => clearTimeout(timer)
+    }
+
+    // Full-screen on phones: don't auto-focus (the keyboard would hide the
+    // suggestions) and freeze the page behind the panel.
+    const lenis = getLenis()
+    lenis?.stop()
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    // iOS doesn't shrink the layout for the on-screen keyboard, so size the
+    // panel to the visual viewport to keep the input above it.
+    const vv = window.visualViewport
+    const fit = () => {
+      if (!vv || !panel.current) return
+      panel.current.style.height = `${vv.height}px`
+      panel.current.style.top = `${vv.offsetTop}px`
+    }
+    fit()
+    vv?.addEventListener('resize', fit)
+    vv?.addEventListener('scroll', fit)
+
+    return () => {
+      vv?.removeEventListener('resize', fit)
+      vv?.removeEventListener('scroll', fit)
+      document.body.style.overflow = prevOverflow
+      lenis?.start()
+    }
   }, [open])
 
   useEffect(() => {
@@ -72,7 +107,8 @@ export const ChatAssistant = () => {
 
   const close = () => {
     setOpen(false)
-    launcher.current?.focus()
+    // The launcher is hidden behind the full-screen panel on phones; focus it once it's back.
+    requestAnimationFrame(() => launcher.current?.focus())
   }
 
   const ask = async (raw: string) => {
@@ -120,7 +156,8 @@ export const ChatAssistant = () => {
       if ((err as Error).name !== 'AbortError') write('Connection problem — please try again.')
     } finally {
       setBusy(false)
-      inputRef.current?.focus()
+      // On phones, re-focusing would pop the keyboard over the answer.
+      if (!isCompact()) inputRef.current?.focus()
     }
   }
 
@@ -129,6 +166,7 @@ export const ChatAssistant = () => {
       <AnimatePresence>
         {open && (
           <motion.div
+            ref={panel}
             role="dialog"
             aria-label="Ask about Dharmendra"
             initial={{ opacity: 0, y: 24, scale: 0.96 }}
@@ -136,7 +174,7 @@ export const ChatAssistant = () => {
             exit={{ opacity: 0, y: 16, scale: 0.97, transition: { duration: 0.18 } }}
             transition={{ duration: 0.45, ease: EASE }}
             onKeyDown={(e) => e.key === 'Escape' && close()}
-            className="fixed inset-x-3 bottom-24 z-[70] flex h-[min(560px,calc(100svh-8rem))] origin-bottom-right flex-col overflow-hidden rounded-lg border border-border bg-card shadow-[0_30px_80px_-20px_rgba(0,0,0,0.55)] sm:inset-x-auto sm:right-6 sm:w-[380px]"
+            className="fixed bottom-24 right-6 z-[70] flex h-[min(600px,calc(100dvh-8rem))] w-[380px] origin-bottom-right flex-col overflow-hidden rounded-lg border border-border bg-card shadow-[0_30px_80px_-20px_rgba(0,0,0,0.55)] compact:inset-0 compact:h-dvh compact:w-full compact:rounded-none compact:border-0"
           >
             {/* Header */}
             <div className="flex items-center gap-3 border-b border-border px-4 py-3.5">
@@ -152,7 +190,7 @@ export const ChatAssistant = () => {
                 type="button"
                 onClick={close}
                 aria-label="Close assistant"
-                className="flex size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-pill hover:text-foreground"
+                className="flex size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-pill hover:text-foreground compact:size-11"
               >
                 <X className="size-4" />
               </button>
@@ -176,7 +214,7 @@ export const ChatAssistant = () => {
                       key={s}
                       type="button"
                       onClick={() => ask(s)}
-                      className="rounded-full border border-coral/50 px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-coral hover:text-[#121f28]"
+                      className="rounded-full border border-coral/50 px-3 py-1.5 text-left text-xs font-medium text-foreground transition-colors hover:bg-coral hover:text-[#121f28] compact:px-4 compact:py-2.5 compact:text-sm"
                     >
                       {s}
                     </button>
@@ -222,19 +260,19 @@ export const ChatAssistant = () => {
                   autoComplete="off"
                   maxLength={MAX_CHARS}
                   disabled={limitReached}
-                  className="min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/70 focus-visible:outline-none"
+                  className="min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/70 focus-visible:outline-none compact:text-base"
                 />
                 <button
                   type="submit"
                   disabled={busy || limitReached || !input.trim()}
                   aria-label="Send question"
-                  className="flex size-9 shrink-0 items-center justify-center rounded-full bg-coral text-[#121f28] transition-opacity disabled:opacity-40"
+                  className="flex size-9 shrink-0 items-center justify-center rounded-full bg-coral text-[#121f28] transition-opacity disabled:opacity-40 compact:size-10"
                 >
                   <ArrowUp className="size-4" />
                 </button>
               </div>
-              <p className="mt-2 flex justify-between px-2 text-[11px] text-muted-foreground">
-                <span>Only portfolio questions are answered.</span>
+              <p className="mt-2 flex justify-between gap-3 px-2 text-[11px] text-muted-foreground">
+                <span>Portfolio questions only</span>
                 {input.length > MAX_CHARS - 60 ? (
                   <span className="tabular-nums">
                     {input.length}/{MAX_CHARS}
@@ -264,7 +302,10 @@ export const ChatAssistant = () => {
             whileHover={{ scale: 1.06 }}
             whileTap={{ scale: 0.94 }}
             transition={{ type: 'spring', stiffness: 380, damping: 22, delay: 0.8 }}
-            className="fixed bottom-5 right-5 z-[70] flex size-14 items-center justify-center rounded-full bg-coral text-[#121f28] shadow-[0_12px_30px_-8px_rgba(255,113,91,0.6)] sm:bottom-6 sm:right-6"
+            className={cn(
+              'fixed bottom-5 right-5 z-[70] flex size-14 items-center justify-center rounded-full bg-coral text-[#121f28] shadow-[0_12px_30px_-8px_rgba(255,113,91,0.6)] sm:bottom-6 sm:right-6',
+              open && 'compact:hidden',
+            )}
           >
             <AnimatePresence mode="wait" initial={false}>
               <motion.span
