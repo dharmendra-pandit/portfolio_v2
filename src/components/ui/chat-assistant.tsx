@@ -3,20 +3,47 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { ArrowUp, MessageCircle, X } from 'lucide-react'
+import { PROFILE } from '@/data/portfolio'
 import { useIntroDone } from '@/lib/intro'
 import { cn } from '@/lib/utils'
 
 type Msg = { role: 'user' | 'assistant'; content: string }
+type Usage = { count: number; since: number }
 
 const MAX_CHARS = 300
 const HISTORY_SENT = 4
+const MAX_QUESTIONS = 3
+const USAGE_KEY = 'dp-assistant-usage'
+const USAGE_WINDOW = 24 * 60 * 60 * 1000
 const SUGGESTIONS = [
   'What does he work on?',
   'Show me his AI projects',
   "What's his tech stack?",
   'How can I contact him?',
 ]
+const LIMIT_MESSAGE = `Thanks for chatting! You've used all ${MAX_QUESTIONS} questions for today. To know more, email Dharmendra at ${PROFILE.email} or connect on ${PROFILE.links.linkedin.replace(/^https?:\/\/(www\.)?/, '')} — he'd be happy to hear from you.`
 const EASE = [0.16, 1, 0.3, 1] as const
+
+// Questions are counted per browser for a day, so a reload doesn't reset the limit.
+function loadUsage(): Usage {
+  try {
+    const saved = JSON.parse(localStorage.getItem(USAGE_KEY) ?? 'null') as Usage | null
+    if (saved && Date.now() - saved.since < USAGE_WINDOW) return saved
+  } catch {
+    // Storage unavailable (SSR, private mode) — fall back to a fresh count.
+  }
+  return { count: 0, since: Date.now() }
+}
+
+function countQuestion(usage: Usage): Usage {
+  const next = { count: usage.count + 1, since: usage.count === 0 ? Date.now() : usage.since }
+  try {
+    localStorage.setItem(USAGE_KEY, JSON.stringify(next))
+  } catch {
+    // Non-critical: the in-memory count still applies for this visit.
+  }
+  return next
+}
 
 export const ChatAssistant = () => {
   const introDone = useIntroDone()
@@ -24,6 +51,9 @@ export const ChatAssistant = () => {
   const [messages, setMessages] = useState<Msg[]>([])
   const [input, setInput] = useState('')
   const [busy, setBusy] = useState(false)
+  const [usage, setUsage] = useState(loadUsage)
+  const remaining = Math.max(0, MAX_QUESTIONS - usage.count)
+  const limitReached = remaining === 0
   const scroller = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const launcher = useRef<HTMLButtonElement>(null)
@@ -47,7 +77,9 @@ export const ChatAssistant = () => {
 
   const ask = async (raw: string) => {
     const question = raw.trim().slice(0, MAX_CHARS)
-    if (!question || busy) return
+    if (!question || busy || limitReached) return
+
+    setUsage(countQuestion(usage))
 
     const next: Msg[] = [...messages, { role: 'user', content: question }]
     setMessages([...next, { role: 'assistant', content: '' }])
@@ -137,8 +169,8 @@ export const ChatAssistant = () => {
                 Hi! I can tell you about Dharmendra&apos;s projects, skills, experience and how to reach him.
               </Bubble>
 
-              {messages.length === 0 && (
-                <div className="flex flex-wrap gap-2 pt-1">
+              {messages.length === 0 && !limitReached && (
+                <div className="flex flex-col items-start gap-2 pt-1">
                   {SUGGESTIONS.map((s) => (
                     <button
                       key={s}
@@ -161,6 +193,12 @@ export const ChatAssistant = () => {
                   </Bubble>
                 ),
               )}
+
+              {limitReached && !busy && (
+                <Bubble role="assistant">
+                  <Linkified text={LIMIT_MESSAGE} />
+                </Bubble>
+              )}
             </div>
 
             {/* Input */}
@@ -180,14 +218,15 @@ export const ChatAssistant = () => {
                   id="chat-input"
                   value={input}
                   onChange={(e) => setInput(e.target.value.slice(0, MAX_CHARS))}
-                  placeholder="Ask about his work…"
+                  placeholder={limitReached ? 'Question limit reached' : 'Ask about his work…'}
                   autoComplete="off"
                   maxLength={MAX_CHARS}
+                  disabled={limitReached}
                   className="min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/70 focus-visible:outline-none"
                 />
                 <button
                   type="submit"
-                  disabled={busy || !input.trim()}
+                  disabled={busy || limitReached || !input.trim()}
                   aria-label="Send question"
                   className="flex size-9 shrink-0 items-center justify-center rounded-full bg-coral text-[#121f28] transition-opacity disabled:opacity-40"
                 >
@@ -196,9 +235,13 @@ export const ChatAssistant = () => {
               </div>
               <p className="mt-2 flex justify-between px-2 text-[11px] text-muted-foreground">
                 <span>Only portfolio questions are answered.</span>
-                {input.length > MAX_CHARS - 60 && (
+                {input.length > MAX_CHARS - 60 ? (
                   <span className="tabular-nums">
                     {input.length}/{MAX_CHARS}
+                  </span>
+                ) : (
+                  <span className="tabular-nums">
+                    {remaining}/{MAX_QUESTIONS} questions left
                   </span>
                 )}
               </p>
@@ -234,7 +277,7 @@ export const ChatAssistant = () => {
                 {open ? <X className="size-6" /> : <MessageCircle className="size-6" />}
               </motion.span>
             </AnimatePresence>
-            {!open && messages.length === 0 && (
+            {!open && messages.length === 0 && !limitReached && (
               <span className="absolute -right-0.5 -top-0.5 flex size-3.5">
                 <span className="absolute inset-0 animate-ping rounded-full bg-coral/70" />
                 <span className="relative size-3.5 rounded-full border-2 border-background bg-emerald-400" />
