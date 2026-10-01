@@ -4,10 +4,6 @@
     "ranking": "Rank 2016287",
     "activityData": [
       {
-        "name": "Mar",
-        "solved": 3
-      },
-      {
         "name": "Apr",
         "solved": 5
       },
@@ -29,6 +25,10 @@
       },
       {
         "name": "Sep",
+        "solved": 0
+      },
+      {
+        "name": "Oct",
         "solved": 0
       }
     ]
