@@ -40,7 +40,7 @@ function buildProfile() {
     `About: ${ABOUT.join(' ')}`,
     `Services: ${SERVICES.map((sv) => `${sv.title} — ${sv.desc}`).join(' ')}`,
     `Skills: ${SKILL_CATEGORIES.map((c) => `${c.title}: ${c.skills.join(', ')}`).join('. ')}.`,
-    `Education & milestones: ${TIMELINE.map((t) => `${t.title} (${t.org}, ${t.date}): ${t.description}`).join(' ')}`,
+    `Experience, education & milestones: ${TIMELINE.map((t) => `${t.title} (${t.org}, ${t.date}): ${t.description}`).join(' ')}`,
     `Certifications: ${CERTIFICATIONS.map((c) => `${c.title} (${c.issuer}, ${c.date})`).join('; ')}.`,
     `Coding stats: ${lc + gfg + c360}+ DSA problems solved (LeetCode ${lc}, ${s.leetcode?.ranking ?? 'unranked'}; GeeksforGeeks ${gfg}; Code360 ${c360}, ${s.code360?.rating ?? ''}). GitHub: ${toInt(s.github?.publicRepos)} public repos. Kaggle tier: ${s.kaggle?.profile?.tier ?? 'n/a'}.`,
     `Pinned GitHub projects:\n${projects.join('\n')}`,

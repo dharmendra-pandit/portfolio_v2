@@ -84,6 +84,20 @@ export const SKILL_CATEGORIES = [
 
 export const TIMELINE = [
   {
+    id: 'brandthink',
+    date: 'Aug 2026 — Present',
+    title: 'Full Stack Engineer',
+    org: 'BrandThink, Jamshedpur',
+    description: 'Building and shipping product features end to end, across both the frontend and the backend.',
+  },
+  {
+    id: 'hostro',
+    date: 'Aug 2025 — Oct 2025',
+    title: 'Full Stack Engineer Intern',
+    org: 'Hostro Ventures Pvt. Ltd., Jaipur',
+    description: 'A three-month full-stack internship, contributing to web application features across the stack.',
+  },
+  {
     id: 'btech',
     date: 'Jul 2023 — Jul 2027',
     title: 'B.Tech in Computer Science Engineering',

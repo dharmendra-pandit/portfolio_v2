@@ -1,12 +1,14 @@
 'use client'
 
 import { useRef } from 'react'
-import { GraduationCap, Sparkles, Bot, Cloud } from 'lucide-react'
+import { BriefcaseBusiness, CodeXml, GraduationCap, Sparkles, Bot, Cloud } from 'lucide-react'
 import { gsap, ScrollTrigger, useGSAP, MOTION_OK } from '@/lib/gsap'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { TIMELINE as ENTRIES } from '@/data/portfolio'
 
 const ICONS: Record<(typeof ENTRIES)[number]['id'], typeof Cloud> = {
+  brandthink: BriefcaseBusiness,
+  hostro: CodeXml,
   btech: GraduationCap,
   'ai-apps': Sparkles,
   genai: Bot,
@@ -57,9 +59,9 @@ export const Experience = () => {
     <section ref={root} id="experience" className="relative overflow-hidden py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <SectionHeading
-          eyebrow="Education & milestones"
+          eyebrow="Experience & education"
           title="My Journey"
-          description="Where I study, and the things I've built and learned along the way."
+          description="Where I've worked, where I study, and the things I've built and learned along the way."
         />
 
         <div data-timeline className="relative mx-auto mt-20 max-w-4xl">
