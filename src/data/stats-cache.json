@@ -1,7 +1,7 @@
 {
   "leetcode": {
     "totalSolved": "79",
-    "ranking": "Rank 2031316",
+    "ranking": "Rank 2032575",
     "activityData": [
       {
         "name": "Apr",
@@ -52,19 +52,6 @@
     },
     "datasets": [
       {
-        "title": "Food Delivery Time Prediction Dataset",
-        "description": "A realistic synthetic food delivery dataset with 50,000 orders",
-        "datasetName": "Food Delivery Time Prediction Dataset",
-        "tags": [
-          "Dataset",
-          "CSV"
-        ],
-        "lastUpdated": "Aug 2026",
-        "notebookUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/food-delivery-time-prediction-dataset",
-        "kaggleUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/food-delivery-time-prediction-dataset",
-        "type": "dataset"
-      },
-      {
         "title": "Credit Card Customer Behavior Segmentation Dataset",
         "description": "The dataset simulates real-world customer profiles, spending behavior",
         "datasetName": "Credit Card Customer Behavior Segmentation Dataset",
@@ -75,6 +62,19 @@
         "lastUpdated": "Jul 2026",
         "notebookUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/credit-card-customer-behavior-segmentation-dataset",
         "kaggleUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/credit-card-customer-behavior-segmentation-dataset",
+        "type": "dataset"
+      },
+      {
+        "title": "Food Delivery Time Prediction Dataset",
+        "description": "A realistic synthetic food delivery dataset with 50,000 orders",
+        "datasetName": "Food Delivery Time Prediction Dataset",
+        "tags": [
+          "Dataset",
+          "CSV"
+        ],
+        "lastUpdated": "Aug 2026",
+        "notebookUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/food-delivery-time-prediction-dataset",
+        "kaggleUrl": "https://www.kaggle.com/datasets/dharmendrapandit12/food-delivery-time-prediction-dataset",
         "type": "dataset"
       },
       {
