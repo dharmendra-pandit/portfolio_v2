@@ -325,7 +325,7 @@
   "docker": {
     "username": "iampanditji",
     "link": "https://hub.docker.com/u/iampanditji",
-    "pullCount": 135,
+    "pullCount": 136,
     "starCount": 1,
     "reposCount": 3,
     "repositories": [
@@ -334,7 +334,7 @@
         "description": "Simple Node.js project with Docker and Docker Hub integration.",
         "url": "https://hub.docker.com/r/iampanditji/simple-node-project",
         "starCount": 1,
-        "pullCount": 32,
+        "pullCount": 33,
         "lastUpdated": "Jul 2026",
         "tags": [
           "Monitoring & observability",
