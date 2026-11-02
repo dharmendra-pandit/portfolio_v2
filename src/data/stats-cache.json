@@ -225,35 +225,6 @@
         }
       },
       {
-        "name": "Campus-Post",
-        "description": "CampusPost is a modern campus community platform that enables students to share posts, connect with peers, and engage in campus discussions in real time. Built with a responsive full-stack architecture for seamless social interaction and collaboration.",
-        "url": "https://github.com/dharmendra-pandit/Campus-Post",
-        "homepageUrl": "https://campus-post.vercel.app",
-        "stargazerCount": 1,
-        "forkCount": 0,
-        "updatedAt": "2026-08-19T15:03:18Z",
-        "primaryLanguage": {
-          "name": "JavaScript",
-          "color": "#f1e05a"
-        },
-        "languages": {
-          "nodes": [
-            {
-              "name": "JavaScript",
-              "color": "#f1e05a"
-            },
-            {
-              "name": "CSS",
-              "color": "#663399"
-            },
-            {
-              "name": "EJS",
-              "color": "#a91e50"
-            }
-          ]
-        }
-      },
-      {
         "name": "Dr.-Audit---AI-Resume-Health-Checker",
         "description": "An intelligent Applicant Tracking System (ATS) calculator that evaluates resumes against job descriptions using a hybrid AI architecture. The system combines Python's FastAPI backend for intelligent document processing with a Telegram Bot interface for seamless user interaction.",
         "url": "https://github.com/dharmendra-pandit/Dr.-Audit---AI-Resume-Health-Checker",
@@ -316,6 +287,27 @@
             {
               "name": "JavaScript",
               "color": "#f1e05a"
+            }
+          ]
+        }
+      },
+      {
+        "name": "Insight-Cart",
+        "description": "AI-powered product review analyzer built with Python and Streamlit, integrating ChatGPT and DeepSeek APIs for sentiment analysis, pros and cons summaries, price comparisons, and related product recommendations. Includes basic authentication to help prevent unauthorized access and misuse.",
+        "url": "https://github.com/dharmendra-pandit/Insight-Cart",
+        "homepageUrl": null,
+        "stargazerCount": 1,
+        "forkCount": 0,
+        "updatedAt": "2026-11-02T06:24:52Z",
+        "primaryLanguage": {
+          "name": "Python",
+          "color": "#3572A5"
+        },
+        "languages": {
+          "nodes": [
+            {
+              "name": "Python",
+              "color": "#3572A5"
             }
           ]
         }
