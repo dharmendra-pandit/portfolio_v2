@@ -317,7 +317,7 @@
   "docker": {
     "username": "iampanditji",
     "link": "https://hub.docker.com/u/iampanditji",
-    "pullCount": 139,
+    "pullCount": 140,
     "starCount": 1,
     "reposCount": 3,
     "repositories": [
@@ -329,8 +329,8 @@
         "pullCount": 35,
         "lastUpdated": "Jul 2026",
         "tags": [
-          "Web servers",
           "Monitoring & observability",
+          "Web servers",
           "Web analytics"
         ],
         "type": "docker"
@@ -340,7 +340,7 @@
         "description": "Node.js and Express backend API for the Simple Blog Post application with MongoDB integration.",
         "url": "https://hub.docker.com/r/iampanditji/simple-blogpost-backend",
         "starCount": 0,
-        "pullCount": 56,
+        "pullCount": 57,
         "lastUpdated": "Jul 2026",
         "tags": [
           "API management",
@@ -357,8 +357,8 @@
         "pullCount": 48,
         "lastUpdated": "Jul 2026",
         "tags": [
-          "Web servers",
           "Databases & storage",
+          "Web servers",
           "Web analytics"
         ],
         "type": "docker"
