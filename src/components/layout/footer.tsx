@@ -1,56 +1,46 @@
 'use client'
 
 import { ArrowUp } from 'lucide-react'
-import { FaGithub, FaLinkedinIn, FaXTwitter } from 'react-icons/fa6'
-import { MdEmail } from 'react-icons/md'
-import { scrollToSection } from '@/lib/scroll'
-import { MagneticButton } from '@/components/ui/magnetic-button'
+import { Reveal } from '@/components/ui/motion'
+import { PROFILE } from '@/data/portfolio'
 
 const LINKS = [
-  { label: 'Email', href: 'mailto:dharmendra193728@gmail.com', icon: MdEmail },
-  { label: 'GitHub', href: 'https://github.com/dharmendra-pandit', icon: FaGithub },
-  { label: 'LinkedIn', href: 'https://linkedin.com/in/dharmendra-pandit1', icon: FaLinkedinIn },
-  { label: 'X (Twitter)', href: 'https://x.com/Dharmendra62042', icon: FaXTwitter },
+  { label: 'Email', href: `mailto:${PROFILE.email}` },
+  { label: 'LinkedIn', href: PROFILE.links.linkedin },
+  { label: 'GitHub', href: PROFILE.links.github },
+  { label: 'X', href: PROFILE.links.x },
 ]
 
-export const Footer = () => {
-  return (
-    <footer className="relative border-t border-border bg-surface">
-      <div className="mx-auto flex max-w-7xl flex-col items-center px-5 py-14 text-center sm:px-8">
-        <p className="text-xl font-bold tracking-tight text-foreground">
-          Dharmendra Pandit<span className="text-coral">.</span>
-        </p>
-        <p className="mt-3 text-sm text-muted-foreground">
-          Designed &amp; built with care. © {new Date().getFullYear()} Dharmendra Pandit — all rights reserved.
-        </p>
-
-        <ul className="mt-8 flex items-center gap-4">
-          {LINKS.map(({ label, href, icon: Icon }) => (
-            <li key={label}>
-              <MagneticButton intensity={0.35}>
-                <a
-                  href={href}
-                  target={href.startsWith('mailto:') ? undefined : '_blank'}
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="flex size-12 items-center justify-center rounded-full bg-foreground text-background transition-colors duration-300 hover:bg-coral hover:text-[#121f28]"
-                >
-                  <Icon className="size-5" />
-                </a>
-              </MagneticButton>
-            </li>
-          ))}
-        </ul>
-
-        <button
-          type="button"
-          onClick={() => scrollToSection('home')}
-          className="group mt-10 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-coral-ink"
-        >
-          Back to top
-          <ArrowUp className="size-3.5 transition-transform duration-300 group-hover:-translate-y-1" />
-        </button>
-      </div>
-    </footer>
-  )
-}
+export const Footer = () => (
+  <footer className="relative overflow-hidden border-t border-border">
+    <div aria-hidden className="bg-blueprint pointer-events-none absolute inset-0 opacity-60" />
+    <Reveal className="relative mx-auto flex max-w-6xl flex-col gap-6 px-5 py-12 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-8">
+      <p>
+        © {new Date().getFullYear()} <span className="text-foreground">{PROFILE.name}</span>
+      </p>
+      <ul className="flex flex-wrap items-center gap-x-6 gap-y-2">
+        {LINKS.map(({ label, href }) => (
+          <li key={label}>
+            <a
+              href={href}
+              target={href.startsWith('mailto:') ? undefined : '_blank'}
+              rel="noopener noreferrer"
+              className="relative transition-colors duration-300 after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-right after:scale-x-0 after:bg-brass after:transition-transform after:duration-500 after:ease-[var(--ease-out-expo)] hover:text-foreground hover:after:origin-left hover:after:scale-x-100"
+            >
+              {label}
+            </a>
+          </li>
+        ))}
+        <li>
+          <a
+            href="#home"
+            className="group inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 transition-colors duration-300 hover:border-brass/60 hover:text-foreground"
+          >
+            Back to top
+            <ArrowUp className="size-3.5 transition-transform duration-300 group-hover:-translate-y-0.5" />
+          </a>
+        </li>
+      </ul>
+    </Reveal>
+  </footer>
+)

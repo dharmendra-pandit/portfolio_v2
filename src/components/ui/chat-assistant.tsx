@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { ArrowUp, MessageCircle, X } from 'lucide-react'
 import { PROFILE } from '@/data/portfolio'
-import { useIntroDone } from '@/lib/intro'
 import { getLenis } from '@/lib/scroll'
 import { cn } from '@/lib/utils'
 
@@ -17,12 +16,12 @@ const MAX_QUESTIONS = 3
 const USAGE_KEY = 'dp-assistant-usage'
 const USAGE_WINDOW = 24 * 60 * 60 * 1000
 const SUGGESTIONS = [
-  'What does he work on?',
-  'Show me his AI projects',
-  "What's his tech stack?",
+  'What is his current role?',
+  'Which AI projects has he built?',
+  'What is his technical stack?',
   'How can I contact him?',
 ]
-const LIMIT_MESSAGE = `Thanks for chatting! You've used all ${MAX_QUESTIONS} questions for today. To know more, email Dharmendra at ${PROFILE.email} or connect on ${PROFILE.links.linkedin.replace(/^https?:\/\/(www\.)?/, '')} — he'd be happy to hear from you.`
+const LIMIT_MESSAGE = `You have reached the limit of ${MAX_QUESTIONS} questions for today. For further information, please email Dharmendra at ${PROFILE.email} or connect on ${PROFILE.links.linkedin.replace(/^https?:\/\/(www\.)?/, '')}.`
 const EASE = [0.16, 1, 0.3, 1] as const
 // Phones in either orientation get a full-screen panel. Matches the `compact` variant in globals.css.
 const COMPACT_QUERY = '(max-width: 639.98px), (max-height: 539.98px)'
@@ -50,7 +49,6 @@ function countQuestion(usage: Usage): Usage {
 }
 
 export const ChatAssistant = () => {
-  const introDone = useIntroDone()
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<Msg[]>([])
   const [input, setInput] = useState('')
@@ -174,23 +172,22 @@ export const ChatAssistant = () => {
             exit={{ opacity: 0, y: 16, scale: 0.97, transition: { duration: 0.18 } }}
             transition={{ duration: 0.45, ease: EASE }}
             onKeyDown={(e) => e.key === 'Escape' && close()}
-            className="fixed bottom-24 right-6 z-[70] flex h-[min(600px,calc(100dvh-8rem))] w-[380px] origin-bottom-right flex-col overflow-hidden rounded-lg border border-border bg-card shadow-[0_30px_80px_-20px_rgba(0,0,0,0.55)] compact:inset-0 compact:h-dvh compact:w-full compact:rounded-none compact:border-0"
+            className="fixed bottom-24 right-6 z-[70] flex h-[min(600px,calc(100dvh-8rem))] w-[380px] origin-bottom-right flex-col overflow-hidden rounded-md border border-border bg-card shadow-[0_24px_60px_-24px_rgba(13,34,51,0.45)] compact:inset-0 compact:h-dvh compact:w-full compact:rounded-none compact:border-0"
           >
             {/* Header */}
             <div className="flex items-center gap-3 border-b border-border px-4 py-3.5">
-              <span className="relative flex size-9 shrink-0 items-center justify-center rounded-full bg-coral text-xs font-bold text-[#121f28]">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-cta font-serif text-xs font-medium text-cta-foreground">
                 DP
-                <span className="absolute -bottom-0.5 -right-0.5 size-2.5 rounded-full border-2 border-card bg-emerald-400" />
               </span>
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-semibold text-foreground">Ask about Dharmendra</p>
-                <p className="truncate text-xs text-muted-foreground">AI assistant · answers from this portfolio only</p>
+                <p className="text-sm font-medium text-foreground">Ask about Dharmendra</p>
+                <p className="truncate text-xs text-muted-foreground">AI assistant. Answers are based on this portfolio only.</p>
               </div>
               <button
                 type="button"
                 onClick={close}
                 aria-label="Close assistant"
-                className="flex size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-pill hover:text-foreground compact:size-11"
+                className="flex size-9 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:bg-pill hover:text-foreground compact:size-11"
               >
                 <X className="size-4" />
               </button>
@@ -204,7 +201,7 @@ export const ChatAssistant = () => {
               className="flex-1 space-y-3 overflow-y-auto overscroll-contain px-4 py-4"
             >
               <Bubble role="assistant">
-                Hi! I can tell you about Dharmendra&apos;s projects, skills, experience and how to reach him.
+                I can answer questions about Dharmendra&apos;s experience, projects, skills and contact details.
               </Bubble>
 
               {messages.length === 0 && !limitReached && (
@@ -214,7 +211,7 @@ export const ChatAssistant = () => {
                       key={s}
                       type="button"
                       onClick={() => ask(s)}
-                      className="rounded-full border border-coral/50 px-3 py-1.5 text-left text-xs font-medium text-foreground transition-colors hover:bg-coral hover:text-[#121f28] compact:px-4 compact:py-2.5 compact:text-sm"
+                      className="rounded-sm border border-border px-3 py-1.5 text-left text-xs font-medium text-foreground transition-colors hover:border-brass/60 hover:bg-brass/10 compact:px-4 compact:py-2.5 compact:text-sm"
                     >
                       {s}
                     </button>
@@ -247,7 +244,7 @@ export const ChatAssistant = () => {
               }}
               className="border-t border-border p-3"
             >
-              <div className="flex items-center gap-2 rounded-full border border-border bg-background py-1.5 pl-4 pr-1.5 transition-colors focus-within:border-coral">
+              <div className="flex items-center gap-2 rounded-sm border border-input bg-background py-1.5 pl-3.5 pr-1.5 transition-colors focus-within:border-brass">
                 <label htmlFor="chat-input" className="sr-only">
                   Your question
                 </label>
@@ -266,7 +263,7 @@ export const ChatAssistant = () => {
                   type="submit"
                   disabled={busy || limitReached || !input.trim()}
                   aria-label="Send question"
-                  className="flex size-9 shrink-0 items-center justify-center rounded-full bg-coral text-[#121f28] transition-opacity disabled:opacity-40 compact:size-10"
+                  className="flex size-9 shrink-0 items-center justify-center rounded-md bg-cta text-cta-foreground transition-opacity disabled:opacity-30 compact:size-10"
                 >
                   <ArrowUp className="size-4" />
                 </button>
@@ -288,45 +285,29 @@ export const ChatAssistant = () => {
         )}
       </AnimatePresence>
 
-      <AnimatePresence>
-        {introDone && (
-          <motion.button
-            ref={launcher}
-            type="button"
-            onClick={() => (open ? close() : setOpen(true))}
-            aria-label={open ? 'Close assistant' : 'Ask the AI assistant about Dharmendra'}
-            aria-expanded={open}
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            whileHover={{ scale: 1.06 }}
-            whileTap={{ scale: 0.94 }}
-            transition={{ type: 'spring', stiffness: 380, damping: 22, delay: 0.8 }}
-            className={cn(
-              'fixed bottom-5 right-5 z-[70] flex size-14 items-center justify-center rounded-full bg-coral text-[#121f28] shadow-[0_12px_30px_-8px_rgba(255,113,91,0.6)] sm:bottom-6 sm:right-6',
-              open && 'compact:hidden',
-            )}
-          >
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.span
-                key={open ? 'x' : 'chat'}
-                initial={{ rotate: -90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: 90, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                {open ? <X className="size-6" /> : <MessageCircle className="size-6" />}
-              </motion.span>
-            </AnimatePresence>
-            {!open && messages.length === 0 && !limitReached && (
-              <span className="absolute -right-0.5 -top-0.5 flex size-3.5">
-                <span className="absolute inset-0 animate-ping rounded-full bg-coral/70" />
-                <span className="relative size-3.5 rounded-full border-2 border-background bg-emerald-400" />
-              </span>
-            )}
-          </motion.button>
+      <button
+        ref={launcher}
+        type="button"
+        onClick={() => (open ? close() : setOpen(true))}
+        aria-label={open ? 'Close assistant' : 'Ask the AI assistant about Dharmendra'}
+        aria-expanded={open}
+        className={cn(
+          'fixed bottom-5 right-5 z-[70] flex size-12 items-center justify-center rounded-full bg-cta text-cta-foreground shadow-[0_12px_28px_-10px_var(--glow),0_8px_20px_-12px_rgba(13,34,51,0.6)] transition-transform duration-300 ease-[var(--ease-out-expo)] hover:-translate-y-0.5 hover:scale-105 active:scale-95 sm:bottom-6 sm:right-6',
+          open && 'compact:hidden',
         )}
-      </AnimatePresence>
+      >
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.span
+            key={open ? 'x' : 'chat'}
+            initial={{ rotate: -90, opacity: 0, scale: 0.6 }}
+            animate={{ rotate: 0, opacity: 1, scale: 1 }}
+            exit={{ rotate: 90, opacity: 0, scale: 0.6 }}
+            transition={{ duration: 0.25 }}
+          >
+            {open ? <X className="size-5" /> : <MessageCircle className="size-5" />}
+          </motion.span>
+        </AnimatePresence>
+      </button>
     </>
   )
 }
@@ -336,10 +317,8 @@ function Bubble({ role, children }: { role: Msg['role']; children: React.ReactNo
     <div className={cn('flex', role === 'user' ? 'justify-end' : 'justify-start')}>
       <div
         className={cn(
-          'max-w-[85%] whitespace-pre-wrap break-words rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed',
-          role === 'user'
-            ? 'rounded-br-sm bg-coral text-[#121f28]'
-            : 'rounded-bl-sm bg-pill text-foreground',
+          'max-w-[85%] whitespace-pre-wrap break-words rounded-md px-3.5 py-2.5 text-sm leading-relaxed',
+          role === 'user' ? 'bg-cta text-cta-foreground' : 'bg-pill text-foreground',
         )}
       >
         {children}
@@ -351,7 +330,7 @@ function Bubble({ role, children }: { role: Msg['role']; children: React.ReactNo
 function TypingDots() {
   return (
     <div className="flex justify-start" aria-label="Assistant is typing">
-      <div className="flex gap-1 rounded-2xl rounded-bl-sm bg-pill px-4 py-3.5">
+      <div className="flex gap-1 rounded-md bg-pill px-4 py-3.5">
         {[0, 1, 2].map((i) => (
           <motion.span
             key={i}
@@ -386,7 +365,7 @@ function Linkified({ text }: { text: string }) {
               href={href}
               target={href.startsWith('mailto:') ? undefined : '_blank'}
               rel="noopener noreferrer"
-              className="font-medium text-coral-ink underline decoration-coral/40 underline-offset-2 hover:decoration-coral"
+              className="font-medium text-brass underline decoration-brass/40 underline-offset-2 hover:decoration-brass"
             >
               {clean}
             </a>

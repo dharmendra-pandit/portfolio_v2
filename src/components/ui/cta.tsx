@@ -1,19 +1,16 @@
 import { cn } from '@/lib/utils'
 
-type CtaVariant = 'solid' | 'outline' | 'link'
+type CtaVariant = 'solid' | 'outline'
 
 const base =
-  'group/cta relative inline-flex items-center justify-center gap-2 whitespace-nowrap font-semibold transition-colors duration-300 cursor-pointer select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:transition-transform [&_svg]:duration-300'
+  'group/cta relative isolate inline-flex h-11 items-center justify-center gap-2 overflow-hidden whitespace-nowrap rounded-md px-5 text-sm font-medium transition-[transform,box-shadow,background-color,border-color,color] duration-300 ease-[var(--ease-out-expo)] cursor-pointer select-none active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:transition-transform [&_svg]:duration-300 [&_svg]:ease-[var(--ease-out-expo)] hover:[&_svg]:translate-x-0.5'
 
 const variants: Record<CtaVariant, string> = {
-  // Coral block with a light sweep on hover; navy label keeps 6:1 contrast.
+  // Brass (dark) / ink (light), with a light sheen that sweeps across on hover.
   solid:
-    'isolate h-12 overflow-hidden rounded-[3px] bg-coral px-6 text-sm text-[#121f28] after:absolute after:inset-0 after:-z-10 after:-translate-x-[101%] after:bg-white/25 after:transition-transform after:duration-500 after:ease-[var(--ease-out-expo)] hover:after:translate-x-0',
+    'bg-cta text-cta-foreground shadow-[0_1px_0_rgba(255,255,255,0.12)_inset] hover:-translate-y-0.5 hover:shadow-[0_12px_28px_-12px_var(--glow),0_1px_0_rgba(255,255,255,0.12)_inset] after:absolute after:inset-y-0 after:-left-1/2 after:-z-10 after:w-1/2 after:-skew-x-12 after:bg-white/25 after:opacity-0 after:transition-[transform,opacity] after:duration-700 after:ease-[var(--ease-out-expo)] hover:after:translate-x-[300%] hover:after:opacity-100',
   outline:
-    'isolate h-12 overflow-hidden rounded-[3px] border border-coral px-6 text-sm text-foreground after:absolute after:inset-0 after:-z-10 after:origin-bottom after:scale-y-0 after:bg-coral/12 after:transition-transform after:duration-500 after:ease-[var(--ease-out-expo)] hover:after:scale-y-100',
-  // Text link with a coral underline that redraws on hover.
-  link:
-    'h-12 text-sm text-foreground before:absolute before:bottom-2.5 before:left-0 before:h-px before:w-full before:bg-coral before:origin-right before:transition-transform before:duration-500 before:ease-[var(--ease-out-expo)] hover:before:scale-x-0 after:absolute after:bottom-2.5 after:left-0 after:h-px after:w-full after:bg-coral after:origin-left after:scale-x-0 after:transition-transform after:duration-500 after:delay-150 after:ease-[var(--ease-out-expo)] hover:after:scale-x-100 hover:[&_svg]:-translate-y-0.5 hover:[&_svg]:translate-x-0.5',
+    'border border-foreground/20 text-foreground hover:-translate-y-0.5 hover:border-brass/70 hover:bg-brass/[0.06]',
 }
 
 export function ctaClasses(variant: CtaVariant = 'solid', className?: string) {

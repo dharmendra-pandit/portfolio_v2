@@ -1,5 +1,15 @@
 import statsCache from '@/data/stats-cache.json'
-import { ABOUT, CERTIFICATIONS, PROFILE, SERVICES, SKILL_CATEGORIES, TIMELINE } from '@/data/portfolio'
+import {
+  ABOUT,
+  CERTIFICATIONS,
+  EDUCATION,
+  EXPERIENCE,
+  PROFILE,
+  SERVICES,
+  SKILL_CATEGORIES,
+  formatDuration,
+  formatRange,
+} from '@/data/portfolio'
 
 export const REFUSAL =
   "I can only answer questions about Dharmendra — his skills, projects, experience, or how to reach him."
@@ -38,9 +48,10 @@ function buildProfile() {
     `${PROFILE.name} — ${PROFILE.role} (AI/ML, backend, DevOps). Based in ${PROFILE.location}. ${PROFILE.availability}`,
     `Contact: ${PROFILE.email} | ${PROFILE.phone} | ${host(PROFILE.links.github)} | ${host(PROFILE.links.linkedin)} | ${host(PROFILE.links.x)}. Resume PDF: ${PROFILE.resume}`,
     `About: ${ABOUT.join(' ')}`,
-    `Services: ${SERVICES.map((sv) => `${sv.title} — ${sv.desc}`).join(' ')}`,
+    `Areas of practice: ${SERVICES.map((sv) => `${sv.title} — ${sv.desc}`).join(' ')}`,
     `Skills: ${SKILL_CATEGORIES.map((c) => `${c.title}: ${c.skills.join(', ')}`).join('. ')}.`,
-    `Experience, education & milestones: ${TIMELINE.map((t) => `${t.title} (${t.org}, ${t.date}): ${t.description}`).join(' ')}`,
+    `Experience: ${EXPERIENCE.map((t) => `${t.title} at ${t.org} (${t.type}, ${t.mode}, ${t.place}; ${formatRange(t.start, t.end)}, ${formatDuration(t.start, t.end)}): ${t.description} Skills: ${t.skills.join(', ')}.`).join(' ')}`,
+    `Education: ${EDUCATION.map((t) => `${t.title}, ${t.org} (${t.place}; ${formatRange(t.start, t.end)}): ${t.description}`).join(' ')}`,
     `Certifications: ${CERTIFICATIONS.map((c) => `${c.title} (${c.issuer}, ${c.date})`).join('; ')}.`,
     `Coding stats: ${lc + gfg + c360}+ DSA problems solved (LeetCode ${lc}, ${s.leetcode?.ranking ?? 'unranked'}; GeeksforGeeks ${gfg}; Code360 ${c360}, ${s.code360?.rating ?? ''}). GitHub: ${toInt(s.github?.publicRepos)} public repos. Kaggle tier: ${s.kaggle?.profile?.tier ?? 'n/a'}.`,
     `Pinned GitHub projects:\n${projects.join('\n')}`,

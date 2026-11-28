@@ -1,113 +1,132 @@
 'use client'
 
 import { useRef } from 'react'
-import { BriefcaseBusiness, CodeXml, GraduationCap, Sparkles, Bot, Cloud } from 'lucide-react'
-import { gsap, ScrollTrigger, useGSAP, MOTION_OK } from '@/lib/gsap'
-import { SectionHeading } from '@/components/ui/section-heading'
-import { TIMELINE as ENTRIES } from '@/data/portfolio'
+import { motion, useScroll, useSpring } from 'motion/react'
+import { Section, SubHeading } from '@/components/ui/section-heading'
+import { EASE, VIEWPORT, pop, slide, stagger, trackSpotlight } from '@/components/ui/motion'
+import { EDUCATION, EXPERIENCE, formatDuration, formatRange } from '@/data/portfolio'
+import { useMounted } from '@/lib/use-mounted'
 
-const ICONS: Record<(typeof ENTRIES)[number]['id'], typeof Cloud> = {
-  brandthink: BriefcaseBusiness,
-  hostro: CodeXml,
-  btech: GraduationCap,
-  'ai-apps': Sparkles,
-  genai: Bot,
-  cloud: Cloud,
+type Entry = {
+  id: string
+  start: string
+  end: string | null
+  title: string
+  org: string
+  monogram: string
+  type: string
+  mode: string | null
+  place: string
+  description: string
+  skills: readonly string[]
 }
 
-const TIMELINE = ENTRIES.map((e) => ({ ...e, icon: ICONS[e.id] }))
+export const Experience = () => (
+  <Section id="experience" title="Experience">
+    <SubHeading>Employment</SubHeading>
+    <Timeline entries={EXPERIENCE} showDuration />
 
-export const Experience = () => {
-  const root = useRef<HTMLElement>(null)
+    <SubHeading className="mt-20">Education</SubHeading>
+    <Timeline entries={EDUCATION} />
+  </Section>
+)
 
-  useGSAP(
-    () => {
-      const mm = gsap.matchMedia()
-      mm.add(MOTION_OK, () => {
-        gsap.fromTo(
-          '[data-progress]',
-          { scaleY: 0 },
-          {
-            scaleY: 1,
-            ease: 'none',
-            scrollTrigger: { trigger: '[data-timeline]', start: 'top 60%', end: 'bottom 60%', scrub: 0.6 },
-          },
-        )
-
-        gsap.utils.toArray<HTMLElement>('[data-entry]').forEach((entry) => {
-          const node = entry.querySelector('[data-node]')
-          gsap.from(entry.querySelectorAll('[data-reveal]'), {
-            autoAlpha: 0,
-            y: 26,
-            duration: 0.9,
-            ease: 'expo.out',
-            stagger: 0.08,
-            scrollTrigger: { trigger: entry, start: 'top 80%', once: true },
-          })
-          ScrollTrigger.create({
-            trigger: entry,
-            start: 'top 60%',
-            toggleClass: { targets: node!, className: 'is-active' },
-          })
-        })
-      })
-    },
-    { scope: root },
-  )
+function Timeline({ entries, showDuration = false }: { entries: readonly Entry[]; showDuration?: boolean }) {
+  const ref = useRef<HTMLOListElement>(null)
+  // The brass rail fills in as the reader scrolls through the entries.
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 80%', 'end 60%'] })
+  const fill = useSpring(scrollYProgress, { stiffness: 140, damping: 30, mass: 0.3 })
 
   return (
-    <section ref={root} id="experience" className="relative overflow-hidden py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <SectionHeading
-          eyebrow="Experience & education"
-          title="My Journey"
-          description="Where I've worked, where I study, and the things I've built and learned along the way."
-        />
-
-        <div data-timeline className="relative mx-auto mt-20 max-w-4xl">
-          <span aria-hidden className="absolute bottom-2 left-[5px] top-2 w-[2px] bg-frame md:left-[13.5rem]" />
-          <span
-            data-progress
+    <ol ref={ref} className="relative mt-8 space-y-6">
+      {entries.length > 1 && (
+        <>
+          <span aria-hidden className="absolute bottom-8 left-[21px] top-8 w-px bg-border" />
+          <motion.span
             aria-hidden
-            className="absolute bottom-2 left-[5px] top-2 w-[2px] origin-top bg-coral md:left-[13.5rem]"
+            style={{ scaleY: fill }}
+            className="absolute bottom-8 left-[21px] top-8 w-px origin-top bg-brass"
           />
+        </>
+      )}
+      {entries.map((entry) => (
+        <TimelineEntry key={entry.id} entry={entry} showDuration={showDuration} />
+      ))}
+    </ol>
+  )
+}
 
-          <ol className="space-y-16">
-            {TIMELINE.map(({ date, title, org, description, icon: Icon }) => (
-              <li
-                key={title}
-                data-entry
-                className="group relative grid gap-3 pl-10 md:grid-cols-[12rem_1fr] md:gap-12 md:pl-0"
+function TimelineEntry({ entry: e, showDuration }: { entry: Entry; showDuration: boolean }) {
+  const mounted = useMounted()
+  // A current role's length depends on today's date, so it is shown once running in the browser.
+  const duration = showDuration && (e.end || mounted) ? formatDuration(e.start, e.end) : null
+
+  return (
+    <motion.li
+      initial="hidden"
+      whileInView="show"
+      viewport={VIEWPORT}
+      variants={stagger(0.08)}
+      className="relative grid grid-cols-[44px_minmax(0,1fr)] gap-x-4 sm:gap-x-6"
+    >
+      <motion.div
+        aria-hidden
+        variants={{
+          hidden: { opacity: 0, scale: 0.6 },
+          show: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: EASE } },
+        }}
+        className="relative z-10 mt-5 flex size-11 items-center justify-center rounded-lg border border-brass/45 bg-card font-serif text-[15px] font-medium tracking-wide text-brass shadow-[0_0_0_6px_var(--background)]"
+      >
+        {e.monogram}
+      </motion.div>
+
+      <motion.article
+        variants={slide}
+        onPointerMove={trackSpotlight}
+        className="spotlight group rounded-xl border border-border bg-card/70 p-5 transition-[border-color,transform,box-shadow] duration-500 ease-[var(--ease-out-expo)] hover:-translate-y-0.5 hover:border-brass/40 hover:shadow-[0_24px_48px_-32px_rgba(13,34,51,0.45)] sm:p-6"
+      >
+        <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
+          <div>
+            <h4 className="text-lg font-medium leading-snug text-foreground sm:text-xl">{e.title}</h4>
+            <p className="mt-1 text-[15px] text-foreground/85">
+              {e.org}
+              <span className="text-muted-foreground">, {e.type}</span>
+            </p>
+          </div>
+          <p className="flex items-center gap-2 pt-1 text-sm tabular-nums text-muted-foreground">
+            {formatRange(e.start, e.end)}
+            {duration && (
+              <motion.span
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, ease: EASE }}
+                className="rounded-full bg-brass/12 px-2 py-0.5 text-xs font-medium text-brass"
               >
-                <span
-                  data-node
-                  aria-hidden
-                  className="absolute left-0 top-1.5 z-10 size-3 rounded-full border-2 border-coral bg-background transition-[background-color,scale] duration-300 ease-[var(--ease-out-expo)] md:left-[calc(13.5rem-5px)] [&.is-active]:scale-125 [&.is-active]:bg-coral"
-                />
-                <p data-reveal className="font-mono text-sm text-coral-ink md:pt-0.5 md:text-right">
-                  {date}
-                </p>
-                <div>
-                  <div data-reveal className="flex items-start gap-3">
-                    <Icon
-                      aria-hidden
-                      strokeWidth={1.5}
-                      className="mt-1 size-5 shrink-0 text-muted-foreground transition-colors duration-300 group-hover:text-coral-ink"
-                    />
-                    <h3 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">{title}</h3>
-                  </div>
-                  <p data-reveal className="mt-1.5 pl-8 text-sm font-medium text-muted-foreground">
-                    {org}
-                  </p>
-                  <p data-reveal className="mt-4 max-w-xl pl-8 leading-relaxed text-muted-foreground">
-                    {description}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ol>
+                {duration}
+              </motion.span>
+            )}
+          </p>
         </div>
-      </div>
-    </section>
+
+        <p className="mt-1 text-sm text-muted-foreground">
+          {e.place}
+          {e.mode && `, ${e.mode}`}
+        </p>
+
+        <p className="mt-4 max-w-[62ch] text-[15px] leading-relaxed text-muted-foreground">{e.description}</p>
+
+        <motion.ul variants={stagger(0.05, 0.25)} aria-label="Skills" className="mt-5 flex flex-wrap gap-2">
+          {e.skills.map((skill) => (
+            <motion.li
+              key={skill}
+              variants={pop}
+              className="rounded-full border border-border bg-pill/60 px-3 py-1 text-[13px] text-foreground/85 transition-colors duration-300 group-hover:border-brass/30"
+            >
+              {skill}
+            </motion.li>
+          ))}
+        </motion.ul>
+      </motion.article>
+    </motion.li>
   )
 }

@@ -1,11 +1,12 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
-import { motion } from 'motion/react'
+import { useState, useEffect, useMemo, useRef } from 'react'
+import { motion, useInView } from 'motion/react'
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
-import { ArrowUpRight, Code2, Target } from 'lucide-react'
+import { Code2, Target } from 'lucide-react'
 import { FaGithub, FaKaggle, FaDocker } from 'react-icons/fa'
-import { SectionHeading } from '@/components/ui/section-heading'
+import { Section } from '@/components/ui/section-heading'
+import { CountUp, Reveal, VIEWPORT, rise, stagger, trackSpotlight } from '@/components/ui/motion'
 import { scrollToSection } from '@/lib/scroll'
 import { useMounted } from '@/lib/use-mounted'
 
@@ -45,7 +46,7 @@ const defaultStats = [
     platform: 'GitHub',
     solved: 'Loading...',
     icon: <FaGithub className="size-4" />,
-    rating: 'Repositories',
+    rating: 'Public repositories',
     link: 'https://github.com/dharmendra-pandit',
   },
   {
@@ -59,7 +60,7 @@ const defaultStats = [
     platform: 'Docker',
     solved: 'Loading...',
     icon: <FaDocker className="size-4" />,
-    rating: 'Container Images',
+    rating: 'Container images',
     link: 'https://hub.docker.com/u/iampanditji',
   },
   {
@@ -179,7 +180,7 @@ export const DsaDashboard = () => {
                 return {
                   ...stat,
                   solved: data.publicRepos,
-                  rating: 'Public Projects',
+                  rating: 'Public repositories',
                   link: data.link || stat.link,
                 }
               }
@@ -195,7 +196,7 @@ export const DsaDashboard = () => {
         setStats((prevStats) =>
           prevStats.map((stat) => {
             if (stat.platform === 'GitHub') {
-              return { ...stat, solved: '0', rating: 'Public Projects' }
+              return { ...stat, solved: '0', rating: 'Public repositories' }
             }
             return stat
           }),
@@ -280,7 +281,7 @@ export const DsaDashboard = () => {
                 const totalContributions = totalNotebooks + totalDatasets
                 return {
                   ...stat,
-                  solved: `${totalContributions} Contribs`,
+                  solved: `${totalContributions} contributions`,
                   rating: data.profile?.tier || 'Novice',
                   link: data.link || stat.link,
                 }
@@ -294,7 +295,7 @@ export const DsaDashboard = () => {
         setStats((prevStats) =>
           prevStats.map((stat) => {
             if (stat.platform === 'Kaggle') {
-              return { ...stat, solved: '4 Contribs', rating: 'Novice' }
+              return { ...stat, solved: '4 contributions', rating: 'Novice' }
             }
             return stat
           })
@@ -313,7 +314,7 @@ export const DsaDashboard = () => {
                 const totalImages = data.profile?.reposCount || 3
                 return {
                   ...stat,
-                  solved: `${totalImages} Images`,
+                  solved: `${totalImages} images`,
                   rating: 'Docker Hub',
                   link: data.link || stat.link,
                 }
@@ -327,7 +328,7 @@ export const DsaDashboard = () => {
         setStats((prevStats) =>
           prevStats.map((stat) => {
             if (stat.platform === 'Docker') {
-              return { ...stat, solved: '3 Images', rating: 'Docker Hub' }
+              return { ...stat, solved: '3 images', rating: 'Docker Hub' }
             }
             return stat
           })
@@ -352,22 +353,25 @@ export const DsaDashboard = () => {
   }
 
   return (
-    <section id="dashboard" className="relative overflow-hidden bg-surface py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <SectionHeading
-          eyebrow="By the numbers"
-          title="Developer Activity"
-          description="A live track record across algorithmic problem solving, open-source repositories, ML datasets and containerised deployments."
-        />
-
-        <div className="mt-16 grid grid-cols-1 gap-5 lg:grid-cols-2">
-          <SummaryPanel title="Problems solved" icon={<Code2 className="size-4" />} total={totalProblems} delay={0}>
+    <Section
+      id="dashboard"
+      title="Activity"
+      lead="Current figures from my coding profiles, covering algorithmic problem solving, open-source repositories, machine-learning work on Kaggle and published container images."
+    >
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={VIEWPORT}
+          variants={stagger(0.12)}
+          className="grid grid-cols-1 gap-5"
+        >
+          <SummaryPanel title="Algorithmic problems solved" total={totalProblems}>
             {problemStats.map((stat) => (
               <PlatformTile key={stat.platform} stat={stat} href={stat.link} external />
             ))}
           </SummaryPanel>
 
-          <SummaryPanel title="Projects shipped" icon={<FaGithub className="size-4" />} total={totalProjects} delay={0.1}>
+          <SummaryPanel title="Published work" total={totalProjects}>
             {projectStats.map((stat) => {
               const hash = projectAnchor[stat.platform] ?? '#projects'
               return (
@@ -384,89 +388,76 @@ export const DsaDashboard = () => {
               )
             })}
           </SummaryPanel>
-        </div>
+        </motion.div>
 
-        <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-2">
-          <ChartPanel title="Problems solved" caption="Last 7 months" mounted={mounted} delay={0.15}>
+        <div className="mt-5 grid grid-cols-1 gap-5 xl:grid-cols-2">
+          <ChartPanel title="Problems solved" caption="By month, last 7 months" mounted={mounted}>
             <AreaChart data={activityData} margin={{ top: 10, right: 8, left: -22, bottom: 0 }}>
-              <ChartDefs id="fillSolved" />
-              <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="3 6" />
+              <CartesianGrid vertical={false} stroke="var(--border)" />
               <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} dy={10} />
               <YAxis stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} dx={-5} />
-              <Tooltip content={<ChartTooltip unit="solved" />} cursor={{ stroke: 'var(--coral)', strokeOpacity: 0.4 }} />
+              <Tooltip content={<ChartTooltip unit="solved" />} cursor={{ stroke: 'var(--muted-foreground)', strokeOpacity: 0.4 }} />
               <Area
                 type="monotone"
                 dataKey="solved"
-                stroke="var(--coral)"
-                strokeWidth={2.5}
-                fill="url(#fillSolved)"
-                activeDot={{ r: 5, fill: 'var(--coral)', stroke: 'var(--card)', strokeWidth: 2 }}
+                stroke="var(--brass)"
+                strokeWidth={2}
+                fill="var(--brass)"
+                fillOpacity={0.1}
+                animationDuration={1400}
+                activeDot={{ r: 4, fill: 'var(--brass)', stroke: 'var(--card)', strokeWidth: 2 }}
               />
             </AreaChart>
           </ChartPanel>
 
-          <ChartPanel title="Projects" caption="Quarterly" mounted={mounted} delay={0.25}>
+          <ChartPanel title="Projects published" caption="By quarter" mounted={mounted}>
             <AreaChart data={projectActivityData} margin={{ top: 10, right: 8, left: -22, bottom: 0 }}>
-              <ChartDefs id="fillProjects" />
-              <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="3 6" />
+              <CartesianGrid vertical={false} stroke="var(--border)" />
               <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} dy={10} />
               <YAxis stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} dx={-5} allowDecimals={false} />
-              <Tooltip content={<ChartTooltip unit="projects" />} cursor={{ stroke: 'var(--coral)', strokeOpacity: 0.4 }} />
+              <Tooltip content={<ChartTooltip unit="projects" />} cursor={{ stroke: 'var(--muted-foreground)', strokeOpacity: 0.4 }} />
               <Area
                 type="monotone"
                 dataKey="projects"
-                stroke="var(--coral)"
-                strokeWidth={2.5}
-                fill="url(#fillProjects)"
-                activeDot={{ r: 5, fill: 'var(--coral)', stroke: 'var(--card)', strokeWidth: 2 }}
+                stroke="var(--brand)"
+                strokeWidth={2}
+                fill="var(--brand)"
+                fillOpacity={0.1}
+                animationDuration={1400}
+                activeDot={{ r: 4, fill: 'var(--brand)', stroke: 'var(--card)', strokeWidth: 2 }}
               />
             </AreaChart>
           </ChartPanel>
         </div>
-      </div>
-    </section>
+    </Section>
   )
 }
 
 type Stat = (typeof defaultStats)[number]
-const EASE = [0.16, 1, 0.3, 1] as const
 
-function SummaryPanel({
-  title,
-  icon,
-  total,
-  delay,
-  children,
-}: {
-  title: string
-  icon: React.ReactNode
-  total: number
-  delay: number
-  children: React.ReactNode
-}) {
+function SummaryPanel({ title, total, children }: { title: string; total: number; children: React.ReactNode }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 32 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.9, ease: EASE, delay }}
-      className="flex flex-col rounded-md border border-border bg-card p-6 sm:p-8"
+      variants={rise}
+      onPointerMove={trackSpotlight}
+      className="spotlight grid gap-x-8 gap-y-6 rounded-xl border border-border bg-card/70 p-6 transition-colors duration-500 hover:border-brass/30 sm:p-7 md:grid-cols-[11rem_minmax(0,1fr)] md:items-center"
     >
-      <p className="flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-        <span className="text-coral-ink">{icon}</span>
-        {title}
-      </p>
-      <motion.p
-        key={total}
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: EASE }}
-        className="mt-4 text-5xl font-bold tabular-nums tracking-tight text-foreground sm:text-6xl"
-      >
-        {total > 0 ? total : '—'}
-        {total > 0 && <span className="ml-1 text-coral-ink">+</span>}
-      </motion.p>
-      <div className="mt-8 grid grid-cols-1 gap-3 border-t border-border pt-6 min-[420px]:grid-cols-3">{children}</div>
+      <div>
+        <p className="text-sm text-muted-foreground">{title}</p>
+        <p className="mt-2 font-serif text-5xl font-normal tracking-[-0.02em] text-foreground">
+          {total > 0 ? (
+            <>
+              <CountUp value={total} />
+              <span className="text-brass">+</span>
+            </>
+          ) : (
+            '—'
+          )}
+        </p>
+      </div>
+      <div className="grid grid-cols-1 gap-px overflow-hidden rounded-lg border border-border bg-border min-[420px]:grid-cols-3">
+        {children}
+      </div>
     </motion.div>
   )
 }
@@ -494,18 +485,18 @@ function PlatformTile({
             }
           : undefined
       }
-      className="group flex min-w-0 flex-col justify-between gap-3 rounded-[4px] border border-transparent bg-pill/70 p-4 transition-colors duration-300 hover:border-coral/50"
+      className="group relative flex min-w-0 flex-col justify-between gap-3 bg-card p-4 transition-colors duration-300 hover:bg-pill/70"
     >
-      <span className="flex items-center justify-between gap-2 text-xs font-semibold text-foreground">
-        <span className="flex min-w-0 items-center gap-2">
-          <span className="shrink-0 text-muted-foreground transition-colors group-hover:text-coral-ink">{stat.icon}</span>
-          <span className="truncate">{stat.platform}</span>
-        </span>
-        <ArrowUpRight className="size-3.5 shrink-0 text-muted-foreground opacity-0 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100" />
+      <span className="flex min-w-0 items-center gap-2 text-[13px] font-medium text-foreground">
+        <span className="shrink-0 text-muted-foreground transition-colors duration-300 group-hover:text-brass">{stat.icon}</span>
+        <span className="truncate">{stat.platform}</span>
+        {external && <span className="sr-only"> (opens in a new tab)</span>}
       </span>
       <span>
-        <span className="block text-xl font-bold tabular-nums tracking-tight text-foreground">{stat.solved}</span>
-        {stat.rating && <span className="mt-0.5 block truncate text-[11px] font-medium text-coral-ink">{stat.rating}</span>}
+        <span className="block text-lg font-medium tabular-nums text-foreground transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:translate-x-0.5">
+          {stat.solved}
+        </span>
+        {stat.rating && <span className="mt-0.5 block truncate text-xs text-muted-foreground">{stat.rating}</span>}
       </span>
     </a>
   )
@@ -515,48 +506,32 @@ function ChartPanel({
   title,
   caption,
   mounted,
-  delay,
   children,
 }: {
   title: string
   caption: string
   mounted: boolean
-  delay: number
   children: React.ReactElement
 }) {
+  const box = useRef<HTMLDivElement>(null)
+  // Mount the chart once it is on screen, so its draw-in animation is actually seen.
+  const seen = useInView(box, { once: true, amount: 0.35 })
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 32 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.9, ease: EASE, delay }}
-      className="rounded-md border border-border bg-card p-6 sm:p-8"
-    >
-      <div className="mb-6 flex items-baseline justify-between gap-4">
-        <h3 className="text-lg font-semibold text-foreground sm:text-xl">{title}</h3>
-        <span className="font-mono text-xs text-muted-foreground">{caption}</span>
+    <Reveal className="rounded-xl border border-border bg-card/70 p-6 sm:p-7">
+      <div className="mb-6 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+        <h3 className="text-lg font-medium text-foreground">{title}</h3>
+        <span className="text-[13px] text-muted-foreground">{caption}</span>
       </div>
-      <div className="h-[260px] w-full sm:h-[300px]">
-        {mounted ? (
+      <div ref={box} className="h-[260px] w-full sm:h-[300px]">
+        {mounted && seen ? (
           <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
             {children}
           </ResponsiveContainer>
         ) : (
-          <div className="h-full w-full animate-pulse rounded bg-pill/50" />
+          <div className="h-full w-full rounded-md bg-pill/30" />
         )}
       </div>
-    </motion.div>
-  )
-}
-
-function ChartDefs({ id }: { id: string }) {
-  return (
-    <defs>
-      <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="var(--coral)" stopOpacity={0.35} />
-        <stop offset="100%" stopColor="var(--coral)" stopOpacity={0} />
-      </linearGradient>
-    </defs>
+    </Reveal>
   )
 }
 
@@ -573,10 +548,10 @@ function ChartTooltip({
 }) {
   if (!active || !payload?.length) return null
   return (
-    <div className="rounded-[4px] border border-border bg-popover px-3 py-2 shadow-lg">
-      <p className="font-mono text-[11px] text-muted-foreground">{label}</p>
-      <p className="text-sm font-semibold text-foreground">
-        <span className="text-coral-ink">{payload[0]?.value}</span> {unit}
+    <div className="rounded-md border border-border bg-popover/95 px-3 py-2 shadow-lg backdrop-blur">
+      <p className="text-xs text-muted-foreground">{label}</p>
+      <p className="text-sm font-medium text-foreground">
+        {payload[0]?.value} {unit}
       </p>
     </div>
   )
